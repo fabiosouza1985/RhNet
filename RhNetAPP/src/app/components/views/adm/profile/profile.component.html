@@ -1,0 +1,10 @@
+<mat-grid-list cols="1" rowHeight="200px">
+    <mat-grid-tile
+        *ngFor="let profile of profiles">
+        <button mat-raised-button class="profileButton">
+            <mat-label>{{profile.name}}</mat-label>
+            <br/>
+            <mat-label>{{profile.description}}</mat-label>
+         </button>
+    </mat-grid-tile>
+  </mat-grid-list>

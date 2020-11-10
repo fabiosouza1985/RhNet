@@ -1,0 +1,35 @@
+.header{
+    display: flex;
+    align-items: center;
+}
+
+.header a{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    
+}
+
+.header .title-group{
+    padding-left: 15px;
+}
+
+.mat-toolbar {
+    position: relative;
+    z-index: 2;
+  }
+
+  .divisor {
+    flex: 1 1 auto;
+  }
+
+  .usuario {
+      font-size: 10pt;
+      margin-left: 30px;
+      text-decoration: underline;
+  }
+
+  .perfil{
+    font-size: 10pt;
+    margin-left: 10px;
+  }

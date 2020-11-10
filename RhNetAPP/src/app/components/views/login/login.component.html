@@ -1,0 +1,33 @@
+<div class="vertical-center">
+    <mat-card tabindex="0" class="login mat-elevation-z6">
+        <mat-card-header>
+            <mat-card-title>
+                Bem-vindo ao RH.net
+            </mat-card-title>
+        </mat-card-header>    
+    
+        <mat-card-content>
+
+            <form class="login-content">
+                <mat-form-field class="login-input">
+                    <mat-label>Usuário:</mat-label>
+                    <input matInput [value]="user_login.userName" (input)="user_login.userName = $event.target.value">
+                </mat-form-field>
+
+                <mat-form-field class="login-input">
+                    <mat-label>Senha:</mat-label>
+                    <input matInput type="password"
+                    [value]="user_login.password" 
+                        (input)="user_login.password = $event.target.value" 
+                        (keyup.enter)="login()">
+                </mat-form-field>
+            </form>
+    
+        </mat-card-content>
+    
+        <mat-card-actions align="end">
+            <button mat-raised-button color="primary" (click)= "login()">Entrar</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+

@@ -1,0 +1,59 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HeaderComponent } from './components/template/header/header.component';
+
+import {MatToolbarModule } from '@angular/material/toolbar';
+import { FooterComponent } from './components/template/footer/footer.component';
+import { NavComponent } from './components/template/nav/nav.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import {MatCardModule} from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
+import {MatGridListModule} from '@angular/material/grid-list';
+
+import { HomeComponent } from './components/views/home/home.component';
+import { LoginComponent } from './components/views/login/login.component';
+
+import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './components/services/token.interceptor';
+import { ProfileComponent } from './components/views/adm/profile/profile.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    NavComponent,
+    HomeComponent,
+    LoginComponent,
+    ProfileComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule,
+    HttpClientModule,
+    MatMenuModule,
+    MatIconModule,
+    MatGridListModule
+  ],
+  providers: [{provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true}],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }

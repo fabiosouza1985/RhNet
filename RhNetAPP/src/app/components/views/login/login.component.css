@@ -1,0 +1,27 @@
+.vertical-center{
+    min-height: 80%;
+    min-height: 80vh; 
+  
+    display: flex;
+    align-items: center;
+}
+.login{
+    background: #bbcdd4;
+  left: calc(50% - 100px);
+}
+
+.login-content{
+    width: 200px;
+}
+
+.login-input{
+    width: 100%;
+}
+.mat-card-title{
+    font-size: 12pt;
+    text-align: center;
+}
+
+button{
+    font-size: 10pt;
+}
