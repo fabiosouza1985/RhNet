@@ -6,12 +6,11 @@
     align-items: center;
 }
 .login{
-    background: #bbcdd4;
   left: calc(50% - 100px);
 }
 
 .login-content{
-    width: 200px;
+    width: 300px;
 }
 
 .login-input{

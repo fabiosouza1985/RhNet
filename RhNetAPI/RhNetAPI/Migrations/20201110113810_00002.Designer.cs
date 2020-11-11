@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RhNetAPI.Contexts;
 
 namespace RhNetAPI.Migrations
 {
     [DbContext(typeof(RhNetContext))]
-    partial class RhNetContextModelSnapshot : ModelSnapshot
+    [Migration("20201110113810_00002")]
+    partial class _00002
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,42 +125,6 @@ namespace RhNetAPI.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("RhNetAPI.Entities.Adm.ApplicationMenu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Header")
-                        .IsRequired()
-                        .HasColumnName("Header")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnName("Path")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Permission_Name")
-                        .IsRequired()
-                        .HasColumnName("Permission_Name")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Role_Name")
-                        .IsRequired()
-                        .HasColumnName("Role_Name")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationMenus");
-                });
-
             modelBuilder.Entity("RhNetAPI.Entities.Adm.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
@@ -258,42 +224,6 @@ namespace RhNetAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("RhNetAPI.Entities.Adm.QuickAccess", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Header")
-                        .IsRequired()
-                        .HasColumnName("Header")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnName("Path")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Permission_Name")
-                        .IsRequired()
-                        .HasColumnName("Permission_Name")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Role_Name")
-                        .IsRequired()
-                        .HasColumnName("Role_Name")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("QuickAccess");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

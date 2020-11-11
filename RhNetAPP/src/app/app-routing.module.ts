@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {HomeComponent} from './components/views/home/home.component';
 import {LoginComponent} from './components/views/login/login.component';
 import {ProfileComponent} from './components/views/adm/profile/profile.component';
+import {ViewMenusComponent} from './components/views/adm/view-menus/view-menus.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,11 @@ const routes: Routes = [
   {
       path: "profile",
       component: ProfileComponent
+  }
+  ,
+  {
+      path: "menus",
+      component: ViewMenusComponent
   }
 ];
 

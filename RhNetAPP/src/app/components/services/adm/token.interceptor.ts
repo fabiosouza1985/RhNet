@@ -43,10 +43,15 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   handleError(req: HttpRequest<any>, event) {
-    
-    if(this.auth.getToken() === undefined || this.auth.getToken() === null){
+   
+    if(this.auth.getToken() === undefined || this.auth.getToken() === null || this.auth.isAuthenticated() === false){
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('email');
+      localStorage.removeItem('currentProfile');
       this.router.navigate(['/login']);    
-    }      
+    }  
+   
   }
   
 }

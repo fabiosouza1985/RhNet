@@ -1,9 +1,8 @@
 <mat-toolbar class="mat-elevation-z4">
     <span>RH .Net</span>
-    <mat-label class="usuario">Bem-Vindo {{Username}}</mat-label>
+    <mat-label class="usuario" *ngIf="variable.Username !== ''">Bem-Vindo {{variable.Username}}</mat-label>
     
-    <span class="perfil">Perfil: </span>
-    <button mat-button routerLink="profile">Master</button>
+    <button class="perfil" mat-button routerLink="profile" *ngIf="variable.Profiles.length > 0">Perfil: {{variable.CurrentProfile}}</button>
     <span class="divisor"></span>
 
     <button mat-icon-button>

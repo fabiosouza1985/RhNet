@@ -35,12 +35,13 @@ namespace RhNetAPI
 
             services.AddDbContext<RhNetContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<RhNetContext>()
                 .AddDefaultTokenProviders();
-
+            
             services.AddScoped<RhNetContext, RhNetContext>();
             services.AddScoped<UserManager<ApplicationUser>>();
+            services.AddScoped<RoleManager<ApplicationRole>>();
 
             services.AddControllers();
 

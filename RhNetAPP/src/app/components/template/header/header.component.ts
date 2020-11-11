@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Variables} from 'src/app/components/variables';
 
 @Component({
   selector: 'app-header',
@@ -7,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  Username: String = "Master";
-  constructor() { }
+  constructor(public variable: Variables) { 
+
+  }
 
   ngOnInit(): void {
+    
   }
 
 }
