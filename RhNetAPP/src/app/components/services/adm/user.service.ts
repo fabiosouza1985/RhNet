@@ -16,12 +16,5 @@ export class UserService {
     return this.http.get<Profile[]>(this.constants.Url + 'user/getroles');
   };
 
-  getMenus(profile) : Observable<Menu[]> {
-    let httpParams = new HttpParams().set('profile', profile)
-    return this.http.get<Menu[]>(this.constants.Url + 'menu/getMenus',{params: httpParams} );
-  };
-
-  getAllMenus() : Observable<Menu[]> {
-    return this.http.get<Menu[]>(this.constants.Url + 'menu/getallmenus' );
-  };
+  
 }

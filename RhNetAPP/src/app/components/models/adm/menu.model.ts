@@ -1,7 +1,7 @@
 export interface Menu {
-    Id : number,
+    id : number,
     header: string;
     path?: string;
-    role_name: string;
-    permission_name: string;
+    role_Name: string;
+    permission_Name: string;
   }
