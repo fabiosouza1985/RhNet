@@ -30,10 +30,10 @@ namespace RhNetAPI.Controllers.Adm
          
         [HttpGet]
         [Route("getMenus")]
-        public async Task<ActionResult<List<MenuModel>>> GetMenus([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, [FromBody] RoleModel profile)
+        public async Task<ActionResult<List<MenuModel>>> GetMenus([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, string profile)
         {
             MenuRepository repository = new MenuRepository();
-            return await repository.GetMenus(this.User.Identity.Name, profile.Name, rhNetContext, userManager);
+            return await repository.GetMenus(this.User.Identity.Name, profile, rhNetContext, userManager);
 
         }
 

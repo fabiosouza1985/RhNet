@@ -43,7 +43,32 @@ export class Variables {
         }
 
         this.menuService.getMenus(this.CurrentProfile).subscribe(results => {
-            console.log(results);
+            var _menus = results;
+
+            for (var i = 0; i < _menus.length; i++) {
+               
+               var _menu_headers = _menus[i].header.split("\\");
+                if (_menu_headers.length === 1) {
+                    this.MenuItems.push({
+                        header: _menus[i].header,
+                        path: _menus[i].path
+                    });
+                } else {
+                    var index = this.MenuItems.map(function (e) { return e.header }).indexOf(_menu_headers[0]);
+
+                    if (index < 0) {
+                        this.MenuItems.push({
+                            header: _menu_headers[0]
+                        });
+                        index = this.MenuItems.map(function (e) { return e.header }).indexOf(_menu_headers[0]);
+                    }
+
+                    this.MenuItems[index].children = [{
+                        header: _menu_headers[1],
+                        path: _menus[i].path
+                    }]
+                }                
+            }
         },
             (err) => {
 
