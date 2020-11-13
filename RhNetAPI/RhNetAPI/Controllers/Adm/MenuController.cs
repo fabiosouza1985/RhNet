@@ -17,7 +17,7 @@ namespace RhNetAPI.Controllers.Adm
     public class MenuController : ControllerBase
     {
 
-        
+        [Authorize(Roles ="Master")]
         [HttpGet]
         [Route("getAllMenus")]
         public async Task<ActionResult<List<MenuModel>>> GetAllMenus( [FromServices] RhNetContext rhNetContext)
@@ -27,15 +27,17 @@ namespace RhNetAPI.Controllers.Adm
 
         }
 
+         
         [HttpGet]
         [Route("getMenus")]
-        public async Task<ActionResult<List<MenuModel>>> GetMenus([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, [FromBody] string profile)
+        public async Task<ActionResult<List<MenuModel>>> GetMenus([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, string profile)
         {
             MenuRepository repository = new MenuRepository();
             return await repository.GetMenus(this.User.Identity.Name, profile, rhNetContext, userManager);
 
         }
 
+        [Authorize(Roles ="Master")]
         [HttpPost]
         [Route("addMenu")]
         public async Task<ActionResult<MenuModel>> AddMenu( [FromServices] RhNetContext rhNetContext, [FromBody] MenuModel menuModel)
@@ -48,8 +50,41 @@ namespace RhNetAPI.Controllers.Adm
             else
             {
                 return BadRequest(ModelState);
+            }          
+
+        }
+
+        [Authorize(Roles ="Master")]
+        [HttpPost]
+        [Route("updateMenu")]
+        public async Task<ActionResult<MenuModel>> UpdateMenu( [FromServices] RhNetContext rhNetContext, [FromBody] MenuModel menuModel)
+        {
+            if (ModelState.IsValid)
+            {
+                MenuRepository repository = new MenuRepository();
+                return await repository.UpdateMenu(menuModel, rhNetContext);
             }
-           
+            else
+            {
+                return BadRequest(ModelState);
+            }          
+
+        }
+
+        [Authorize(Roles ="Master")]
+        [HttpPost]
+        [Route("removeMenu")]
+        public async Task<ActionResult<MenuModel>> RemoveMenu( [FromServices] RhNetContext rhNetContext, [FromBody] MenuModel menuModel)
+        {
+            if (ModelState.IsValid)
+            {
+                MenuRepository repository = new MenuRepository();
+                return await repository.RemoveMenu(menuModel, rhNetContext);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }          
 
         }
 

@@ -63,17 +63,19 @@ namespace RhNetAPI.Controllers.Adm
             {
                 return StatusCode((int)HttpStatusCode.BadRequest, "Senha incorreta.");
             }
-                       
-            // Gera o Token
-            var token = TokenService.GenerateToken(user);
-
+            
             UserRepository repository = new UserRepository();
+            var profiles =  (await repository.GetRolesAsync(userManager, roleManager, user.UserName)).ToList();
+            // Gera o Token
+            var token = TokenService.GenerateToken(user, profiles);
+
+            
             var loginUser = new UserModel()
             {
                 Username = user.UserName,
                 Email = user.Email,
                 Token = token,
-                Profiles = (await repository.GetRolesAsync(userManager, roleManager, user.UserName)).ToList()
+                Profiles = profiles
             };
 
             return StatusCode((int)HttpStatusCode.OK, loginUser);

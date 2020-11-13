@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RhNetAPI.Entities.Adm;
 using RhNetAPI.Models.Adm;
 using System;
@@ -22,8 +23,23 @@ namespace RhNetAPI.Repositories.Adm
                              select new RoleModel()
                              {
                                  Name = x.Name,
-                                 Description = x.Description
+                                 Description = x.Description,
+                                 id = x.Id
                              }).ToList();
+
+            return userRoles;
+        }
+
+        public async Task<List<RoleModel>> GetAllRolesAsync(RoleManager<ApplicationRole> roleManager)
+        {
+           
+            var userRoles =await (from x in roleManager.Roles
+                             select new RoleModel()
+                             {
+                                 Name = x.Name,
+                                 Description = x.Description,
+                                 id = x.Id
+                             }).ToListAsync();
 
             return userRoles;
         }

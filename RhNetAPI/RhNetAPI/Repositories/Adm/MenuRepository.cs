@@ -88,5 +88,33 @@ namespace RhNetAPI.Repositories.Adm
             return menuModel;
             
         }
+
+         public async Task<MenuModel> UpdateMenu(MenuModel menuModel, RhNetContext context)
+        {
+            ApplicationMenu menu = await context.ApplicationMenus.FindAsync(menuModel.Id);
+
+             menu.Header = menuModel.Header;
+             menu.Path = menuModel.Path;
+             menu.Permission_Name = menuModel.Permission_Name;
+             menu.Role_Name = menuModel.Role_Name;
+           
+
+            context.Entry(menu).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+           
+            return menuModel;
+            
+        }
+
+        public async Task<MenuModel> RemoveMenu(MenuModel menuModel, RhNetContext context)
+        {
+            ApplicationMenu menu = await context.ApplicationMenus.FindAsync(menuModel.Id);
+
+            context.Entry(menu).State = EntityState.Deleted;
+            await context.SaveChangesAsync();
+           
+            return menuModel;
+            
+        }
     }
 }

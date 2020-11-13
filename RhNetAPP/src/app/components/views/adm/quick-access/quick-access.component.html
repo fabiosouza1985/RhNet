@@ -1,6 +1,6 @@
 ﻿<div class="mat-elevation-z6 header">
     
-    <mat-label class="title">Meus Menus:</mat-label>
+    <mat-label class="title">Acesso Rápido:</mat-label>
 
 </div>
 
@@ -61,14 +61,14 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-            <button (click)="addMenu(element)" mat-icon-button *ngIf="element.id === 0">
+            <button (click)="addQuickAccess(element)" mat-icon-button *ngIf="element.id === 0">
                 <mat-icon>add</mat-icon>
             </button>
 
-            <button (click)="updateMenu(element, this)" mat-icon-button *ngIf="element.id !== 0">
+            <button (click)="updateQuickAccess(element, this)" mat-icon-button *ngIf="element.id !== 0">
                 <mat-icon>save</mat-icon>
             </button>
-            <button (click)="removeMenu(element)" mat-icon-button *ngIf="element.id !== 0">
+            <button (click)="removeQuickAccess(element)" mat-icon-button *ngIf="element.id !== 0">
                 <mat-icon>remove</mat-icon>
             </button>
         </td>
@@ -78,3 +78,4 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+

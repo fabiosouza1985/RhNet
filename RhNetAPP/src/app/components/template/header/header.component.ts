@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Variables} from 'src/app/components/variables';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import {Variables} from 'src/app/components/variables';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public variable: Variables) { 
+    constructor(public variable: Variables, private router: Router) { 
 
   }
 
@@ -16,4 +17,8 @@ export class HeaderComponent implements OnInit {
     
   }
 
+    logoff(): void {
+        this.variable.Logoff();
+        this.router.navigate(['/login']);
+    }
 }

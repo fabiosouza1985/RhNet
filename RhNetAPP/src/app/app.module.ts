@@ -18,7 +18,9 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRippleModule } from '@angular/material/core';
 
 import { HomeComponent } from './components/views/home/home.component';
 import { LoginComponent } from './components/views/login/login.component';
@@ -29,6 +31,8 @@ import { TokenInterceptor } from './components/services/adm/token.interceptor';
 import { ProfileComponent } from './components/views/adm/profile/profile.component';
 import { ViewMenusComponent } from './components/views/adm/view-menus/view-menus.component';
 import { MenuItemComponent } from './components/template/menu-item/menu-item.component';
+import { NotFoundComponent } from './components/views/adm/not-found/not-found.component';
+import { QuickAccessComponent } from './components/views/adm/quick-access/quick-access.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +44,9 @@ import { MenuItemComponent } from './components/template/menu-item/menu-item.com
     LoginComponent,
     ProfileComponent,
     ViewMenusComponent,
-    MenuItemComponent
+    MenuItemComponent,
+    NotFoundComponent,
+    QuickAccessComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +63,9 @@ import { MenuItemComponent } from './components/template/menu-item/menu-item.com
     MatIconModule,
     MatGridListModule,
     FlexLayoutModule,
-    MatTableModule
+      MatTableModule,
+      MatSelectModule,
+      MatRippleModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,

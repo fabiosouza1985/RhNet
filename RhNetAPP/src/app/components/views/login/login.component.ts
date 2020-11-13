@@ -36,7 +36,8 @@ export class LoginComponent implements OnInit {
       this.variable.CurrentProfile = results.profiles[0].name;
 
       this.router.navigate(['/home']);
-      
+        this.variable.GetMenus();
+        this.variable.GetQuickAccess();
   },
     (err) => {     
       alert(err.error);   
