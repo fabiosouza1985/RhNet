@@ -11,8 +11,12 @@
     font-weight: 500;
 }
 
-table {
-    width: 100%
+table{
+    min-width: 100%;
+}
+.table-container {   
+    width: 100%;
+    overflow: auto;
 }
 
 .mat-cell {

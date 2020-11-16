@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import {UserService} from 'src/app/components/services/adm/user.service'
 import {Profile} from 'src/app/components/models/adm/profile.model';
 import { MenuService } from 'src/app/components/services/adm/menu.service';
+import { FavoriteService } from 'src/app/components/services/adm/favorite.service';
 import { MenuItem } from 'src/app/components/models/adm/menuItem.model';
+import { Favorite } from 'src/app/components/models/adm/favorite.model';
 import { Menu } from 'src/app/components/models/adm/menu.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
     providedIn: 'root'
@@ -17,8 +20,9 @@ export class Variables {
     public CurrentProfile = "";
     public MenuItems: MenuItem[] = [];
     public QuickAccess: Menu[] = [];
+    public Favorites: Favorite[] = [];
 
-    constructor(private service: UserService, private menuService: MenuService){
+    constructor(private service: UserService, private menuService: MenuService, private favoriteService : FavoriteService, private _snackBar: MatSnackBar){
         if(localStorage.getItem("username") !== null && localStorage.getItem("username") !== undefined){
             this.Username = localStorage.getItem("username");
 
@@ -30,6 +34,7 @@ export class Variables {
                 this.CurrentProfile = localStorage.getItem("currentProfile");
                 this.GetMenus();
                 this.GetQuickAccess();
+                this.GetFavorites();
             },
               (err) => {     
                 
@@ -143,12 +148,70 @@ export class Variables {
             });
     }
 
+    public GetFavorites(): void {
+        this.Favorites = [];
+        if (this.CurrentProfile == "") {
+            return;
+        }
+
+        this.favoriteService.getFavorites(this.CurrentProfile).subscribe(results => {
+            this.Favorites = results;
+        },
+            (err) => {
+
+                console.log(err);
+            });
+    }
+
     public Logoff(): void {
         this.Username = '';
         this.CurrentProfile = '';
         this.MenuItems = [];
         this.Profiles = [];
         this.QuickAccess = [];
+        this.Favorites = [];
         localStorage.clear();
+    }
+
+    public showMessage(message: string) {
+        this._snackBar.open(message, 'X', {
+            duration: 2000,
+        });
+    }
+
+    public addRemoveFavorite(add: boolean, path: string) : void{
+        if (add) {
+            this.favoriteService.addFavorite(path).subscribe(results => {
+
+                this._snackBar.open('Adicionado ao favorito', 'X', {
+                    duration: 2000,
+                });
+                this.Favorites.push(results);
+                
+               
+            },
+                (err) => {
+                    console.log(err)
+                   
+                })
+            
+        } else {
+            this.favoriteService.removeFavorite(path).subscribe(results => {
+                this._snackBar.open('Removido do favorito', 'X', {
+                    duration: 2000,
+                });      
+                var index = this.Favorites.map(function (e) { return e.path }).indexOf(path);
+                if (index >= 0) {
+                    this.Favorites.splice(index, 1);
+                }
+                
+                
+            },
+                (err) => {
+                    console.log(err);
+                   
+                })
+           
+        }
     }
 }

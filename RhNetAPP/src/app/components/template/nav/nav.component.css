@@ -1,6 +1,39 @@
-.container{
-    padding-top: 70px;
+.container {
+    padding-top: 50px;
+    /*padding-top: 70px;
     padding-bottom: 60px;
-    padding-left: 10px;
-    padding-right: 20px;
+    padding-left: 0;
+    padding-right: 20px;*/
+    height: calc(100%);
+    overflow-y:visible
 }
+
+.content {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
+    margin: 0;
+    width: calc(100% - 100px);
+}
+
+.quickAccessButton {
+    transform: rotate(90deg);
+    float: left;
+    top: 55px;
+    margin-left: -50px;
+}
+
+.favoriteButton {
+    float: right;
+    transform: rotate(270deg);
+    top: 100px;
+    right:-20px;
+    
+    position: fixed;
+}
+
+.quickAccessContent, .favoriteContent {
+    padding: 10px;
+    padding-top: 80px
+}
+

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Variables } from 'src/app/components/variables';
 
 @Component({
   selector: 'app-nav',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class NavComponent implements OnInit {
 
   
-  constructor() { 
+    constructor(public variable: Variables) { 
     
   }
 

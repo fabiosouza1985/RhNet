@@ -1,3 +1,42 @@
-<div class="container">
-    <router-outlet></router-outlet>
-</div>
+﻿<mat-drawer-container class="container" [hasBackdrop]="true">
+    <mat-drawer class="quickAccessContent" #quickAccess position="start">
+
+        <mat-label>Acesso Rápido:</mat-label>
+
+        <div *ngFor="let element of variable.QuickAccess">
+
+            <button mat-button [routerLink]="element.path" (click)="quickAccess.close()">               
+                <span>{{element.header}}</span>
+            </button>
+            
+        </div>
+    </mat-drawer>
+
+    <mat-drawer class="favoriteContent" #favorite position="end">
+        <mat-label>Favoritos:</mat-label>
+
+        <div *ngFor="let element of variable.Favorites">
+
+            <button mat-button [routerLink]="element.path" (click)="favorite.close()">
+                <span>{{element.header}}</span>
+            </button>
+
+        </div>
+    </mat-drawer>
+    
+    <mat-drawer-content>
+
+        <div>
+            <a mat-raised-button (click)="quickAccess.toggle()" class="quickAccessButton" *ngIf="variable.QuickAccess.length > 0">Acesso Rápido</a>
+
+            <div class="content">
+                <router-outlet></router-outlet>
+            </div>
+
+            <a mat-raised-button (click)="favorite.toggle()" class="favoriteButton" *ngIf="variable.Favorites.length > 0">Favoritos</a>
+        </div>
+  
+
+    </mat-drawer-content>
+</mat-drawer-container>
+

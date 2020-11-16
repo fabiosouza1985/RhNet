@@ -25,6 +25,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRippleModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { HomeComponent } from './components/views/home/home.component';
 import { LoginComponent } from './components/views/login/login.component';
@@ -72,7 +75,10 @@ import { ViewProfilesComponent } from './components/views/adm/view-profiles/view
       MatTableModule,
       MatSelectModule,
       MatRippleModule,
-      MatCheckboxModule
+      MatCheckboxModule,
+      MatSnackBarModule,
+      MatSortModule,
+      MatPaginatorModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,

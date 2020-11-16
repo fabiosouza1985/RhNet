@@ -1,21 +1,11 @@
 
-.divisor {
-    flex: 1 1 auto;
-}
-
-.header {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 15px;
-}
-
-.title {
-    font-size: 16pt;
-    font-weight: 500;
-}
-
 table {
-    width: 100%
+    min-width: 100%;
+}
+
+.table-container {
+    width: 100%;
+    overflow: auto;
 }
 
 .mat-cell {
@@ -42,14 +32,4 @@ table {
     width: 100%;
 }
 
-.notfavorite{
-    color: white;
-}
 
-.favorite {
-    color: yellow;
-}
-mat-toolbar{
-    background-color: #6b6969;
-    color: white
-}

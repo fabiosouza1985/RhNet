@@ -1,6 +1,6 @@
 <mat-toolbar class="mat-elevation-z4">
-    <span >RH .Net</span>
-    <mat-label class="usuario" *ngIf="variable.Username !== ''">Bem-Vindo {{variable.Username}}</mat-label>
+    <button class="homeButton" mat-icon-button routerLink="home">RH .Net</button>
+    <!--<mat-label class="usuario" *ngIf="variable.Username !== ''">Bem-Vindo {{variable.Username}}</mat-label>-->
 
     <button class="perfil" mat-button routerLink="myprofile" *ngIf="variable.Profiles.length > 0">Perfil: {{variable.CurrentProfile}}</button>
 
@@ -30,8 +30,8 @@
         </span>
 
         <span *ngIf="item === variable.MenuItems[0]">
-            <button mat-button (click)="logoff()">
-                Logoff
+            <button mat-icon-button (click)="logoff()">
+                <mat-icon>login</mat-icon>
             </button>            
         </span>
     </span>
