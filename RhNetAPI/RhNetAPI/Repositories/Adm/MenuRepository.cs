@@ -23,7 +23,8 @@ namespace RhNetAPI.Repositories.Adm
                               Header = x.Header,
                               Id = x.Id,
                               Path = x.Path,
-                              Permission_Name = x.Permission_Name
+                              Permission_Name = x.Permission_Name,
+                              Quick_Access = x.Quick_Access
                           }).ToListAsync();
             ;
 
@@ -43,7 +44,8 @@ namespace RhNetAPI.Repositories.Adm
                                    Header = x.Header,
                                    Id = x.Id,
                                    Path = x.Path,
-                                   Permission_Name = x.Permission_Name
+                                   Permission_Name = x.Permission_Name,
+                                   Quick_Access = x.Quick_Access
                                }).ToListAsync();
             }
             else
@@ -59,7 +61,50 @@ namespace RhNetAPI.Repositories.Adm
                                    Header = x.Header,
                                    Id = x.Id,
                                    Path = x.Path,
-                                   Permission_Name = x.Permission_Name
+                                   Permission_Name = x.Permission_Name,
+                                   Quick_Access = x.Quick_Access
+                               }).ToListAsync();
+
+            }
+
+            return menus;
+
+        }
+
+        public async Task<List<MenuModel>> GetQuickAccess(string username, string profile, RhNetContext context, UserManager<ApplicationUser> userManager)
+        {
+            List<MenuModel> menus = new List<MenuModel>();
+
+            if (username == "master")
+            {
+
+                menus = await (from x in context.ApplicationMenus
+                               where x.Role_Name == profile && x.Quick_Access == true
+                               select new MenuModel()
+                               {
+                                   Role_Name = x.Role_Name,
+                                   Header = x.Header,
+                                   Id = x.Id,
+                                   Path = x.Path,
+                                   Permission_Name = x.Permission_Name,
+                                   Quick_Access = x.Quick_Access
+                               }).ToListAsync();
+            }
+            else
+            {
+                var user = await userManager.FindByNameAsync(username);
+                var claims = (await userManager.GetClaimsAsync(user)).Where(e => e.Type == "Permission").Select(e => e.Value).ToList();
+
+                menus = await (from x in context.ApplicationMenus
+                               where x.Role_Name == profile && claims.Contains(x.Permission_Name) && x.Quick_Access == true
+                               select new MenuModel()
+                               {
+                                   Role_Name = x.Role_Name,
+                                   Header = x.Header,
+                                   Id = x.Id,
+                                   Path = x.Path,
+                                   Permission_Name = x.Permission_Name,
+                                   Quick_Access = x.Quick_Access
                                }).ToListAsync();
 
             }
@@ -76,7 +121,8 @@ namespace RhNetAPI.Repositories.Adm
                 Header = menuModel.Header,
                 Path = menuModel.Path,
                 Permission_Name = menuModel.Permission_Name,
-                Role_Name = menuModel.Role_Name
+                Role_Name = menuModel.Role_Name,
+                Quick_Access = menuModel.Quick_Access
             };
 
             context.Entry(menu).State = EntityState.Added;
@@ -97,7 +143,7 @@ namespace RhNetAPI.Repositories.Adm
              menu.Path = menuModel.Path;
              menu.Permission_Name = menuModel.Permission_Name;
              menu.Role_Name = menuModel.Role_Name;
-           
+            menu.Quick_Access = menuModel.Quick_Access;
 
             context.Entry(menu).State = EntityState.Modified;
             await context.SaveChangesAsync();

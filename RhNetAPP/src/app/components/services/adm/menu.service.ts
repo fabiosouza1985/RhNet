@@ -16,6 +16,11 @@ export class MenuService {
         let httpParams = new HttpParams().set('profile', profile)
         return this.http.get<Menu[]>(this.constants.Url + 'menu/getMenus', { params: httpParams });
     };
+
+    getQuickAccess(profile): Observable<Menu[]> {
+        let httpParams = new HttpParams().set('profile', profile)
+        return this.http.get<Menu[]>(this.constants.Url + 'menu/getQuickAccess', { params: httpParams });
+    };
     getAllMenus(): Observable<Menu[]> {
         return this.http.get<Menu[]>(this.constants.Url + 'menu/getallmenus');
     };

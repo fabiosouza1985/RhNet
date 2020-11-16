@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RhNetAPI.Contexts;
 
 namespace RhNetAPI.Migrations
 {
     [DbContext(typeof(RhNetContext))]
-    partial class RhNetContextModelSnapshot : ModelSnapshot
+    [Migration("20201114004453_00004")]
+    partial class _00004
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,7 +270,7 @@ namespace RhNetAPI.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("RhNetAPI.Entities.Adm.Favorite", b =>
+            modelBuilder.Entity("RhNetAPI.Entities.Adm.QuickAccess", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -276,22 +278,32 @@ namespace RhNetAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("MenuId")
-                        .HasColumnName("MenuId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("Header")
                         .IsRequired()
-                        .HasColumnName("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnName("Header")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnName("Path")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Permission_Name")
+                        .IsRequired()
+                        .HasColumnName("Permission_Name")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Role_Name")
+                        .IsRequired()
+                        .HasColumnName("Role_Name")
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MenuId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Favorites");
+                    b.ToTable("QuickAccess");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -339,21 +351,6 @@ namespace RhNetAPI.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.HasOne("RhNetAPI.Entities.Adm.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RhNetAPI.Entities.Adm.Favorite", b =>
-                {
-                    b.HasOne("RhNetAPI.Entities.Adm.ApplicationMenu", "ApplicationMenu")
-                        .WithMany()
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RhNetAPI.Entities.Adm.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

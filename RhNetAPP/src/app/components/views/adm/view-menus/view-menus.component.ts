@@ -17,7 +17,7 @@ export class ViewMenusComponent implements OnInit {
 
     menus: Menu[];
 
-    displayedColumns: string[] = ["role_Name", "header", "path", "permission_Name", "actions"];
+    displayedColumns: string[] = ["role_Name", "header", "path", "permission_Name", 'quick_Access', "actions"];
     constructor(private service: UserService, private menuService: MenuService) { }
     
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class ViewMenusComponent implements OnInit {
             newMenu.path = '';
             newMenu.role_Name = '';
             newMenu.permission_Name = '';
-
+            newMenu.quick_Access = false;
             this.menus.splice(0, 0, newMenu);
             this.ds = new MatTableDataSource(this.menus);
         },
@@ -55,12 +55,13 @@ export class ViewMenusComponent implements OnInit {
         newMenu.path = menu.path;
         newMenu.role_Name = menu.role_Name;
         newMenu.permission_Name = menu.permission_Name;
-
+        newMenu.quick_Access = menu.quick_Access;
         this.menuService.addMenu(newMenu).subscribe(results => {
             menu.header = '';
             menu.path = '';
             menu.role_Name = '';
             menu.permission_Name = '';
+            menu.quick_Access = false;
 
             this.menus.push(results);
             this.ds.data = this.menus;

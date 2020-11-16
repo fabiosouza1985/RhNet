@@ -1,5 +1,5 @@
 .content{
-padding: 20px
+padding: 10px
 }
 
 
@@ -20,15 +20,21 @@ padding: 20px
 }
 
 .quickAccessPanel{
-    padding-top: 15px;
-    padding-left:15px;
+   width:100%;
+   padding:10px
     
 }
 
 .favoritePanel {
     padding: 10px;
+    height: 100%
 }
 
 .quickAccess{
-    margin:10px
+ /* margin:10px*/
+}
+
+.title{
+    font-size: 14pt;
+    font-weight: 400;
 }

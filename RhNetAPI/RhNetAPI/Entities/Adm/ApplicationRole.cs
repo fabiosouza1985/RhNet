@@ -14,5 +14,8 @@ namespace RhNetAPI.Entities.Adm
         [Column("Description")]
         [StringLength(200)]
         public string Description { get; set; }
+
+        [Column("Level")]
+        public int? Level { get; set; }
     }
 }

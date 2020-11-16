@@ -37,6 +37,15 @@ namespace RhNetAPI.Controllers.Adm
 
         }
 
+        [HttpGet]
+        [Route("getQuickAccess")]
+        public async Task<ActionResult<List<MenuModel>>> GetQuickAccess([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, string profile)
+        {
+            MenuRepository repository = new MenuRepository();
+            return await repository.GetQuickAccess(this.User.Identity.Name, profile, rhNetContext, userManager);
+
+        }
+
         [Authorize(Roles ="Master")]
         [HttpPost]
         [Route("addMenu")]

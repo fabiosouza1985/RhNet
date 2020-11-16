@@ -27,5 +27,7 @@ namespace RhNetAPI.Models.Adm
         [Required]
         [StringLength(100)]
         public string Permission_Name { get; set; }
+
+        public bool? Quick_Access { get; set; }
     }
 }

@@ -28,6 +28,7 @@ export class ProfileComponent implements OnInit {
     this.variable.CurrentProfile = perfil;
       localStorage.setItem("currentProfile", perfil);
       this.variable.GetMenus();
+      this.variable.GetQuickAccess();
     this.router.navigate(['/home']);
   }
 }

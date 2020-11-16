@@ -1,5 +1,6 @@
 export interface Profile {
 	name: string, 
 	description: string,
-	id: string
+	id: string,
+	level?:number
 }

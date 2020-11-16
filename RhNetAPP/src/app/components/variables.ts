@@ -3,9 +3,7 @@ import {UserService} from 'src/app/components/services/adm/user.service'
 import {Profile} from 'src/app/components/models/adm/profile.model';
 import { MenuService } from 'src/app/components/services/adm/menu.service';
 import { MenuItem } from 'src/app/components/models/adm/menuItem.model';
-
-import { QuickAccessService } from 'src/app/components/services/adm/quick-access.service';
-import { QuickAccess } from './models/adm/quickAccess.model';
+import { Menu } from 'src/app/components/models/adm/menu.model';
 
 @Injectable({
     providedIn: 'root'
@@ -18,9 +16,9 @@ export class Variables {
     public Profiles: Profile[] = [];
     public CurrentProfile = "";
     public MenuItems: MenuItem[] = [];
-    public QuickAccess: QuickAccess[] = [];
+    public QuickAccess: Menu[] = [];
 
-    constructor(private service: UserService, private menuService: MenuService, private quickAccessService: QuickAccessService){
+    constructor(private service: UserService, private menuService: MenuService){
         if(localStorage.getItem("username") !== null && localStorage.getItem("username") !== undefined){
             this.Username = localStorage.getItem("username");
 
@@ -136,7 +134,7 @@ export class Variables {
             return;
         }
 
-        this.quickAccessService.getQuickAccess(this.CurrentProfile).subscribe(results => {
+        this.menuService.getQuickAccess(this.CurrentProfile).subscribe(results => {
             this.QuickAccess = results;
         },
             (err) => {

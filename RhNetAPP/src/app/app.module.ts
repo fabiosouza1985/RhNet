@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { HeaderComponent } from './components/template/header/header.component';
 
 import {MatToolbarModule } from '@angular/material/toolbar';
@@ -21,6 +24,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRippleModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { HomeComponent } from './components/views/home/home.component';
 import { LoginComponent } from './components/views/login/login.component';
@@ -32,7 +36,7 @@ import { ProfileComponent } from './components/views/adm/profile/profile.compone
 import { ViewMenusComponent } from './components/views/adm/view-menus/view-menus.component';
 import { MenuItemComponent } from './components/template/menu-item/menu-item.component';
 import { NotFoundComponent } from './components/views/adm/not-found/not-found.component';
-import { QuickAccessComponent } from './components/views/adm/quick-access/quick-access.component';
+import { ViewProfilesComponent } from './components/views/adm/view-profiles/view-profiles.component';
 
 @NgModule({
   declarations: [
@@ -46,12 +50,14 @@ import { QuickAccessComponent } from './components/views/adm/quick-access/quick-
     ViewMenusComponent,
     MenuItemComponent,
     NotFoundComponent,
-    QuickAccessComponent
+    ViewProfilesComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
+      BrowserAnimationsModule,
+      FormsModule,
+      ReactiveFormsModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -65,7 +71,8 @@ import { QuickAccessComponent } from './components/views/adm/quick-access/quick-
     FlexLayoutModule,
       MatTableModule,
       MatSelectModule,
-      MatRippleModule
+      MatRippleModule,
+      MatCheckboxModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,

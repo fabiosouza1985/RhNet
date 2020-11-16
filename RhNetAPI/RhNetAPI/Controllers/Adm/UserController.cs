@@ -35,5 +35,25 @@ namespace RhNetAPI.Controllers.Adm
             return await repository.GetAllRolesAsync(roleManager);
            
         }
+
+        [Authorize(Roles = "Master")]
+        [HttpPost]
+        [Route("addRole")]
+        public async Task<ActionResult<RoleModel>> AddRole([FromServices] RoleManager<ApplicationRole> roleManager, [FromBody] RoleModel role)
+        {
+            UserRepository repository = new UserRepository();
+            return await repository.AddRoleAsync(roleManager, role);
+
+        }
+
+        [Authorize(Roles = "Master")]
+        [HttpPost]
+        [Route("updateRole")]
+        public async Task<ActionResult<RoleModel>> UpdateRole([FromServices] RoleManager<ApplicationRole> roleManager, [FromBody] RoleModel role)
+        {
+            UserRepository repository = new UserRepository();
+            return await repository.UpdateRoleAsync(roleManager, role);
+
+        }
     }
 }

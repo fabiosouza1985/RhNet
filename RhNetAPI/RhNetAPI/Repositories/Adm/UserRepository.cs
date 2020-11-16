@@ -20,11 +20,13 @@ namespace RhNetAPI.Repositories.Adm
 
             var userRoles = (from x in roleManager.Roles
                              where roles.Contains(x.Name)
+                             orderby x.Level
                              select new RoleModel()
                              {
                                  Name = x.Name,
                                  Description = x.Description,
-                                 id = x.Id
+                                 id = x.Id,
+                                 Level = x.Level
                              }).ToList();
 
             return userRoles;
@@ -34,14 +36,43 @@ namespace RhNetAPI.Repositories.Adm
         {
            
             var userRoles =await (from x in roleManager.Roles
-                             select new RoleModel()
+                                  orderby x.Level
+                                  select new RoleModel()
                              {
                                  Name = x.Name,
                                  Description = x.Description,
-                                 id = x.Id
-                             }).ToListAsync();
+                                 id = x.Id,
+                                      Level = x.Level
+                                  }).ToListAsync();
 
             return userRoles;
+        }
+
+        public async Task<RoleModel> AddRoleAsync(RoleManager<ApplicationRole> roleManager, RoleModel role)
+        {
+            ApplicationRole newRole = new ApplicationRole() { 
+                Description = role.Description,
+                Level = role.Level,
+                Name = role.Name
+            };
+
+            await roleManager.CreateAsync(newRole);
+            newRole = await roleManager.FindByNameAsync(role.Name);
+            role.id = newRole.Id;
+            return role;
+        }
+
+        public async Task<RoleModel> UpdateRoleAsync(RoleManager<ApplicationRole> roleManager, RoleModel role)
+        {
+            ApplicationRole applicationRole =await roleManager.FindByIdAsync(role.id);
+
+            applicationRole.Name = role.Name;
+            applicationRole.Description = role.Description;
+            applicationRole.Level = role.Level;
+            
+
+             await roleManager.UpdateAsync(applicationRole);
+            return role;
         }
     }
 }

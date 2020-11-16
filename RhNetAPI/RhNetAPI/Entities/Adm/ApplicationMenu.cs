@@ -34,5 +34,7 @@ namespace RhNetAPI.Entities.Adm
         [StringLength(100)]
         public string Permission_Name { get; set; }
 
+        [Column("Quick_Access")]
+        public bool? Quick_Access { get; set; }
     }
 }

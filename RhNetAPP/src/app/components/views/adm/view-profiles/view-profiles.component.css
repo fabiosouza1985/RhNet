@@ -1,0 +1,55 @@
+
+.divisor {
+    flex: 1 1 auto;
+}
+
+.header {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 15px;
+}
+
+.title {
+    font-size: 16pt;
+    font-weight: 500;
+}
+
+table {
+    width: 100%
+}
+
+.mat-cell {
+    padding-right: 20px;
+}
+
+.mat-column-name {    
+    width:50px
+}
+
+.mat-column-level {
+    width: 5px;
+}
+
+.mat-column-actions {
+    width: 10px;
+}
+
+.mat-column-description {
+    width: 100%;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+.notfavorite{
+    color: white;
+}
+
+.favorite {
+    color: yellow;
+}
+mat-toolbar{
+    background-color: #6b6969;
+    color: white
+}

@@ -12,7 +12,7 @@ namespace RhNetAPI.Contexts
     public class RhNetContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
        public DbSet<ApplicationMenu> ApplicationMenus { get; set; }
-       public DbSet<QuickAccess> QuickAccess { get; set; }
-       public RhNetContext(DbContextOptions <RhNetContext> options): base(options) { }
+        public DbSet<Favorite> Favorites { get; set; }
+        public RhNetContext(DbContextOptions <RhNetContext> options): base(options) { }
     }
 }

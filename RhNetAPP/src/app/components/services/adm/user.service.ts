@@ -19,4 +19,13 @@ export class UserService {
     getAllRoles(): Observable<Profile[]> {
         return this.http.get<Profile[]>(this.constants.Url + 'user/getallroles');
     }; 
+
+    addRole(profile): Observable<Profile> {
+        return this.http.post<Profile>(this.constants.Url + 'user/addrole', profile);
+    }; 
+
+    updateRole(profile): Observable<Profile> {
+        return this.http.post<Profile>(this.constants.Url + 'user/updateRole', profile);
+    }; 
+
 }
