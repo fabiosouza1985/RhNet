@@ -4,8 +4,8 @@
     padding-bottom: 60px;
     padding-left: 0;
     padding-right: 20px;*/
-    height: calc(100%);
-    overflow-y:visible
+    height: calc(100% - 50px);
+    overflow-y: visible
 }
 
 .content {
@@ -37,3 +37,11 @@
     padding-top: 80px
 }
 
+.loading {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    left: calc(50% - 25px);
+}

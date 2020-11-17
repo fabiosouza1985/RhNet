@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Profile } from 'src/app/components/models/adm/profile.model';
 import { Menu } from 'src/app/components/models/adm/menu.model';
 import { Constants } from 'src/app/components/constants';
 

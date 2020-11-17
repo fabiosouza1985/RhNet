@@ -62,8 +62,11 @@ namespace RhNetAPI.Controllers.Adm
             }          
 
         }
-
-        [Authorize(Roles ="Master")]
+        public override ForbidResult Forbid()
+        {
+            return base.Forbid("teste");
+        }
+        [Authorize(Roles ="Master", Policy = "ViewUsers")]
         [HttpPost]
         [Route("updateMenu")]
         public async Task<ActionResult<MenuModel>> UpdateMenu( [FromServices] RhNetContext rhNetContext, [FromBody] MenuModel menuModel)

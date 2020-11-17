@@ -63,6 +63,10 @@ namespace RhNetAPI
                     ValidateAudience = false
                 };
             });
+
+            services.AddAuthorization(options =>
+                options.AddPolicy("ViewUsers",
+                    policy => policy.RequireClaim("permission", "Visualizar Usuários")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

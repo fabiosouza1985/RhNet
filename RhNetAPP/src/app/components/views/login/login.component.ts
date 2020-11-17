@@ -24,7 +24,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login(): void{
+    login(): void{
+        this.variable.IsLoading = true;
     this.service.login(this.user_login.userName, this.user_login.password).subscribe(results => {     
       localStorage.setItem('token', results.token);
       localStorage.setItem('username', results.username);
@@ -38,8 +39,10 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/home']);
         this.variable.GetMenus();
         this.variable.GetQuickAccess();
+        this.variable.IsLoading = false;
   },
-    (err) => {     
+        (err) => {     
+            this.variable.IsLoading = false;
       alert(err.error);   
   });
   }

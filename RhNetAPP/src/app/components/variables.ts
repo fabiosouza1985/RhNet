@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class Variables {
     
     
-    
+    public IsLoading: boolean = false;
     public Username: String = "";
     public Profiles: Profile[] = [];
     public CurrentProfile = "";
@@ -24,6 +24,7 @@ export class Variables {
 
     constructor(private service: UserService, private menuService: MenuService, private favoriteService : FavoriteService, private _snackBar: MatSnackBar){
         if(localStorage.getItem("username") !== null && localStorage.getItem("username") !== undefined){
+            this.IsLoading = true;
             this.Username = localStorage.getItem("username");
 
             this.service.getRoles().subscribe(results => {     
@@ -35,9 +36,10 @@ export class Variables {
                 this.GetMenus();
                 this.GetQuickAccess();
                 this.GetFavorites();
+                this.IsLoading = false;
             },
               (err) => {     
-                
+                  this.IsLoading = false;
                 console.log(err);   
             });
         }
@@ -179,7 +181,8 @@ export class Variables {
         });
     }
 
-    public addRemoveFavorite(add: boolean, path: string) : void{
+    public addRemoveFavorite(add: boolean, path: string): void{
+        this.IsLoading = true;
         if (add) {
             this.favoriteService.addFavorite(path).subscribe(results => {
 
@@ -187,11 +190,12 @@ export class Variables {
                     duration: 2000,
                 });
                 this.Favorites.push(results);
-                
+                this.IsLoading = false;
                
             },
                 (err) => {
-                    console.log(err)
+                    console.log(err);
+                    this.IsLoading = false;
                    
                 })
             
@@ -204,11 +208,12 @@ export class Variables {
                 if (index >= 0) {
                     this.Favorites.splice(index, 1);
                 }
-                
+                this.IsLoading = false;
                 
             },
                 (err) => {
                     console.log(err);
+                    this.IsLoading = false;
                    
                 })
            
