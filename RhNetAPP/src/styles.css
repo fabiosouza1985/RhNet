@@ -8,16 +8,15 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.header {
-    margin-top: 10px;
+.header {    
     margin-bottom: 10px;
-    padding: 15px;
+    padding: 5px;
     background-color: #6b6969;
     color: white;
 }
 
 .title {
-    font-size: 16pt;
+    font-size: 0.7em;
     font-weight: 500;
 }
 

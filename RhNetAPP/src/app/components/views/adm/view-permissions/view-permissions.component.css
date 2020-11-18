@@ -1,19 +1,7 @@
-
-
-.header{
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 15px;
-}
-
-.title {
-    font-size: 16pt;
-    font-weight: 500;
-}
-
-table{
+table {
     min-width: 100%;
 }
+
 .table-container {
     width: 100%;
     overflow: auto;
@@ -23,3 +11,16 @@ table{
 .mat-cell {
     padding-right: 20px;
 }
+
+.mat-form-field {
+    width: 100%;
+}
+
+.mat-column-table {
+    width: 20%
+}
+
+.mat-column-description {
+    width: 70%
+}
+

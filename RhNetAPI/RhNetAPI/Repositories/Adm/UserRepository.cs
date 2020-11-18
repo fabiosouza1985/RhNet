@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using RhNetAPI.Contexts;
 using RhNetAPI.Entities.Adm;
 using RhNetAPI.Models.Adm;
 using System;
@@ -11,6 +12,43 @@ namespace RhNetAPI.Repositories.Adm
 {
     public class UserRepository
     {
+        public async Task<List<ApplicationUserModel>> GetUsers(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, RhNetContext rhNetContext, string username)
+        {
+            ApplicationUser user = await userManager.FindByNameAsync(username);
+
+
+            List<ApplicationUserModel> users = new List<ApplicationUserModel>();
+
+            if (user.UserName == "master")
+            {
+                users = await (from x in userManager.Users
+                               select new ApplicationUserModel()
+                               {
+                                   Cpf = x.Cpf,
+                                   Email = x.Email,
+                                   UserId = x.Id,
+                                   UserName = x.UserName
+                               }).ToListAsync();
+            }
+            else
+            {
+                List<int> client_ids = await (from x in rhNetContext.UserClients
+                                              where x.UserId == user.Id
+                                              select x.ClientId).ToListAsync();
+
+                users = await (from x in userManager.Users
+                               from y in rhNetContext.UserClients.Where(e => client_ids.Contains(e.ClientId))
+                               select new ApplicationUserModel()
+                               {
+                                   Cpf = x.Cpf,
+                                   Email = x.Email,
+                                   UserId = x.Id,
+                                   UserName = x.UserName
+                               }).ToListAsync();
+            }
+
+            return users;
+        }
         public async Task<List<RoleModel>> GetRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, string username)
         {
             ApplicationUser user = await userManager.FindByNameAsync(username);

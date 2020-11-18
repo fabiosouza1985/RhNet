@@ -1,11 +1,8 @@
 .container {
     padding-top: 50px;
-    /*padding-top: 70px;
-    padding-bottom: 60px;
-    padding-left: 0;
-    padding-right: 20px;*/
-    height: calc(100% - 50px);
-    overflow-y: visible
+    height: calc(100% - 60px);
+    overflow-y: visible;
+    background-color: #e5e3e3;
 }
 
 .content {
@@ -13,7 +10,7 @@
     padding-right: 50px;
     padding-top: 20px;
     margin: 0;
-    width: calc(100% - 100px);
+    width: calc(100% - 110px);    
 }
 
 .quickAccessButton {

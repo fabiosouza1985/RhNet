@@ -1,10 +1,9 @@
-﻿import { Component, OnInit, ViewChild, AfterViewInit  } from '@angular/core';
+﻿import { Component, OnInit, ViewChild  } from '@angular/core';
 import { Profile } from 'src/app/components/models/adm/profile.model';
 import { UserService } from 'src/app/components/services/adm/user.service';
 import { FavoriteService } from 'src/app/components/services/adm/favorite.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Variables } from 'src/app/components/variables';
@@ -26,7 +25,7 @@ export class ViewProfilesComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
 
 
-    constructor(private service: UserService, private favoriteService: FavoriteService, private router: Router, private _snackBar: MatSnackBar, private variable: Variables) { }
+    constructor(private service: UserService, private favoriteService: FavoriteService, private router: Router, private variable: Variables) { }
 
     ngOnInit(): void {
         
@@ -84,23 +83,27 @@ export class ViewProfilesComponent implements OnInit {
 
             this.profiles.push(results);
             this.ds.data = this.profiles;
-            
-            this._snackBar.open('Perfil adicionado com sucesso', 'X', {
-                duration: 2000,
-            });
+            this.variable.showMessage('Perfil adicionado com sucesso');
+          
 
         },
             (err) => {
+                if (err.errors !== undefined) {
+                    var erros = '';
+                    for (var e = 0; e < err.errors.length; e++) {
+                        erros += err.errors[e];
+                    }
+                    console.log(erros);
+                    alert(erros);
+                }
                 console.log(err)
             })
     }
 
     update(profile: Profile): void {
         this.service.updateRole(profile).subscribe(results => {
-            this._snackBar.open('Perfil atualizado com sucesso', 'X',  {
-                duration: 2000,
-            });
-            
+            this.variable.showMessage('Perfil atualizado com sucesso');
+           
         },
             (err) => {
                 console.log(err)

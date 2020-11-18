@@ -15,6 +15,7 @@ export class Variables {
     
     
     public IsLoading: boolean = false;
+    public IsEnabled: boolean = true;
     public Username: String = "";
     public Profiles: Profile[] = [];
     public CurrentProfile = "";

@@ -7,6 +7,9 @@ import {ProfileComponent} from './components/views/adm/profile/profile.component
 import {ViewMenusComponent} from './components/views/adm/view-menus/view-menus.component';
 import { NotFoundComponent } from './components/views/adm/not-found/not-found.component';
 import { ViewProfilesComponent } from './components/views/adm/view-profiles/view-profiles.component';
+import { ViewPermissionsComponent } from './components/views/adm/view-permissions/view-permissions.component';
+import { ViewClientsComponent } from './components/views/adm/clients/view-clients/view-clients.component';
+import { ViewUsersComponent } from './components/views/adm/users/view-users/view-users.component';
 
 const routes: Routes = [
   {
@@ -35,6 +38,18 @@ const routes: Routes = [
     {
         path: "profiles",
         component: ViewProfilesComponent
+    },
+    {
+        path: "permissions",
+        component: ViewPermissionsComponent
+    },
+    {
+        path: "clients",
+        component: ViewClientsComponent
+    },
+    {
+        path: "users",
+        component: ViewUsersComponent
     },
     {
         path: "**",

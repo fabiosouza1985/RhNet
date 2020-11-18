@@ -13,24 +13,24 @@ table {
     padding-right: 20px;
 }
 
-.mat-column-name {    
-    width:50px
+
+.mat-column-cnpj {
+    width: 150px;
 }
 
-.mat-column-level {
-    width: 5px;
+.mat-column-situation {
+    width: 350px;
 }
+
 
 .mat-column-actions {
     width: 10px;
-}
-
-.mat-column-description {
-    width: 100%;
 }
 
 .mat-form-field {
     width: 100%;
 }
 
-
+mat-radio-button{
+    margin-right: 15px
+}

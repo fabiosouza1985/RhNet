@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { Profile } from 'src/app/components/models/adm/profile.model';
 import { UserService } from 'src/app/components/services/adm/user.service';
 import { MenuService } from 'src/app/components/services/adm/menu.service';
@@ -23,10 +23,13 @@ export class ViewMenusComponent implements OnInit {
     ds = new MatTableDataSource();
     profiles: Profile[] = [];
   
-
     menus: Menu[];
 
     displayedColumns: string[] = ["role_Name", "header", "path", "permission_Name", 'quick_Access', "actions"];
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+
     constructor(private service: UserService, private menuService: MenuService, private favoriteService: FavoriteService, private router: Router, private _snackBar: MatSnackBar, private variable: Variables) { }
     
   ngOnInit(): void {
@@ -38,31 +41,43 @@ export class ViewMenusComponent implements OnInit {
               console.log(err)
           })
 
-    this.service.getAllRoles().subscribe(results => {
-      this.profiles = results;
+   
+  } 
 
-        this.menuService.getAllMenus().subscribe(results_1 => {
+    ngAfterViewInit() {
+        this.service.getAllRoles().subscribe(results => {
+            this.profiles = results;
 
-            this.menus = results_1;
+            this.paginator._intl.itemsPerPageLabel = "Items por página"
+            this.paginator._intl.firstPageLabel = "Primeira página"
+            this.paginator._intl.lastPageLabel = "Úlltima página"
+            this.paginator._intl.nextPageLabel = "Próxima página"
+            this.paginator._intl.previousPageLabel = "Página anterior"
 
-            let newMenu = {} as Menu;
-            newMenu.id = 0;
-            newMenu.header = '';
-            newMenu.path = '';
-            newMenu.role_Name = '';
-            newMenu.permission_Name = '';
-            newMenu.quick_Access = false;
-            this.menus.splice(0, 0, newMenu);
-            this.ds = new MatTableDataSource(this.menus);
+            this.menuService.getAllMenus().subscribe(results_1 => {
+
+                this.menus = results_1;
+
+                let newMenu = {} as Menu;
+                newMenu.id = 0;
+                newMenu.header = '';
+                newMenu.path = '';
+                newMenu.role_Name = '';
+                newMenu.permission_Name = '';
+                newMenu.quick_Access = false;
+                this.menus.splice(0, 0, newMenu);
+                this.ds = new MatTableDataSource(this.menus);
+                this.ds.paginator = this.paginator;
+                this.ds.sort = this.sort;
+            },
+                (err) => {
+                    console.log(err)
+                })
         },
             (err) => {
                 console.log(err)
             })
-    },
-    (err) => {           
-      console.log(err)})
-  } 
-
+    }
     addMenu(menu: Menu): void {
         
         let newMenu = {} as Menu;

@@ -13,6 +13,11 @@ namespace RhNetAPI.Contexts
     {
        public DbSet<ApplicationMenu> ApplicationMenus { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+
+        public DbSet<Client> Clients { get; set; }
+
+        public DbSet<UserClient> UserClients { get; set; }
         public RhNetContext(DbContextOptions <RhNetContext> options): base(options) { }
     }
 }

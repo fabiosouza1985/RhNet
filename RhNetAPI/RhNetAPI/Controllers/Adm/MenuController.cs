@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+
 namespace RhNetAPI.Controllers.Adm
 {
     [Authorize()]
@@ -17,7 +19,7 @@ namespace RhNetAPI.Controllers.Adm
     public class MenuController : ControllerBase
     {
 
-        [Authorize(Roles ="Master")]
+        [Authorize(Roles ="Master", Policy = "ViewMenu")]
         [HttpGet]
         [Route("getAllMenus")]
         public async Task<ActionResult<List<MenuModel>>> GetAllMenus( [FromServices] RhNetContext rhNetContext)
@@ -46,7 +48,7 @@ namespace RhNetAPI.Controllers.Adm
 
         }
 
-        [Authorize(Roles ="Master")]
+        [Authorize(Roles ="Master", Policy = "AddMenu")]
         [HttpPost]
         [Route("addMenu")]
         public async Task<ActionResult<MenuModel>> AddMenu( [FromServices] RhNetContext rhNetContext, [FromBody] MenuModel menuModel)
@@ -61,12 +63,9 @@ namespace RhNetAPI.Controllers.Adm
                 return BadRequest(ModelState);
             }          
 
-        }
-        public override ForbidResult Forbid()
-        {
-            return base.Forbid("teste");
-        }
-        [Authorize(Roles ="Master", Policy = "ViewUsers")]
+        }       
+
+        [Authorize(Roles ="Master", Policy = "UpdateMenu")]
         [HttpPost]
         [Route("updateMenu")]
         public async Task<ActionResult<MenuModel>> UpdateMenu( [FromServices] RhNetContext rhNetContext, [FromBody] MenuModel menuModel)
@@ -83,7 +82,7 @@ namespace RhNetAPI.Controllers.Adm
 
         }
 
-        [Authorize(Roles ="Master")]
+        [Authorize(Roles ="Master", Policy = "RemoveMenu")]
         [HttpPost]
         [Route("removeMenu")]
         public async Task<ActionResult<MenuModel>> RemoveMenu( [FromServices] RhNetContext rhNetContext, [FromBody] MenuModel menuModel)

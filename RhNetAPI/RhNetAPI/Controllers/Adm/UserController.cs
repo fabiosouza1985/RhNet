@@ -8,6 +8,7 @@ using RhNetAPI.Entities.Adm;
 using RhNetAPI.Repositories.Adm;
 using RhNetAPI.Models.Adm;
 using Microsoft.AspNetCore.Authorization;
+using RhNetAPI.Contexts;
 
 namespace RhNetAPI.Controllers.Adm
 {
@@ -16,6 +17,16 @@ namespace RhNetAPI.Controllers.Adm
     [Route("api/user")]
     public class UserController : ControllerBase
     {
+        [Authorize(Policy = "ViewUser")]
+        [HttpGet]
+        [Route("getUsers")]
+        public async Task<ActionResult<List<ApplicationUserModel>>> GetUsers([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RoleManager<ApplicationRole> roleManager, [FromServices] RhNetContext rhNetContext)
+        {
+            UserRepository repository = new UserRepository();
+            return await repository.GetUsers(userManager, roleManager, rhNetContext, this.User.Identity.Name);
+
+        }
+
 
         [HttpGet]
         [Route("getroles")]

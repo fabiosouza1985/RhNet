@@ -11,7 +11,7 @@
             <form class="login-content">
                 <mat-form-field class="login-input">
                     <mat-label>Usuário:</mat-label>
-                    <input matInput [value]="user_login.userName" (input)="user_login.userName = $event.target.value">
+                    <input matInput [value]="user_login.userName" (input)="user_login.userName = $event.target.value" [disabled]="variable.IsEnabled === false">
                 </mat-form-field>
 
                 <mat-form-field class="login-input">
@@ -19,14 +19,16 @@
                     <input matInput type="password"
                     [value]="user_login.password" 
                         (input)="user_login.password = $event.target.value" 
-                        (keyup.enter)="login()">
+                        (keyup.enter)="login()"
+                            [disabled]="variable.IsEnabled === false">
                 </mat-form-field>
             </form>
     
         </mat-card-content>
     
         <mat-card-actions align="end">
-            <button mat-raised-button color="primary" (click)= "login()">Entrar</button>
+            <button mat-raised-button color="primary" (click)= "login()"
+                     [disabled]="variable.IsEnabled === false">Entrar</button>
         </mat-card-actions>
     </mat-card>
 </div>

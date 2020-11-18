@@ -29,6 +29,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+
 import { HomeComponent } from './components/views/home/home.component';
 import { LoginComponent } from './components/views/login/login.component';
 
@@ -40,6 +42,9 @@ import { ViewMenusComponent } from './components/views/adm/view-menus/view-menus
 import { MenuItemComponent } from './components/template/menu-item/menu-item.component';
 import { NotFoundComponent } from './components/views/adm/not-found/not-found.component';
 import { ViewProfilesComponent } from './components/views/adm/view-profiles/view-profiles.component';
+import { ViewPermissionsComponent } from './components/views/adm/view-permissions/view-permissions.component';
+import { ViewClientsComponent } from './components/views/adm/clients/view-clients/view-clients.component';
+import { ViewUsersComponent } from './components/views/adm/users/view-users/view-users.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +58,10 @@ import { ViewProfilesComponent } from './components/views/adm/view-profiles/view
     ViewMenusComponent,
     MenuItemComponent,
     NotFoundComponent,
-    ViewProfilesComponent
+    ViewProfilesComponent,
+    ViewPermissionsComponent,
+    ViewClientsComponent,
+    ViewUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +87,8 @@ import { ViewProfilesComponent } from './components/views/adm/view-profiles/view
       MatSnackBarModule,
       MatSortModule,
       MatPaginatorModule,
-      MatProgressSpinnerModule
+      MatProgressSpinnerModule,
+      MatRadioModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,
