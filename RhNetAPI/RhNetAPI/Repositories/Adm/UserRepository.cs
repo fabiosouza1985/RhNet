@@ -70,22 +70,94 @@ namespace RhNetAPI.Repositories.Adm
             return userRoles;
         }
 
-        public async Task<List<RoleModel>> GetAllRolesAsync(RoleManager<ApplicationRole> roleManager)
+        public async Task<List<RoleModel>> GetAllRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, string username)
         {
-           
-            var userRoles =await (from x in roleManager.Roles
-                                  orderby x.Level
-                                  select new RoleModel()
-                             {
-                                 Name = x.Name,
-                                 Description = x.Description,
-                                 id = x.Id,
-                                      Level = x.Level
-                                  }).ToListAsync();
+           if(username == "master")
+            {
+                var userRoles = await (from x in roleManager.Roles
+                                       orderby x.Level
+                                       select new RoleModel()
+                                       {
+                                           Name = x.Name,
+                                           Description = x.Description,
+                                           id = x.Id,
+                                           Level = x.Level
+                                       }).ToListAsync();
 
-            return userRoles;
+                return userRoles;
+            }
+            else
+            {
+                ApplicationUser user = await userManager.FindByNameAsync(username);
+                List<String> roles = new List<String>();
+
+                roles = (await userManager.GetRolesAsync(user)).ToList();
+
+                int? MinLevel = await (from x in roleManager.Roles
+                                      where roles.Contains(x.Name)
+                                      select x.Level).MinAsync();
+
+                var userRoles = await (from x in roleManager.Roles
+                                       where x.Level >= MinLevel
+                                       orderby x.Level
+                                       select new RoleModel()
+                                       {
+                                           Name = x.Name,
+                                           Description = x.Description,
+                                           id = x.Id,
+                                           Level = x.Level
+                                       }).ToListAsync();
+
+                return userRoles;
+            }
+           
         }
 
+        public async Task<Object> AddUserAsync(UserManager<ApplicationUser> userManager, ApplicationUserModel applicationUserModel)
+        {
+            
+            ApplicationUser applicationUser = new ApplicationUser()
+            {
+                UserName = applicationUserModel.UserName,
+                Email = applicationUserModel.Email,
+                Cpf = applicationUserModel.Cpf
+            };
+
+            List<Client> clients = applicationUserModel.clients;
+            List<ApplicationRole> roles = applicationUserModel.applicationRoles;
+            List<Permission> permissions = applicationUserModel.permissions;
+
+
+          var result =   await userManager.CreateAsync(applicationUser);
+
+            if (result.Succeeded)
+            {
+                return applicationUserModel;
+            }
+            else
+            {
+                var errorList = result.Errors.ToList();
+                string errors = "";
+
+                for(var i = 0; i < errorList.Count; i++)
+                {
+                    IdentityError erro = errorList.ElementAt(i);
+                    if(erro.Code == "DuplicateUserName")
+                    {
+                        errors += "Usuário já existe";
+                    }
+                    else
+                    {
+                        errors += erro.Description + " ";
+                    }
+                    
+                }
+                return errors;
+            }
+
+
+           
+        }
         public async Task<RoleModel> AddRoleAsync(RoleManager<ApplicationRole> roleManager, RoleModel role)
         {
             ApplicationRole newRole = new ApplicationRole() { 

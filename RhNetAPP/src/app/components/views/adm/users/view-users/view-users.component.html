@@ -40,7 +40,7 @@
 
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>
-                <button (click)="add(element)" mat-raised-button color="primary">
+                <button [routerLink]="'adduser'" mat-raised-button color="primary">
                     Adicionar Novo
                 </button>
             </th>

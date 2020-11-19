@@ -45,6 +45,7 @@ import { ViewProfilesComponent } from './components/views/adm/view-profiles/view
 import { ViewPermissionsComponent } from './components/views/adm/view-permissions/view-permissions.component';
 import { ViewClientsComponent } from './components/views/adm/clients/view-clients/view-clients.component';
 import { ViewUsersComponent } from './components/views/adm/users/view-users/view-users.component';
+import { AddUserComponent } from './components/views/adm/users/add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ViewUsersComponent } from './components/views/adm/users/view-users/view
     ViewProfilesComponent,
     ViewPermissionsComponent,
     ViewClientsComponent,
-    ViewUsersComponent
+    ViewUsersComponent,
+    AddUserComponent
   ],
   imports: [
     BrowserModule,

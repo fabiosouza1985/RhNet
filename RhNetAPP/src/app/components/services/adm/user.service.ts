@@ -16,6 +16,9 @@ export class UserService {
         return this.http.get<ApplicationUser[]>(this.constants.Url + 'user/getusers');
     };
 
+    addUser(user): Observable<ApplicationUser> {
+        return this.http.post<ApplicationUser>(this.constants.Url + 'user/adduser', user);
+    }; 
   getRoles() : Observable<Profile[]> {
     return this.http.get<Profile[]>(this.constants.Url + 'user/getroles');
   };

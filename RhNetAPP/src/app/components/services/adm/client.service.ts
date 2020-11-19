@@ -16,6 +16,10 @@ export class ClientService {
         return this.http.get<Client[]>(this.constants.Url + 'client/getallClients');
     };
 
+    getClients(): Observable<Client[]> {
+        return this.http.get<Client[]>(this.constants.Url + 'client/getClients');
+    };
+
     add(client: Client): Observable<Client> {
         return this.http.post<Client>(this.constants.Url + 'client/addClient', client);
     }

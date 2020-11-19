@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RhNetAPI.Contexts;
+using RhNetAPI.Entities.Adm;
 using RhNetAPI.Models.Adm;
 using RhNetAPI.Repositories.Adm;
 using System;
@@ -23,6 +25,14 @@ namespace RhNetAPI.Controllers.Adm
         {
             ClientRepository repository = new ClientRepository();
             return await repository.GetAllClients(rhNetContext);
+        }
+                
+        [HttpGet]
+        [Route("getClients")]
+        public async Task<List<ClientModel>> GetClients([FromServices] RhNetContext rhNetContext, [FromServices] UserManager<ApplicationUser> userManager)
+        {
+            ClientRepository repository = new ClientRepository();
+            return await repository.GetClients(rhNetContext, userManager, this.User.Identity.Name);
         }
 
         [Authorize(Roles = "Master", Policy = "AddClient")]

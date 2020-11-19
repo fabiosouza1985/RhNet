@@ -60,4 +60,14 @@ export class ViewUsersComponent implements OnInit {
                 console.log(err)
             })
     }
+
+    addRemoveFavorite(): void {
+        this.variable.addRemoveFavorite(!this.isFavorite, this.router.url);
+        this.isFavorite = !this.isFavorite;
+
+    }
+
+    addUser(): void {
+        this.router.navigate(['adduser']);
+    }
 }

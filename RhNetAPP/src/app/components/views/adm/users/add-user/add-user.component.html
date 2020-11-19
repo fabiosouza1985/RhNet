@@ -1,0 +1,136 @@
+﻿<div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
+
+    <div fxFlex="25%">
+        <mat-card class="mat-elevation-z6">
+            <mat-card-header>
+                <mat-card-title>
+                    Clientes
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div>
+                    <mat-form-field appearance="standard">
+
+                        <mat-select (selectionChange)="addClient()" [(ngModel)]="selectedClient">
+                            <mat-option *ngFor="let client of clients" [value]="client">
+                                {{client.description}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard" *ngFor="let client of newUser.clients">
+                        <input matInput readonly [(ngModel)]="client.description" />
+                        <button mat-button matSuffix mat-icon-button (click)="removeClient(client)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                  
+                </div>
+            </mat-card-content>
+
+        </mat-card>
+    </div>
+
+    <div fxFlex="25%">
+        <mat-card class="mat-elevation-z6">
+            <mat-card-header>
+                <mat-card-title>
+                    Perfis
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div>
+                    <mat-form-field appearance="standard">
+
+                        <mat-select (selectionChange)="addProfile()" [(ngModel)]="selectedProfile">
+                            <mat-option *ngFor="let profile of profiles" [value]="profile">
+                                {{profile.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard" *ngFor="let profile of newUser.applicationRoles">
+                        <input matInput readonly [(ngModel)]="profile.name" />
+                        <button mat-button matSuffix mat-icon-button (click)="removeProfile(profile)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                </div>
+            </mat-card-content>
+
+        </mat-card>
+    </div>
+
+    <div fxFlex="25%">
+        <mat-card class="mat-elevation-z6">
+            <mat-card-header>
+                <mat-card-title>
+                    Permissões
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div>
+                    <mat-form-field appearance="standard">
+
+                        <mat-select (selectionChange)="addPermission()" [(ngModel)]="selectedPermission">
+                            <mat-option *ngFor="let permission of permissions" [value]="permission">
+                                {{permission.table}} - {{permission.description}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard" *ngFor="let permission of newUser.permissions">
+                        <input matInput readonly [(ngModel)]="permission.table + ' - ' + permission.description" >
+                        <button mat-button matSuffix mat-icon-button (click)="removePermission(permission)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                </div>
+            </mat-card-content>
+
+        </mat-card>
+    </div>
+
+    <div fxFlex="25%">
+        <mat-card class="mat-elevation-z6">
+            <mat-card-header>
+                <mat-card-title>
+                    Dados do Usuário
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+
+                <div>
+                    <mat-form-field appearance="standard">
+                        <mat-label>Username</mat-label>
+                        <input matInput [(ngModel)]="newUser.userName">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <mat-label>CPF</mat-label>
+                        <input matInput maxlength="11" [(ngModel)]="newUser.cpf">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" [(ngModel)]="newUser.email">
+                    </mat-form-field>
+                </div>
+
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary"
+                        [disabled]="variable.IsEnabled === false" (click)="addUser()">
+                    Adicionar
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

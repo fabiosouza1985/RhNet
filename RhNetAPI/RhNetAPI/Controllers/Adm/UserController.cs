@@ -27,6 +27,30 @@ namespace RhNetAPI.Controllers.Adm
 
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("addUser")]
+        public async Task<ActionResult<ActionResult<ApplicationUserModel>>> AddUser([FromServices] UserManager<ApplicationUser> userManager, [FromBody] ApplicationUserModel applicationUserModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+                UserRepository repository = new UserRepository();
+            var result = await repository.AddUserAsync(userManager, applicationUserModel);
+
+            if (result == applicationUserModel)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                ModelState.AddModelError("errors", result.ToString());
+                return BadRequest(ModelState);
+            }
+          
+
+        }
 
         [HttpGet]
         [Route("getroles")]
@@ -37,13 +61,13 @@ namespace RhNetAPI.Controllers.Adm
            
         }
 
-         [Authorize(Roles ="Master")]
+         [Authorize]
          [HttpGet]
         [Route("getallroles")]
-        public async Task<ActionResult<List<RoleModel>>> GetAllRoles( [FromServices] RoleManager<ApplicationRole> roleManager)
+        public async Task<ActionResult<List<RoleModel>>> GetAllRoles([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RoleManager<ApplicationRole> roleManager)
         {
             UserRepository repository = new UserRepository();
-            return await repository.GetAllRolesAsync(roleManager);
+            return await repository.GetAllRolesAsync(userManager, roleManager,  this.User.Identity.Name);
            
         }
 
