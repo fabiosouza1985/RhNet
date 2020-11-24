@@ -11,6 +11,7 @@ import { ViewPermissionsComponent } from './components/views/adm/view-permission
 import { ViewClientsComponent } from './components/views/adm/clients/view-clients/view-clients.component';
 import { ViewUsersComponent } from './components/views/adm/users/view-users/view-users.component';
 import { AddUserComponent } from './components/views/adm/users/add-user/add-user.component';
+import { SelectClientComponent } from './components/views/adm/clients/select-client/select-client.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,10 @@ const routes: Routes = [
     {
         path: "users/adduser",
         component: AddUserComponent
+    },
+    {
+        path: "selectClient",
+        component: SelectClientComponent
     },
     {
         path: "**",

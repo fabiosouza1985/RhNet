@@ -130,6 +130,7 @@ namespace RhNetAPI
                         context.User.Identity.Name == "master" ||
                         context.User.HasClaim(c => c.Type == "permission" && c.Value == "Remover Usuários")
                         ));
+
                 }); ;
         }
 
