@@ -15,6 +15,11 @@ export class PermissionService {
         return this.http.get<Permission[]>(this.constants.Url + 'permission/getAllPermissions');
     };
 
+    getPermissions(): Observable<Permission[]> {
+        return this.http.get<Permission[]>(this.constants.Url + 'permission/getPermissions');
+    };
+
+
     addPermission(permission: Permission): Observable<Permission> {
         return this.http.post<Permission>(this.constants.Url + 'permission/addPermission', permission);
     }

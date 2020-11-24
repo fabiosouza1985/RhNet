@@ -8,7 +8,7 @@
     
         <mat-card-content>
 
-            <form class="login-content">
+            <div class="login-content">
                 <mat-form-field class="login-input">
                     <mat-label>Usuário:</mat-label>
                     <input matInput [value]="user_login.userName" (input)="user_login.userName = $event.target.value" [disabled]="variable.IsEnabled === false">
@@ -17,12 +17,22 @@
                 <mat-form-field class="login-input">
                     <mat-label>Senha:</mat-label>
                     <input matInput type="password"
-                    [value]="user_login.password" 
-                        (input)="user_login.password = $event.target.value" 
-                        (keyup.enter)="login()"
-                            [disabled]="variable.IsEnabled === false">
+                           [value]="user_login.password"
+                           (input)="user_login.password = $event.target.value"
+                           (keyup.enter)="login()"
+                           [disabled]="variable.IsEnabled === false">
                 </mat-form-field>
-            </form>
+
+                <mat-form-field class="login-input" *ngIf="clients.length > 0">
+                    <mat-label>Cliente:</mat-label>
+                    <mat-select  [(ngModel)]="selectedClient">
+                        <mat-option *ngFor="let client of clients" [value]="client">
+                            {{client.description}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                    
+            </div>
     
         </mat-card-content>
     

@@ -13,7 +13,7 @@ namespace RhNetAPI.Services
 {
     public class TokenService
     {
-        public static string GenerateToken(ApplicationUser user, List<RoleModel> profiles)
+        public static string GenerateToken(ApplicationUser user, List<RoleModel> profiles, List<Claim> claims)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("fedaf7d8863b48e197b9287d492b708e");
@@ -24,6 +24,12 @@ namespace RhNetAPI.Services
             for(var i = 0; i < profiles.Count(); i++){
                 subject.AddClaim(new Claim(ClaimTypes.Role, profiles[i].Name));
             }
+
+            for (var i = 0; i < claims.Count(); i++)
+            {
+                subject.AddClaim(new Claim(claims[i].Type, claims[i].Value));
+            }
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = subject,
