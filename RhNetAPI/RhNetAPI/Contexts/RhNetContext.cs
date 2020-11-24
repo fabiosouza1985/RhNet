@@ -9,15 +9,7 @@ using System.Threading.Tasks;
 
 namespace RhNetAPI.Contexts
 {
-    public class RhNetContext : IdentityDbContext
-        <ApplicationUser, 
-        ApplicationRole, 
-        string, 
-        ApplicationUserClaim, 
-        ApplicationUserRole, 
-        IdentityUserLogin<string>, 
-        IdentityRoleClaim<string>, 
-        IdentityUserToken<string>>
+    public class RhNetContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
        public DbSet<ApplicationMenu> ApplicationMenus { get; set; }
         public DbSet<Favorite> Favorites { get; set; }

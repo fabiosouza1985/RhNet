@@ -9,7 +9,6 @@ using RhNetAPI.Repositories.Adm;
 using RhNetAPI.Models.Adm;
 using Microsoft.AspNetCore.Authorization;
 using RhNetAPI.Contexts;
-using System.Security.Claims;
 
 namespace RhNetAPI.Controllers.Adm
 {
@@ -18,46 +17,6 @@ namespace RhNetAPI.Controllers.Adm
     [Route("api/user")]
     public class UserController : ControllerBase
     {
-
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("getUserInfo")]
-        public async Task<ActionResult<UserModel>> GetUserInfo([FromServices] UserManager<ApplicationUser> userManager)
-        {
-            if(this.User.Identity.IsAuthenticated)
-            {
-                var user = await userManager.FindByNameAsync(this.User.Identity.Name);
-
-                if (user == null)
-                {                    
-                    return BadRequest("Usuário não encontrado");
-                }
-                UserModel userModel = new UserModel()
-                {
-                    Username = user.UserName,
-                    Email = user.Email
-                    
-                };
-                return Ok(userModel);
-            }
-            else
-            {
-                return BadRequest("Usuário não autenticado");
-            }
-        }
-
-        [HttpPost]
-        [Route("SetClient")]
-        public  ActionResult SetClient([FromBody] ClientModel client)
-        {
-            ClaimsIdentity subject = new ClaimsIdentity();
-            subject.AddClaim(new Claim("permission", "Visualizar Usuários"));
-
-            this.User.AddIdentity(subject);
-          
-            return Ok("OK");
-        }
-
         [Authorize(Policy = "ViewUser")]
         [HttpGet]
         [Route("getUsers")]
@@ -68,18 +27,17 @@ namespace RhNetAPI.Controllers.Adm
 
         }
 
-
-        [Authorize(Policy = "AddUser")]
+        [Authorize]
         [HttpPost]
         [Route("addUser")]
-        public async Task<ActionResult<ApplicationUserModel>> AddUser([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, [FromBody] ApplicationUserModel applicationUserModel)
+        public async Task<ActionResult<ActionResult<ApplicationUserModel>>> AddUser([FromServices] UserManager<ApplicationUser> userManager, [FromBody] ApplicationUserModel applicationUserModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
                 UserRepository repository = new UserRepository();
-            var result = await repository.AddUserAsync(userManager, rhNetContext, applicationUserModel);
+            var result = await repository.AddUserAsync(userManager, applicationUserModel);
 
             if (result == applicationUserModel)
             {
@@ -94,7 +52,6 @@ namespace RhNetAPI.Controllers.Adm
 
         }
 
-       
         [HttpGet]
         [Route("getroles")]
         public async Task<ActionResult<List<RoleModel>>> GetRoles([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RoleManager<ApplicationRole> roleManager)

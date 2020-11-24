@@ -35,8 +35,4 @@ export class UserService {
         return this.http.post<Profile>(this.constants.Url + 'user/updateRole', profile);
     }; 
 
-    setClient(client): Observable<any> {
-        return this.http.post<any>(this.constants.Url + 'user/setClient', client);
-    }; 
-
 }

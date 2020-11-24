@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RhNetAPI.Contexts;
 using RhNetAPI.Models.Adm;
-using RhNetAPI.Entities.Adm;
 using RhNetAPI.Repositories.Adm;
 using System;
 using System.Collections.Generic;
@@ -24,15 +22,6 @@ namespace RhNetAPI.Controllers.Adm
         {
             PermissionRepository repository = new PermissionRepository();
             return await repository.GetAllPermissions(rhNetContext);
-
-        }
-
-        [HttpGet]
-        [Route("getPermissions")]
-        public async Task<ActionResult<List<PermissionModel>>> GetPermissions([FromServices] RhNetContext rhNetContext, [FromServices] UserManager<ApplicationUser> userManager)
-        {
-            PermissionRepository repository = new PermissionRepository();
-            return await repository.GetPermissions(rhNetContext, userManager, this.User.Identity.Name);
 
         }
 

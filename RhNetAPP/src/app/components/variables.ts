@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserService } from 'src/app/components/services/adm/user.service';
-import { ClientService } from 'src/app/components/services/adm/client.service'
+import {UserService} from 'src/app/components/services/adm/user.service'
 import {Profile} from 'src/app/components/models/adm/profile.model';
 import { MenuService } from 'src/app/components/services/adm/menu.service';
 import { FavoriteService } from 'src/app/components/services/adm/favorite.service';
@@ -8,14 +7,12 @@ import { MenuItem } from 'src/app/components/models/adm/menuItem.model';
 import { Favorite } from 'src/app/components/models/adm/favorite.model';
 import { Menu } from 'src/app/components/models/adm/menu.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Title } from '@angular/platform-browser';
-import { Client } from 'src/app/components/models/adm/client.model';
-import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
   })
 export class Variables {
+    
     
     public IsLoading: boolean = false;
     public IsEnabled: boolean = true;
@@ -25,51 +22,12 @@ export class Variables {
     public MenuItems: MenuItem[] = [];
     public QuickAccess: Menu[] = [];
     public Favorites: Favorite[] = [];
-    public SelectedClient: Client = null;
 
-    constructor(private service: UserService,
-        private menuService: MenuService,
-        private clientService: ClientService,
-        private favoriteService: FavoriteService,
-        private _snackBar: MatSnackBar,
-        private titleService: Title,
-        private router: Router)
-    {
-
+    constructor(private service: UserService, private menuService: MenuService, private favoriteService : FavoriteService, private _snackBar: MatSnackBar){
         if(localStorage.getItem("username") !== null && localStorage.getItem("username") !== undefined){
             this.IsLoading = true;
             this.Username = localStorage.getItem("username");
-           
-            this.clientService.getClients().subscribe(results => {
-                var clients = results;
-                if (clients.length === 1) {
-                    this.SelectedClient = clients[0];
-                    this.setTitle();
-                } else {
-                    if (localStorage.getItem("currentClient") == null || localStorage.getItem("currentClient") == undefined) {
-                        this.router.navigate(['/selectClient']);
-                    } else {
-                        var currentClient = localStorage.getItem("currentClient");
-                        for (var i = 0; i < clients.length; i++) {
-                            if (clients[i].cnpj === currentClient) {
-                                this.SelectedClient = clients[i];
-                                this.setTitle();
-                                break;
-                            }
-                        }
-                        if (this.SelectedClient === null) {
-                            this.router.navigate(['/selectClient']);
-                        }
-                    }
-                    
-                }
-            },
-                (err) => {
-                    this.IsLoading = false;
-                    console.log(err);
-                });
 
-            
             this.service.getRoles().subscribe(results => {     
                 this.Profiles = results;      
                 if(localStorage.getItem("currentProfile") === null || localStorage.getItem("username") === undefined){
@@ -80,15 +38,11 @@ export class Variables {
                 this.GetQuickAccess();
                 this.GetFavorites();
                 this.IsLoading = false;
-                
-                
             },
               (err) => {     
                   this.IsLoading = false;
                 console.log(err);   
-                });
-
-            this.setTitle();
+            });
         }
 
         
@@ -219,9 +173,7 @@ export class Variables {
         this.Profiles = [];
         this.QuickAccess = [];
         this.Favorites = [];
-        this.SelectedClient = null;
         localStorage.clear();
-        this.setTitle();
     }
 
     public showMessage(message: string) {
@@ -267,18 +219,5 @@ export class Variables {
                 })
            
         }
-    }
-
-    public setTitle() {
-        var title = 'RH .net';
-
-        if (this.Username.length > 0) {
-            title += ' - Bem-vindo ' + this.Username;
-        }
-
-        if (this.SelectedClient !== null) {
-            title += " - " + this.SelectedClient.description;
-        }
-        this.titleService.setTitle(title);
     }
 }

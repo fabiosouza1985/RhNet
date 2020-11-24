@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/components/models/adm/user.model';
-import { Client } from 'src/app/components/models/adm/client.model';
+import {User} from 'src/app/components/models/adm/user.model';
 import {Constants} from 'src/app/components/constants';
 const helper = new JwtHelperService();
 
@@ -29,9 +28,9 @@ export class AuthService {
     return !helper.isTokenExpired(token);
   }
 
-  public login( usuario: string,  senha: string, selectedClient: Client): Observable<User>{
+  public login( usuario: string,  senha: string): Observable<User>{
  
-      return this.http.post<any>(this.constants.Url + 'account/login', { Username: usuario, Password: senha, SelectedClient: selectedClient});
+    return this.http.post<any>(this.constants.Url + 'account/login', {Username: usuario, Password: senha});
   }
 
   public login1( usuario: string,  senha: string): Observable<any>{

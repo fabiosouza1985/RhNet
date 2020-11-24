@@ -57,7 +57,7 @@ export class AddUserComponent implements OnInit {
                 console.log(err)
             })
 
-        this.permissionService.getPermissions().subscribe(results => {
+        this.permissionService.getAllPermissions().subscribe(results => {
             this.permissions = results;
         },
             (err) => {
@@ -109,8 +109,6 @@ export class AddUserComponent implements OnInit {
             this.variable.IsEnabled = true;
         },
             (err) => {
-                this.variable.IsLoading = false;
-                this.variable.IsEnabled = true;
                 if (err.error.errors !== undefined) {
                     let properties = Object.getOwnPropertyNames(err.error.errors);
 
@@ -126,7 +124,8 @@ export class AddUserComponent implements OnInit {
                     alert(erros);
                 }
 
-                
+                this.variable.IsLoading = false;
+                this.variable.IsEnabled = true;
                 console.log(err);
             })
     }

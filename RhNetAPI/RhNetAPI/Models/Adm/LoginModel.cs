@@ -9,7 +9,5 @@ namespace RhNetAPI.Models.Adm
     {
         public string Username { get; set; }
         public string Password { get; set; }
-
-        public ClientModel SelectedClient { get; set; }
     }
 }

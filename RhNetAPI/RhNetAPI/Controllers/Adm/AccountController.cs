@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using RhNetAPI.Contexts;
 
 namespace RhNetAPI.Controllers.Adm
 {
@@ -20,7 +19,7 @@ namespace RhNetAPI.Controllers.Adm
 
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<dynamic>> Login([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RoleManager<ApplicationRole> roleManager, [FromServices] RhNetContext rhNetContext, [FromBody] LoginModel model)
+        public async Task<ActionResult<dynamic>> Authenticate([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RoleManager<ApplicationRole> roleManager, [FromBody] LoginModel model)
         {
            
             ApplicationUser user = await userManager.FindByNameAsync(model.Username);
@@ -66,76 +65,17 @@ namespace RhNetAPI.Controllers.Adm
             }
             
             UserRepository repository = new UserRepository();
-
-            var clients = await repository.GetClientsAsync(rhNetContext, user.Id);
-
-            if(clients.Count() == 0)
-            {
-                if(user.UserName == "master")
-                {
-                    ClientRepository clientRepository = new ClientRepository();
-                    clients = await clientRepository.GetAllClients(rhNetContext);
-                }
-                else
-                {
-                    return BadRequest("Cliente não associado a um cliente");
-                }
- 
-
-            }
-
-            if(clients.Count() > 1 && model.SelectedClient == null)
-            {
-                return StatusCode((int)HttpStatusCode.Conflict, clients);
-                
-            }
-
-            ClientModel selectedClient = null;
-
-
-            if(clients.Count() == 1)
-            {
-                selectedClient = clients[0];
-            }
-            else
-            {
-                for(var i = 0; i < clients.Count; i++)
-                {
-                    if(model.SelectedClient.Cnpj == clients[i].Cnpj)
-                    {
-                        selectedClient = clients[i];
-                        break;
-                    }
-                }
-            }
-
-            if(selectedClient == null)
-            {
-                return BadRequest("Cliente não associado a um cliente ou cliente selecionado incorreto");
-            }
-
-            if(selectedClient.Situation == Enums.ClientSituation.Bloqueado && user.UserName != "master")
-            {
-                return BadRequest("Cliente bloqueado. Entre em contato com um administrador do sistema");
-            }
-
-            if (selectedClient.Situation == Enums.ClientSituation.Inativo && user.UserName != "master")
-            {
-                return BadRequest("Cliente inativo. Entre em contato com um administrador do sistema");
-            }
-
             var profiles =  (await repository.GetRolesAsync(userManager, roleManager, user.UserName)).ToList();
-            var claims = (await userManager.GetClaimsAsync(user)).ToList();
             // Gera o Token
-            var token = TokenService.GenerateToken(user, profiles, claims);
-                        
+            var token = TokenService.GenerateToken(user, profiles);
+
+            
             var loginUser = new UserModel()
             {
                 Username = user.UserName,
                 Email = user.Email,
                 Token = token,
-                Profiles = profiles,
-                CurrentClient = selectedClient
+                Profiles = profiles
             };
 
             return StatusCode((int)HttpStatusCode.OK, loginUser);

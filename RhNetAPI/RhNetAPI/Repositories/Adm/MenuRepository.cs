@@ -51,7 +51,7 @@ namespace RhNetAPI.Repositories.Adm
             else
             {
                 var user = await userManager.FindByNameAsync(username);
-                var claims = (await userManager.GetClaimsAsync(user)).Where(e => e.Type == "permission").Select(e => e.Value).ToList();
+                var claims = (await userManager.GetClaimsAsync(user)).Where(e => e.Type == "Permission").Select(e => e.Value).ToList();
 
                 menus = await (from x in context.ApplicationMenus
                                where x.Role_Name == profile && claims.Contains( x.Permission_Name )
@@ -93,7 +93,7 @@ namespace RhNetAPI.Repositories.Adm
             else
             {
                 var user = await userManager.FindByNameAsync(username);
-                var claims = (await userManager.GetClaimsAsync(user)).Where(e => e.Type == "permission").Select(e => e.Value).ToList();
+                var claims = (await userManager.GetClaimsAsync(user)).Where(e => e.Type == "Permission").Select(e => e.Value).ToList();
 
                 menus = await (from x in context.ApplicationMenus
                                where x.Role_Name == profile && claims.Contains(x.Permission_Name) && x.Quick_Access == true

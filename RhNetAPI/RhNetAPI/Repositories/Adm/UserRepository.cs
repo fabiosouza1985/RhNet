@@ -6,7 +6,6 @@ using RhNetAPI.Models.Adm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RhNetAPI.Repositories.Adm
@@ -17,7 +16,7 @@ namespace RhNetAPI.Repositories.Adm
         {
             ApplicationUser user = await userManager.FindByNameAsync(username);
 
-            
+
             List<ApplicationUserModel> users = new List<ApplicationUserModel>();
 
             if (user.UserName == "master")
@@ -38,7 +37,7 @@ namespace RhNetAPI.Repositories.Adm
                                               select x.ClientId).ToListAsync();
 
                 users = await (from x in userManager.Users
-                               where (from y in rhNetContext.UserClients where client_ids.Contains( y.ClientId) select y.UserId).Contains(x.Id)
+                               from y in rhNetContext.UserClients.Where(e => client_ids.Contains(e.ClientId))
                                select new ApplicationUserModel()
                                {
                                    Cpf = x.Cpf,
@@ -49,22 +48,6 @@ namespace RhNetAPI.Repositories.Adm
             }
 
             return users;
-        }
-
-        public async Task<List<ClientModel>> GetClientsAsync(RhNetContext rhNetContext, string userId)
-        {
-            List<ClientModel> clients = await (from x in rhNetContext.UserClients
-                                               from y in rhNetContext.Clients.Where(e=> e.Id == x.ClientId)
-                                               where x.UserId == userId
-                                               select new ClientModel()
-                                               {
-                                                   Id = y.Id,
-                                                   Cnpj = y.Cnpj,
-                                                   Description = y.Description,
-                                                   Situation = y.Situation
-                                               }).ToListAsync();
-
-            return clients;
         }
         public async Task<List<RoleModel>> GetRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, string username)
         {
@@ -130,7 +113,7 @@ namespace RhNetAPI.Repositories.Adm
            
         }
 
-        public async Task<Object> AddUserAsync(UserManager<ApplicationUser> userManager, RhNetContext rhNetContext, ApplicationUserModel applicationUserModel)
+        public async Task<Object> AddUserAsync(UserManager<ApplicationUser> userManager, ApplicationUserModel applicationUserModel)
         {
             
             ApplicationUser applicationUser = new ApplicationUser()
@@ -145,38 +128,13 @@ namespace RhNetAPI.Repositories.Adm
             List<Permission> permissions = applicationUserModel.permissions;
 
 
-          var result =   await userManager.CreateAsync(applicationUser, "Mm123456*");
+          var result =   await userManager.CreateAsync(applicationUser);
 
             if (result.Succeeded)
             {
-                applicationUser = await userManager.FindByNameAsync(applicationUser.UserName);
-
-                for (var i = 0; i < roles.Count() ; i++)
-                {
-                    await userManager.AddToRoleAsync(applicationUser, roles[i].Name);
-
-                }
-
-                for (var i = 0; i < permissions.Count(); i++)
-                {
-                    await userManager.AddClaimAsync(applicationUser, new Claim("permission", permissions[i].Description));
-
-                }
-
-                for (var i = 0; i < clients.Count(); i++)
-                {
-                    UserClient userClient = new UserClient()
-                    {
-                        ApplicationUser = applicationUser,
-                        ClientId = clients[i].Id
-                    };
-                    rhNetContext.Entry(userClient).State = EntityState.Added;
-
-                }
-
-                await rhNetContext.SaveChangesAsync();
                 return applicationUserModel;
-            } else
+            }
+            else
             {
                 var errorList = result.Errors.ToList();
                 string errors = "";

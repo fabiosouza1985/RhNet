@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RhNetAPI.Contexts;
 using RhNetAPI.Entities.Adm;
 using RhNetAPI.Models.Adm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RhNetAPI.Repositories.Adm
@@ -26,29 +24,7 @@ namespace RhNetAPI.Repositories.Adm
                           }).ToListAsync();
 
         }
-
-        public async Task<List<PermissionModel>> GetPermissions(RhNetContext context, UserManager<ApplicationUser> userManager, string userName)
-        {
-            if (userName == "master")
-            {
-                return await GetAllPermissions(context);
-            }
-            ApplicationUser user = await userManager.FindByNameAsync(userName);
-            List<Claim> claims = (await userManager.GetClaimsAsync(user)).ToList();
-            List<string> permissions = claims.Where(e => e.Type == "permission").Select(e => e.Value).ToList();
-
-            return await (from x in context.Permissions
-                          where permissions.Contains(x.Description)
-                          orderby x.Table, x.Description
-                          select new PermissionModel()
-                          {
-                              Description = x.Description,
-                              Id = x.Id,
-                              Table = x.Table
-                          }).ToListAsync();
-
-        }
-
+                
         public async Task<PermissionModel> AddPermission(PermissionModel permissionModel, RhNetContext context)
         {
 
