@@ -5,25 +5,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RhNetAPI.Entities.Adm
+namespace RhNetAPI.Entities.Shared
 {
-    [Table("Permissions")]
-    public class Permission
+    [Table("Municipios")]
+    public class Municipio
     {
-        [Key()]
+
+        [Key]
         [Column("Id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Column("Descricao")]
         [Required]
-        [Column("Description")]
-        [StringLength(100)]
-        public string Description { get; set; }
+        [StringLength(300)]
+        public string Descricao { get; set; }
 
-        [Required]
-        [Column("Table")]
-        [StringLength(100)]
-        public string Table { get; set; }
 
+        [Column("Codigo_Audesp")]
+        [StringLength(10)]
+        public string Codigo_Audesp { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from 'src/app/components/services/adm/user.service';
-import {Profile} from 'src/app/components/models/adm/profile.model';
 import {Variables} from 'src/app/components/variables';
 import { Router } from '@angular/router';
 
@@ -11,18 +10,13 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  profiles: Profile[] = [];
 
-  constructor(private service: UserService, private variable : Variables, private router: Router) { }
+  constructor(private service: UserService, public variable : Variables, private router: Router) { }
 
-  ngOnInit(): void {
-    this.service.getRoles().subscribe(results => {
-      this.profiles = results;
-      
-  },
-    (err) => {           
-      console.log(err)})
-  }
+    ngOnInit(): void {
+     
+        }
+   
 
   setPerfil(perfil) : void{
     this.variable.CurrentProfile = perfil;

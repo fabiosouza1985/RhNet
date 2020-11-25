@@ -2,5 +2,6 @@ export interface Profile {
 	name: string, 
 	description: string,
 	id: string,
-	level?:number
+	level?: number,
+	clientId?: number
 }

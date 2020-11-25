@@ -10,6 +10,7 @@ using RhNetAPI.Models.Adm;
 using Microsoft.AspNetCore.Authorization;
 using RhNetAPI.Contexts;
 using System.Security.Claims;
+using RhNetAPI.Services;
 
 namespace RhNetAPI.Controllers.Adm
 {
@@ -48,14 +49,27 @@ namespace RhNetAPI.Controllers.Adm
 
         [HttpPost]
         [Route("SetClient")]
-        public  ActionResult SetClient([FromBody] ClientModel client)
+        public async Task< ActionResult> SetClient([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, [FromBody] ClientModel client)
         {
-            ClaimsIdentity subject = new ClaimsIdentity();
-            subject.AddClaim(new Claim("permission", "Visualizar Usuários"));
+            ApplicationUser user = await userManager.FindByNameAsync(this.User.Identity.Name);
 
-            this.User.AddIdentity(subject);
-          
-            return Ok("OK");
+            UserRepository repository = new UserRepository();
+
+            var profiles = (await repository.GetRolesAsync(userManager, rhNetContext, this.User.Identity.Name, client.Id)).ToList();
+            var claims = (await repository.GetClaimsAsync(userManager, rhNetContext, this.User.Identity.Name, client.Id)).ToList();
+
+            var token = TokenService.GenerateToken(user, profiles, claims);
+
+            var loginUser = new UserModel()
+            {
+                Username = user.UserName,
+                Email = user.Email,
+                Token = token,
+                Profiles = profiles,
+                CurrentClient = client
+            };
+
+            return Ok( loginUser);
         }
 
         [Authorize(Policy = "ViewUser")]
@@ -97,10 +111,11 @@ namespace RhNetAPI.Controllers.Adm
        
         [HttpGet]
         [Route("getroles")]
-        public async Task<ActionResult<List<RoleModel>>> GetRoles([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RoleManager<ApplicationRole> roleManager)
+        public async Task<ActionResult<List<RoleModel>>> GetRoles([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, int clientId)
         {
             UserRepository repository = new UserRepository();
-            return await repository.GetRolesAsync(userManager, roleManager, this.User.Identity.Name);
+           
+            return await repository.GetRolesAsync(userManager, rhNetContext, this.User.Identity.Name, clientId);
            
         }
 

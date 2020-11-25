@@ -8,7 +8,8 @@ namespace RhNetAPI.Models.Adm
     public class FavoriteModel
     {
         public string Path { get; set; }
-
         public string Header { get; set; }
+
+        public string Profile { get; set; }
     }
 }

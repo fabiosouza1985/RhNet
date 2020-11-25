@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RhNetAPI.Contexts;
 using RhNetAPI.Entities.Adm;
@@ -12,23 +13,29 @@ namespace RhNetAPI.Repositories.Adm
 {
     public class FavoriteRepository
     {
-        public async Task<List<FavoriteModel>> GetFavorites(RhNetContext context, string userName, string profile)
+        public async Task<List<FavoriteModel>> GetFavorites(UserManager<ApplicationUser> userManager,RhNetContext context, string userName, string profile, int clientId)
         {
+            UserRepository userRepository = new UserRepository();
+
+            var claims = await userRepository.GetClaimsAsync(userManager, context, userName, clientId);
+
+            var claim_values = claims.Where(e => e.Type == "permission").Select(e => e.Value).ToList();
+
             return await (from x in context.Favorites
                           from y in context.ApplicationMenus.Where(e => e.Id == x.MenuId)
                           from z in context.Users.Where(e => e.Id == x.UserId)
-                          where y.Role_Name == profile && z.UserName == userName
+                          where y.Role_Name == profile && z.UserName == userName && claim_values.Contains( y.Permission_Name)
                           select new FavoriteModel { 
                               Header = y.Header,
                               Path = y.Path
                           }).ToListAsync() ;
         }
-        public async Task<Boolean> IsFavorite(RhNetContext context, string userName, string path)
+        public async Task<Boolean> IsFavorite(RhNetContext context, string userName, string path, string profile)
         {
             return await (from x in context.Favorites
                                 from y in context.ApplicationMenus.Where(e => e.Id == x.MenuId)
                                 from z in context.Users.Where(e => e.Id == x.UserId)
-                                where y.Path == path && z.UserName == userName
+                                where y.Path == path && z.UserName == userName && y.Role_Name == profile
                                 select x.Id).CountAsync() > 0;
         }
 
@@ -43,8 +50,8 @@ namespace RhNetAPI.Repositories.Adm
                 return "Usuário não encontrado";
             }
             ApplicationMenu menu = await (from x in context.ApplicationMenus
-                                where x.Path == favoriteModel.Path
-                                select x).FirstOrDefaultAsync();
+                                where x.Path == favoriteModel.Path && x.Role_Name == favoriteModel.Profile
+                                          select x).FirstOrDefaultAsync();
 
             if (menu == null)
             {
@@ -65,7 +72,7 @@ namespace RhNetAPI.Repositories.Adm
         {
             Favorite favorite = await (from x in context.Favorites
                                        from y in context.Users.Where(e => e.UserName == userName)
-                                       from z in context.ApplicationMenus.Where(e => e.Path == favoriteModel.Path)
+                                       from z in context.ApplicationMenus.Where(e => e.Path == favoriteModel.Path && e.Role_Name == favoriteModel.Profile)
                                        select x).FirstOrDefaultAsync();
 
             if(favorite == null)

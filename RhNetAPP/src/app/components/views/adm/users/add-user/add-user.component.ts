@@ -9,6 +9,9 @@ import { ApplicationUser } from 'src/app/components/models/adm/applicationUser.m
 import { Client } from 'src/app/components/models/adm/client.model';
 import { Permission } from 'src/app/components/models/adm/permission.model';
 import { Profile } from 'src/app/components/models/adm/profile.model';
+import { UserRole } from 'src/app/components/models/adm/userRole.model';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { UserPermission } from '../../../../models/adm/userPermission.model';
 
 @Component({
   selector: 'app-add-user',
@@ -20,6 +23,7 @@ export class AddUserComponent implements OnInit {
     clients: Client[] = [];
     profiles: Profile[] = [];
     permissions: Permission[] = [];
+    tables: string[] = [];
 
     selectedClient: Client;
     selectedProfile: Profile;
@@ -59,6 +63,14 @@ export class AddUserComponent implements OnInit {
 
         this.permissionService.getPermissions().subscribe(results => {
             this.permissions = results;
+            this.tables = [];
+            for (var i = 0; i < this.permissions.length; i++) {
+                var index = this.tables.indexOf(this.permissions[i].table);
+
+                if (index < 0) {
+                    this.tables.push(this.permissions[i].table);
+                }
+            }
         },
             (err) => {
                 console.log(err)
@@ -76,26 +88,38 @@ export class AddUserComponent implements OnInit {
         this.clients.push(client);
     }
 
-    addProfile(): void {
-        this.newUser.applicationRoles.push(this.selectedProfile);
-        this.profiles.splice(this.profiles.indexOf(this.selectedProfile), 1);
+    addProfile(profile, clientId): void {
+        let userProfile: UserRole = {
+            clientId: clientId,
+            roleId: profile.id,
+            userId: ''
+        }
+        this.newUser.applicationRoles.push(userProfile);
+    }
+
+    removeProfile(profile, clientId): void {
+        var index = this.newUser.applicationRoles.map(function (e) { return e.clientId, e.roleId }).indexOf(clientId, profile.id);
+
+        this.newUser.applicationRoles.splice(index, 1);
+        
+    }
+
+    addPermission(permission, clientId): void {
+        let userPermission: UserPermission = {
+            clientId: clientId,
+            description: permission.description,
+            userId: ''
+        }
+        this.newUser.permissions.push(userPermission);
 
     }
 
-    removeProfile(profile): void {
-        this.newUser.applicationRoles.splice(this.newUser.applicationRoles.indexOf(profile), 1);
-        this.profiles.push(profile);
-    }
+    removePermission(permission, clientId): void {
 
-    addPermission(): void {
-        this.newUser.permissions.push(this.selectedPermission);
-        this.permissions.splice(this.permissions.indexOf(this.selectedPermission), 1);
+        var index = this.newUser.permissions.map(function (e) { return e.clientId, e.description }).indexOf(clientId, permission.description);
 
-    }
-
-    removePermission(permission): void {
-        this.newUser.permissions.splice(this.newUser.permissions.indexOf(permission), 1);
-        this.permissions.push(permission);
+        this.newUser.permissions.splice(index, 1);
+        
     }
 
     addUser(): void {
@@ -129,5 +153,35 @@ export class AddUserComponent implements OnInit {
                 
                 console.log(err);
             })
+    }
+
+    getPermissions(table): Permission[] {
+        var permissions = [];
+
+        for (var i = 0; i < this.permissions.length; i++) {
+            if (this.permissions[i].table === table) {
+                permissions.push(this.permissions[i]);
+            }
+        }
+
+        return permissions;
+    }
+
+    permissionChange(event: MatSlideToggleChange, permission: Permission, clientId: number): void {
+        if (event.checked === true) {
+            this.addPermission(permission, clientId);
+        } else {
+            this.removePermission(permission, clientId);
+        }
+        
+    }
+
+    profileChange(event: MatSlideToggleChange, profile: Profile, clientId: number): void {
+        if (event.checked === true) {
+            this.addProfile(profile, clientId);
+        } else {
+            this.removeProfile(profile, clientId);
+        }
+
     }
 }
