@@ -1,13 +1,13 @@
-import { Profile } from 'src/app/components/models/adm/profile.model';
+import { UserRole } from 'src/app/components/models/adm/userRole.model';
 import { Client } from 'src/app/components/models/adm/client.model';
-import { Permission } from 'src/app/components/models/adm/permission.model';
+import { UserPermission } from 'src/app/components/models/adm/userPermission.model';
 
 export interface ApplicationUser {
 	userId: string,
 	cpf: string,
 	userName: string,
 	email: string,	
-	applicationRoles: Profile[],
+	applicationRoles: UserRole[],
 	clients: Client[],
-	permissions: Permission[]
+	permissions: UserPermission[]
 }

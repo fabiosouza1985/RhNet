@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RhNetAPI.Contexts;
 
 namespace RhNetAPI.Migrations
 {
     [DbContext(typeof(RhNetContext))]
-    partial class RhNetContextModelSnapshot : ModelSnapshot
+    [Migration("20201124181715_00011")]
+    partial class _00011
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -416,31 +418,6 @@ namespace RhNetAPI.Migrations
                     b.ToTable("Entidades");
                 });
 
-            modelBuilder.Entity("RhNetAPI.Entities.Shared.EntidadeSubordinacao", b =>
-                {
-                    b.Property<int>("Entidade_Superior_Id")
-                        .HasColumnName("Entidade_Superior_Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Entidade_Inferior_Id")
-                        .HasColumnName("Entidade_Inferior_Id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Vigencia_Inicio")
-                        .HasColumnName("Vigencia_Inicio")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Vigencia_Termino")
-                        .HasColumnName("Vigencia_Termino")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Entidade_Superior_Id", "Entidade_Inferior_Id", "Vigencia_Inicio");
-
-                    b.HasIndex("Entidade_Inferior_Id");
-
-                    b.ToTable("EntidadesSubordinacoes");
-                });
-
             modelBuilder.Entity("RhNetAPI.Entities.Shared.Municipio", b =>
                 {
                     b.Property<int>("Id")
@@ -559,21 +536,6 @@ namespace RhNetAPI.Migrations
                     b.HasOne("RhNetAPI.Entities.Shared.Municipio", "Municipio")
                         .WithMany()
                         .HasForeignKey("Municipio_Id");
-                });
-
-            modelBuilder.Entity("RhNetAPI.Entities.Shared.EntidadeSubordinacao", b =>
-                {
-                    b.HasOne("RhNetAPI.Entities.Shared.Entidade", "Entidade_Inferior")
-                        .WithMany()
-                        .HasForeignKey("Entidade_Inferior_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RhNetAPI.Entities.Shared.Entidade", "Entidade_Superior")
-                        .WithMany()
-                        .HasForeignKey("Entidade_Superior_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

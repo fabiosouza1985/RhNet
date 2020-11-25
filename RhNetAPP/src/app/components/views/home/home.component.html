@@ -1,39 +1,33 @@
 ﻿<div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
         
-    <div fxFlex="70%">
+    <div fxFlex="30%">
 
-        <div fxLayout="row wrap" fxLayoutGap="16px grid" class="mat-elevation-z4 quickAccessPanel">
-
-            <div fxFlex="100%">
-                <mat-label class="title">Acesso Rápido</mat-label>
-            </div>
-            
-
-            <div fxFlex="33%" *ngFor="let element of variable.QuickAccess">
-                <div class="quickAccess">
-                    <div class="ripple-container mat-elevation-z4"
-                         matRipple
-                         [matRippleCentered]="true" [routerLink]="element.path">
-
-                        {{element.header}}
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        <mat-card>
+            <mat-card-content>
+                <mat-label>Usuário Logado: <span class="variableLabel">{{variable.Username}}</span></mat-label>
+                
+                <mat-label *ngIf="variable.SelectedClient">Cliente: <span class="variableLabel">{{variable.SelectedClient.cnpj}} - {{variable.SelectedClient.description}}</span> <a routerLink="/selectClient">Alterar</a></mat-label>
+                
+                <mat-label>Perfil: <span class="variableLabel">{{variable.CurrentProfile}}</span> <a routerLink="/myprofile">Alterar</a></mat-label>
+            </mat-card-content>
+        </mat-card>
        
        
     </div>
 
-
-    <div class="mat-elevation-z4"
-         fxFlex="30%">
-        <div class="favoritePanel">
-            <mat-label class="title">Favoritos</mat-label>
-        </div>
-        
+    <div fxFlex="30%" *ngIf="variable.CurrentProfile === 'Master'">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    Usuários
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-label>Carregando total de usuários...</mat-label>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </mat-card-content>
+        </mat-card>
     </div>
-
     
 
 </div>

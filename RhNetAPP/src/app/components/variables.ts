@@ -63,6 +63,28 @@ export class Variables {
                     }
                     
                 }
+
+                if (this.SelectedClient !== null) {
+                    this.service.getRoles(this.SelectedClient.id).subscribe(results => {
+                        this.Profiles = results;
+                        if (localStorage.getItem("currentProfile") === null || localStorage.getItem("username") === undefined) {
+                            localStorage.setItem("currentProfile", this.Profiles[0].name);
+                        }
+                        this.CurrentProfile = localStorage.getItem("currentProfile");
+                        this.GetMenus();
+                        this.GetQuickAccess();
+                        this.GetFavorites();
+                        this.IsLoading = false;
+
+
+                    },
+                        (err) => {
+                            this.IsLoading = false;
+                            console.log(err);
+                        });
+                }
+                
+
             },
                 (err) => {
                     this.IsLoading = false;
@@ -70,24 +92,7 @@ export class Variables {
                 });
 
             
-            this.service.getRoles().subscribe(results => {     
-                this.Profiles = results;      
-                if(localStorage.getItem("currentProfile") === null || localStorage.getItem("username") === undefined){
-                    localStorage.setItem("currentProfile", this.Profiles[0].name);                    
-                }       
-                this.CurrentProfile = localStorage.getItem("currentProfile");
-                this.GetMenus();
-                this.GetQuickAccess();
-                this.GetFavorites();
-                this.IsLoading = false;
-                
-                
-            },
-              (err) => {     
-                  this.IsLoading = false;
-                console.log(err);   
-                });
-
+           
             this.setTitle();
         }
 
@@ -100,7 +105,7 @@ export class Variables {
             return;
         }
 
-        this.menuService.getMenus(this.CurrentProfile).subscribe(results => {
+        this.menuService.getMenus(this.CurrentProfile, this.SelectedClient.id).subscribe(results => {
             var _menus = results;
             this.MenuItems.push({ header: '', children: [] });
 
@@ -175,6 +180,9 @@ export class Variables {
                 }
               
             }
+            
+            this.MenuItems[0].children.push({ header: 'Alterar Cliente', path: '/selectClient' });
+            
         },
             (err) => {
 
@@ -187,8 +195,8 @@ export class Variables {
         if (this.CurrentProfile == "") {
             return;
         }
-
-        this.menuService.getQuickAccess(this.CurrentProfile).subscribe(results => {
+      
+        this.menuService.getQuickAccess(this.CurrentProfile, this.SelectedClient.id.toString()).subscribe(results => {
             this.QuickAccess = results;
         },
             (err) => {
@@ -203,7 +211,7 @@ export class Variables {
             return;
         }
 
-        this.favoriteService.getFavorites(this.CurrentProfile).subscribe(results => {
+        this.favoriteService.getFavorites(this.CurrentProfile, this.SelectedClient.id.toString()).subscribe(results => {
             this.Favorites = results;
         },
             (err) => {
@@ -233,7 +241,7 @@ export class Variables {
     public addRemoveFavorite(add: boolean, path: string): void{
         this.IsLoading = true;
         if (add) {
-            this.favoriteService.addFavorite(path).subscribe(results => {
+            this.favoriteService.addFavorite(path, this.CurrentProfile).subscribe(results => {
 
                 this._snackBar.open('Adicionado ao favorito', 'X', {
                     duration: 2000,
@@ -249,7 +257,7 @@ export class Variables {
                 })
             
         } else {
-            this.favoriteService.removeFavorite(path).subscribe(results => {
+            this.favoriteService.removeFavorite(path, this.CurrentProfile).subscribe(results => {
                 this._snackBar.open('Removido do favorito', 'X', {
                     duration: 2000,
                 });      
@@ -281,4 +289,5 @@ export class Variables {
         }
         this.titleService.setTitle(title);
     }
+        
 }
