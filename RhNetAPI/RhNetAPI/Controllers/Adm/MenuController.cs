@@ -32,19 +32,19 @@ namespace RhNetAPI.Controllers.Adm
          
         [HttpGet]
         [Route("getMenus")]
-        public async Task<ActionResult<List<MenuModel>>> GetMenus([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, string profile, int clientId)
+        public async Task<ActionResult<List<MenuModel>>> GetMenus([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, string profile)
         {
             MenuRepository repository = new MenuRepository();
-            return await repository.GetMenus(this.User.Identity.Name, profile, rhNetContext, userManager, clientId);
+            return await repository.GetMenus(this.User.Identity.Name, profile, rhNetContext, userManager);
 
         }
 
         [HttpGet]
         [Route("getQuickAccess")]
-        public async Task<ActionResult<List<MenuModel>>> GetQuickAccess([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, string profile, int clientId)
+        public async Task<ActionResult<List<MenuModel>>> GetQuickAccess([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, string profile)
         {
             MenuRepository repository = new MenuRepository();
-            return await repository.GetQuickAccess(this.User.Identity.Name, profile, rhNetContext, userManager, clientId);
+            return await repository.GetQuickAccess(this.User.Identity.Name, profile, rhNetContext, userManager);
 
         }
 

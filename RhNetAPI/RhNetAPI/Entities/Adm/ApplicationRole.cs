@@ -17,6 +17,5 @@ namespace RhNetAPI.Entities.Adm
 
         [Column("Level")]
         public int? Level { get; set; }
-
     }
 }

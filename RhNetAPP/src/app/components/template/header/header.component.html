@@ -27,12 +27,12 @@
             <button mat-button color="primary" [routerLink]="item.path">
                 {{item.header}}
             </button>
-        </span>        
+        </span>
 
         <span *ngIf="item === variable.MenuItems[0]">
             <button mat-icon-button (click)="logoff()">
                 <mat-icon>login</mat-icon>
-            </button>
+            </button>            
         </span>
     </span>
 

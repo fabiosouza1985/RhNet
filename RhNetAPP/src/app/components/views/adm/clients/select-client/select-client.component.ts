@@ -26,29 +26,12 @@ export class SelectClientComponent implements OnInit {
             })
     }
 
-    setClient(client): void {        
-
-        this.variable.IsLoading = true;
-        this.variable.IsEnabled = false;
-
+    setClient(client): void {
+        this.variable.SelectedClient = client;
+        localStorage.setItem("currentClient", client.cnpj);
+        this.variable.setTitle();
         this.userService.setClient(client).subscribe(results => {
-
-            localStorage.setItem('token', results.token);            
-            localStorage.setItem('currentProfile', results.profiles[0].name);
-            localStorage.setItem("currentClient", results.currentClient.cnpj);
-            
-            this.variable.Profiles = results.profiles;
-            this.variable.CurrentProfile = results.profiles[0].name;
-            this.variable.SelectedClient = results.currentClient;
-
-            this.variable.setTitle();
-
-            this.router.navigate(['/home']);
-            this.variable.GetMenus();
-            this.variable.GetQuickAccess();
-            this.variable.GetFavorites();
-            this.variable.IsLoading = false;
-            this.variable.IsEnabled = true;
+            console.log(results);
 
         },
             (err) => {

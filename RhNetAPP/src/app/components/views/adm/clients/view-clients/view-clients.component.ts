@@ -30,7 +30,7 @@ export class ViewClientsComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.favoriteService.isFavorite(this.router.url, this.variable.CurrentProfile).subscribe(results => {
+        this.favoriteService.isFavorite(this.router.url).subscribe(results => {
             this.isFavorite = results;
         },
             (err) => {

@@ -6,11 +6,3 @@ mat-form-field
 .content{
     padding-top: 10px;
 }
-
-.fill {
-    flex: 1 1 auto;
-}
-
-mat-slide-toggle{
-    margin: 10px;
-}

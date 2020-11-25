@@ -30,13 +30,7 @@ export class ViewUsersComponent implements OnInit {
 
     ngOnInit(): void {
 
-        var currentProfile = '';
-        if (this.variable.CurrentProfile.length > 0) {
-            currentProfile = this.variable.CurrentProfile
-        } else {
-            currentProfile = localStorage.getItem('currentProfile');
-        }
-        this.favoriteService.isFavorite(this.router.url, currentProfile).subscribe(results => {
+        this.favoriteService.isFavorite(this.router.url).subscribe(results => {
             this.isFavorite = results;
         },
             (err) => {

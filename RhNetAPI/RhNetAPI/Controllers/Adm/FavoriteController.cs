@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RhNetAPI.Contexts;
-using RhNetAPI.Entities.Adm;
 using RhNetAPI.Models.Adm;
 using RhNetAPI.Repositories.Adm;
 using System;
@@ -19,19 +17,19 @@ namespace RhNetAPI.Controllers.Adm
     {
         [HttpGet]
         [Route("getFavorites")]
-        public async Task<ActionResult<List<FavoriteModel>>> GetFavorites([FromServices] UserManager<ApplicationUser> userManager, [FromServices] RhNetContext rhNetContext, string profile, int clientId)
+        public async Task<ActionResult<List<FavoriteModel>>> GetFavorites([FromServices] RhNetContext rhNetContext, string profile)
         {
             FavoriteRepository repository = new FavoriteRepository();
-            return await repository.GetFavorites(userManager, rhNetContext, this.User.Identity.Name, profile, clientId);
+            return await repository.GetFavorites(rhNetContext, this.User.Identity.Name, profile);
 
         }
 
         [HttpGet]
         [Route("isFavorite")]
-        public async Task<ActionResult<bool>> IsFavorite([FromServices] RhNetContext rhNetContext, string path, string profile)
+        public async Task<ActionResult<bool>> IsFavorite([FromServices] RhNetContext rhNetContext, string path)
         {
             FavoriteRepository repository = new FavoriteRepository();
-            return await repository.IsFavorite(rhNetContext, this.User.Identity.Name, path, profile);
+            return await repository.IsFavorite(rhNetContext, this.User.Identity.Name, path);
 
         }
 

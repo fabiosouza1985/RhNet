@@ -29,7 +29,7 @@ namespace RhNetAPI.Repositories.Adm
             ;
 
         }
-        public async Task<List<MenuModel>> GetMenus(string username, string profile, RhNetContext context,  UserManager<ApplicationUser> userManager, int clientId)
+        public async Task<List<MenuModel>> GetMenus(string username, string profile, RhNetContext context,  UserManager<ApplicationUser> userManager)
         {
             List<MenuModel> menus = new List<MenuModel>();
 
@@ -51,15 +51,10 @@ namespace RhNetAPI.Repositories.Adm
             else
             {
                 var user = await userManager.FindByNameAsync(username);
-                UserRepository userRepository = new UserRepository();
-
-                var claims = await userRepository.GetClaimsAsync(userManager, context, username, clientId);
-
-                var claim_values = claims.Where(e => e.Type == "permission").Select(e => e.Value).ToList();
-                
+                var claims = (await userManager.GetClaimsAsync(user)).Where(e => e.Type == "permission").Select(e => e.Value).ToList();
 
                 menus = await (from x in context.ApplicationMenus
-                               where x.Role_Name == profile && claim_values.Contains( x.Permission_Name )
+                               where x.Role_Name == profile && claims.Contains( x.Permission_Name )
                                select new MenuModel()
                                {
                                    Role_Name = x.Role_Name,
@@ -76,7 +71,7 @@ namespace RhNetAPI.Repositories.Adm
 
         }
 
-        public async Task<List<MenuModel>> GetQuickAccess(string username, string profile, RhNetContext context, UserManager<ApplicationUser> userManager, int clientId)
+        public async Task<List<MenuModel>> GetQuickAccess(string username, string profile, RhNetContext context, UserManager<ApplicationUser> userManager)
         {
             List<MenuModel> menus = new List<MenuModel>();
 
@@ -98,16 +93,10 @@ namespace RhNetAPI.Repositories.Adm
             else
             {
                 var user = await userManager.FindByNameAsync(username);
-
-                UserRepository userRepository = new UserRepository();
-
-                var claims = await userRepository.GetClaimsAsync(userManager, context, username, clientId);
-
-                var claim_values = claims.Where(e => e.Type == "permission").Select(e => e.Value).ToList();
-
+                var claims = (await userManager.GetClaimsAsync(user)).Where(e => e.Type == "permission").Select(e => e.Value).ToList();
 
                 menus = await (from x in context.ApplicationMenus
-                               where x.Role_Name == profile && claim_values.Contains(x.Permission_Name) && x.Quick_Access == true
+                               where x.Role_Name == profile && claims.Contains(x.Permission_Name) && x.Quick_Access == true
                                select new MenuModel()
                                {
                                    Role_Name = x.Role_Name,

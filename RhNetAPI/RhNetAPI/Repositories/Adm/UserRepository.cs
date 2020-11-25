@@ -66,51 +66,25 @@ namespace RhNetAPI.Repositories.Adm
 
             return clients;
         }
-        public async Task<List<RoleModel>> GetRolesAsync(UserManager<ApplicationUser> userManager, RhNetContext rhNetContext, string username, int clientId)
-        {
-            if (username == "master")
-            {
-                var userRoles = await (from x in rhNetContext.Roles
-                                       orderby x.Level
-                                       select new RoleModel()
-                                       {
-                                           Name = x.Name,
-                                           Description = x.Description,
-                                           id = x.Id,
-                                           Level = x.Level
-                                       }).ToListAsync();
-
-                return userRoles;
-            }
-            else
-            {
-                ApplicationUser user = await userManager.FindByNameAsync(username);
-                var userRoles = await (from x in rhNetContext.UserRoles
-                                       from y in rhNetContext.Roles.Where(e => e.Id == x.RoleId)
-                                       where x.ClientId == clientId && x.UserId == user.Id
-                                       orderby y.Level
-                                       select new RoleModel()
-                                       {
-                                           Name = y.Name,
-                                           Description = y.Description,
-                                           id = y.Id,
-                                           Level = y.Level
-                                       }).ToListAsync();
-
-                return userRoles;
-            }
-            
-        }
-
-        public async Task<List<Claim>> GetClaimsAsync(UserManager<ApplicationUser> userManager, RhNetContext rhNetContext, string username, int clientId)
+        public async Task<List<RoleModel>> GetRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, string username)
         {
             ApplicationUser user = await userManager.FindByNameAsync(username);
-            var userClaims = await (from x in rhNetContext.UserClaims
-                                   where x.ClientId == clientId && x.UserId == user.Id
-                                   select new Claim(x.ClaimType, x.ClaimValue)
-                                 ).ToListAsync();
+            List<String> roles = new List<String>();                      
+           
+            roles = (await userManager.GetRolesAsync(user)).ToList();
 
-            return userClaims;
+            var userRoles = (from x in roleManager.Roles
+                             where roles.Contains(x.Name)
+                             orderby x.Level
+                             select new RoleModel()
+                             {
+                                 Name = x.Name,
+                                 Description = x.Description,
+                                 id = x.Id,
+                                 Level = x.Level
+                             }).ToList();
+
+            return userRoles;
         }
 
         public async Task<List<RoleModel>> GetAllRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, string username)
@@ -166,9 +140,9 @@ namespace RhNetAPI.Repositories.Adm
                 Cpf = applicationUserModel.Cpf
             };
 
-            List<ClientModel> clients = applicationUserModel.clients;
-            List<ApplicationUserModel.UserRoleModel> roles = applicationUserModel.applicationRoles;
-            List<ApplicationUserModel.UserPermissionModel> permissions = applicationUserModel.permissions;
+            List<Client> clients = applicationUserModel.clients;
+            List<ApplicationRole> roles = applicationUserModel.applicationRoles;
+            List<Permission> permissions = applicationUserModel.permissions;
 
 
           var result =   await userManager.CreateAsync(applicationUser, "Mm123456*");
@@ -179,28 +153,13 @@ namespace RhNetAPI.Repositories.Adm
 
                 for (var i = 0; i < roles.Count() ; i++)
                 {
-                    ApplicationUserRole applicationUserRole = new ApplicationUserRole()
-                    {
-                        ClientId = roles[i].ClientId,
-                        UserId = applicationUser.Id,
-                        RoleId = roles[i].RoleId
-                    };
-                    rhNetContext.Entry(applicationUserRole).State = EntityState.Added;
-                  
+                    await userManager.AddToRoleAsync(applicationUser, roles[i].Name);
 
                 }
 
                 for (var i = 0; i < permissions.Count(); i++)
                 {
-                    ApplicationUserClaim applicationUserClaim = new ApplicationUserClaim()
-                    {
-                        ClientId = permissions[i].ClientId,
-                        UserId = applicationUser.Id,
-                        ClaimType = "permission",
-                        ClaimValue = permissions[i].Description
-                    };
-                    rhNetContext.Entry(applicationUserClaim).State = EntityState.Added;
-                    
+                    await userManager.AddClaimAsync(applicationUser, new Claim("permission", permissions[i].Description));
 
                 }
 

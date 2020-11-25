@@ -24,6 +24,5 @@ namespace RhNetAPI.Entities.Adm
         [Column("Table")]
         [StringLength(100)]
         public string Table { get; set; }
-
     }
 }

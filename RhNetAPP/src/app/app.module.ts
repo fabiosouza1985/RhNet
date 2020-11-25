@@ -30,9 +30,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { HomeComponent } from './components/views/home/home.component';
 import { LoginComponent } from './components/views/login/login.component';
@@ -95,10 +92,7 @@ import { SelectClientComponent } from './components/views/adm/clients/select-cli
       MatSortModule,
       MatPaginatorModule,
       MatProgressSpinnerModule,
-      MatRadioModule,
-      MatTabsModule,
-      MatSlideToggleModule,
-      MatProgressBarModule
+      MatRadioModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,

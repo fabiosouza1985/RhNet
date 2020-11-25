@@ -11,13 +11,13 @@ export class MenuService {
 
     constructor(private http: HttpClient, private constants: Constants) { }    
 
-    getMenus(profile, clientId : number): Observable<Menu[]> {
-        let httpParams = new HttpParams().set('profile', profile).set('clientId', clientId.toString());
+    getMenus(profile): Observable<Menu[]> {
+        let httpParams = new HttpParams().set('profile', profile)
         return this.http.get<Menu[]>(this.constants.Url + 'menu/getMenus', { params: httpParams });
     };
 
-    getQuickAccess(profile, clientId): Observable<Menu[]> {
-        let httpParams = new HttpParams().set('profile', profile).set('clientId', clientId);
+    getQuickAccess(profile): Observable<Menu[]> {
+        let httpParams = new HttpParams().set('profile', profile)
         return this.http.get<Menu[]>(this.constants.Url + 'menu/getQuickAccess', { params: httpParams });
     };
     getAllMenus(): Observable<Menu[]> {

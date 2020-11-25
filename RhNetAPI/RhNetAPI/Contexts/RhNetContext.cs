@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RhNetAPI.Entities.Adm;
-using RhNetAPI.Entities.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,18 +27,5 @@ namespace RhNetAPI.Contexts
 
         public DbSet<UserClient> UserClients { get; set; }
         public RhNetContext(DbContextOptions <RhNetContext> options): base(options) { }
-
-        public DbSet<Municipio> Municipios { get; set; }
-
-        public DbSet<Entidade> Entidades { get; set; }
-        public DbSet<EntidadeSubordinacao> EntidadesSubordinacoes { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.Entity<EntidadeSubordinacao>()
-                .HasKey(c => new { c.Entidade_Superior_Id, c.Entidade_Inferior_Id, c.Vigencia_Inicio });
-            
-            base.OnModelCreating(builder);
-        }
     }
 }

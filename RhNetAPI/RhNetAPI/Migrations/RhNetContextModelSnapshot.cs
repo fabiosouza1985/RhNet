@@ -386,85 +386,6 @@ namespace RhNetAPI.Migrations
                     b.ToTable("UserClients");
                 });
 
-            modelBuilder.Entity("RhNetAPI.Entities.Shared.Entidade", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Codigo_Audesp")
-                        .HasColumnName("Codigo_Audesp")
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnName("Descricao")
-                        .HasColumnType("nvarchar(300)")
-                        .HasMaxLength(300);
-
-                    b.Property<int?>("Municipio_Id")
-                        .HasColumnName("Municipio_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Municipio_Id");
-
-                    b.ToTable("Entidades");
-                });
-
-            modelBuilder.Entity("RhNetAPI.Entities.Shared.EntidadeSubordinacao", b =>
-                {
-                    b.Property<int>("Entidade_Superior_Id")
-                        .HasColumnName("Entidade_Superior_Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Entidade_Inferior_Id")
-                        .HasColumnName("Entidade_Inferior_Id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Vigencia_Inicio")
-                        .HasColumnName("Vigencia_Inicio")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Vigencia_Termino")
-                        .HasColumnName("Vigencia_Termino")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Entidade_Superior_Id", "Entidade_Inferior_Id", "Vigencia_Inicio");
-
-                    b.HasIndex("Entidade_Inferior_Id");
-
-                    b.ToTable("EntidadesSubordinacoes");
-                });
-
-            modelBuilder.Entity("RhNetAPI.Entities.Shared.Municipio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Codigo_Audesp")
-                        .HasColumnName("Codigo_Audesp")
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnName("Descricao")
-                        .HasColumnType("nvarchar(300)")
-                        .HasMaxLength(300);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Municipios");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("RhNetAPI.Entities.Adm.ApplicationRole", null)
@@ -550,28 +471,6 @@ namespace RhNetAPI.Migrations
                     b.HasOne("RhNetAPI.Entities.Adm.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RhNetAPI.Entities.Shared.Entidade", b =>
-                {
-                    b.HasOne("RhNetAPI.Entities.Shared.Municipio", "Municipio")
-                        .WithMany()
-                        .HasForeignKey("Municipio_Id");
-                });
-
-            modelBuilder.Entity("RhNetAPI.Entities.Shared.EntidadeSubordinacao", b =>
-                {
-                    b.HasOne("RhNetAPI.Entities.Shared.Entidade", "Entidade_Inferior")
-                        .WithMany()
-                        .HasForeignKey("Entidade_Inferior_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RhNetAPI.Entities.Shared.Entidade", "Entidade_Superior")
-                        .WithMany()
-                        .HasForeignKey("Entidade_Superior_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

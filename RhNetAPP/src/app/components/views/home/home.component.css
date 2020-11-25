@@ -38,17 +38,3 @@ padding: 18px
     font-size: 14pt;
     font-weight: 400;
 }
-
-mat-label {
-    font-weight: 200;
-    padding: 10px;
-    display: block;
-}
-
-mat-label a{
-    margin-left: 10px;
-}
-.variableLabel{
-    font-weight: 600;
-    text-decoration: underline;
-}

@@ -9,7 +9,7 @@ namespace RhNetAPI.Models.Adm
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public string Table { get; set; }
 
+        public string Table { get; set; }
     }
 }

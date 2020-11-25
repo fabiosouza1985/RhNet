@@ -11,24 +11,23 @@ export class FavoriteService {
 
     constructor(private http: HttpClient, private constants: Constants) { }    
 
-    getFavorites(profile, clientId): Observable<Favorite[]> {
-        let httpParams = new HttpParams().set('profile', profile).set('clientId', clientId);
+    getFavorites(profile): Observable<Favorite[]> {
+        let httpParams = new HttpParams().set('profile', profile);
         return this.http.get<Favorite[]>(this.constants.Url + 'favorite/getFavorites', { params: httpParams });
     };
 
-    isFavorite(path, profile): Observable<boolean> {
-        let httpParams = new HttpParams().set('path', path).set('profile', profile);
+    isFavorite(path): Observable<boolean> {
+        let httpParams = new HttpParams().set('path', path)
         return this.http.get<boolean>(this.constants.Url + 'favorite/isFavorite', { params: httpParams });
     };
 
-    addFavorite(path, profile): Observable<Favorite> {
-        alert(profile);
-        var favoriteModel = {header: '', path: path, profile: profile};
+    addFavorite(path): Observable<Favorite> {
+        var favoriteModel = {header: '', path: path};
         return this.http.post<Favorite>(this.constants.Url + 'favorite/addFavorite', favoriteModel);
     };
 
-    removeFavorite(path, profile): Observable<Favorite> {
-        var favoriteModel = { header: '', path: path, profile: profile };
+    removeFavorite(path): Observable<Favorite> {
+        var favoriteModel = { header: '', path: path };
         return this.http.post<Favorite>(this.constants.Url + 'favorite/removeFavorite', favoriteModel);
     };
 }

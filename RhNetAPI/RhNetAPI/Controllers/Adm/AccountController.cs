@@ -124,9 +124,8 @@ namespace RhNetAPI.Controllers.Adm
                 return BadRequest("Cliente inativo. Entre em contato com um administrador do sistema");
             }
 
-            var profiles =  (await repository.GetRolesAsync(userManager, rhNetContext, user.UserName, selectedClient.Id)).ToList();
-            var claims = (await repository.GetClaimsAsync(userManager, rhNetContext, user.UserName, selectedClient.Id)).ToList();
-            
+            var profiles =  (await repository.GetRolesAsync(userManager, roleManager, user.UserName)).ToList();
+            var claims = (await userManager.GetClaimsAsync(user)).ToList();
             // Gera o Token
             var token = TokenService.GenerateToken(user, profiles, claims);
                         
