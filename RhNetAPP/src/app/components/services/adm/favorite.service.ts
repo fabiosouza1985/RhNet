@@ -22,7 +22,7 @@ export class FavoriteService {
     };
 
     addFavorite(path, profile): Observable<Favorite> {
-        alert(profile);
+      
         var favoriteModel = {header: '', path: path, profile: profile};
         return this.http.post<Favorite>(this.constants.Url + 'favorite/addFavorite', favoriteModel);
     };

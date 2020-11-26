@@ -50,6 +50,7 @@ import { ViewClientsComponent } from './components/views/adm/clients/view-client
 import { ViewUsersComponent } from './components/views/adm/users/view-users/view-users.component';
 import { AddUserComponent } from './components/views/adm/users/add-user/add-user.component';
 import { SelectClientComponent } from './components/views/adm/clients/select-client/select-client.component';
+import { MunicipiosComponent } from './components/views/shared/municipios/municipios.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { SelectClientComponent } from './components/views/adm/clients/select-cli
     ViewClientsComponent,
     ViewUsersComponent,
     AddUserComponent,
-    SelectClientComponent
+    SelectClientComponent,
+    MunicipiosComponent
   ],
   imports: [
     BrowserModule,

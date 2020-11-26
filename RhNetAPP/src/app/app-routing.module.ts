@@ -12,6 +12,7 @@ import { ViewClientsComponent } from './components/views/adm/clients/view-client
 import { ViewUsersComponent } from './components/views/adm/users/view-users/view-users.component';
 import { AddUserComponent } from './components/views/adm/users/add-user/add-user.component';
 import { SelectClientComponent } from './components/views/adm/clients/select-client/select-client.component';
+import { MunicipiosComponent } from './components/views/shared/municipios/municipios.component';
 
 const routes: Routes = [
   {
@@ -60,6 +61,10 @@ const routes: Routes = [
     {
         path: "selectClient",
         component: SelectClientComponent
+    },
+    {
+        path: "municipios",
+        component: MunicipiosComponent
     },
     {
         path: "**",
