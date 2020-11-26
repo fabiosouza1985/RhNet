@@ -135,4 +135,7 @@ export class ViewMenusComponent implements OnInit {
         this.isFavorite = !this.isFavorite;
 
     }
+
+   
+
 }

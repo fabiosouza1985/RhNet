@@ -18,10 +18,9 @@ namespace RhNetAPI.Controllers.Shared
     {
         [HttpGet]
         [Route("getProperties")]
-        public ActionResult<List<Property>> GetProperties([FromServices] RhNetContext rhNetContext)
-        {
-            MunicipioRepository repository = new MunicipioRepository();
-            return  repository.GetProperties();
+        public ActionResult<List<Property>> GetProperties()
+        {            
+            return Ok(Property.GetProperties(typeof(MunicipioModel)));
         }
 
         [HttpGet]
@@ -46,6 +45,46 @@ namespace RhNetAPI.Controllers.Shared
             object result = await repository.Add(rhNetContext, municipioModel);
 
             if(result.GetType() == typeof(MunicipioModel))
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToString());
+            }
+        }
+
+        [HttpPost]
+        [Route("update")]
+        public async Task<ActionResult> Update([FromServices] RhNetContext rhNetContext, [FromBody] MunicipioModel municipioModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            MunicipioRepository repository = new MunicipioRepository();
+            object result = await repository.Update(rhNetContext, municipioModel);
+
+            if (result.GetType() == typeof(MunicipioModel))
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToString());
+            }
+        }
+
+        [HttpPost]
+        [Route("remove")]
+        public async Task<ActionResult> Remove([FromServices] RhNetContext rhNetContext, [FromBody] MunicipioModel municipioModel)
+        {
+            
+            MunicipioRepository repository = new MunicipioRepository();
+            object result = await repository.Remove(rhNetContext, municipioModel);
+
+            if (result.GetType() == typeof(MunicipioModel))
             {
                 return Ok(result);
             }

@@ -11,11 +11,7 @@ using System.Threading.Tasks;
 namespace RhNetAPI.Repositories.Shared
 {
     public class MunicipioRepository
-    {
-        public List<Property> GetProperties()
-        {
-            return  Property.GetProperties(typeof(MunicipioModel));
-        }
+    {        
         public async Task<List<MunicipioModel>> Get(RhNetContext rhNetContext)
         {
             return await (from x in rhNetContext.Municipios
@@ -51,7 +47,56 @@ namespace RhNetAPI.Repositories.Shared
                 return ex.InnerException.ToString();
 
             }
+        }
 
+        public async Task<Object> Update(RhNetContext rhNetContext, MunicipioModel municipioModel)
+        {
+            Municipio municipio = await rhNetContext.Municipios.FindAsync(municipioModel.Id);
+
+            if (municipio == null)
+            {
+                return "Município não encontrado.";
+            }
+            municipio.Descricao = municipioModel.Descricao;
+            municipio.Codigo_Audesp = municipioModel.Codigo_Audesp;
+
+            try
+            {
+                rhNetContext.Entry(municipio).State = EntityState.Modified;
+                await rhNetContext.SaveChangesAsync();
+
+                return municipioModel;
+            }
+            catch (DbUpdateException ex)
+            {
+                return ex.InnerException.ToString();
+
+            }
+          
+
+        }
+
+        public async Task<Object> Remove(RhNetContext rhNetContext, MunicipioModel municipioModel)
+        {
+            Municipio municipio = await rhNetContext.Municipios.FindAsync(municipioModel.Id);
+
+            if (municipio == null)
+            {
+                return "Município não encontrado.";
+            }
+            
+            try
+            {
+                rhNetContext.Entry(municipio).State = EntityState.Deleted;
+                await rhNetContext.SaveChangesAsync();
+
+                return municipioModel;
+            }
+            catch (DbUpdateException ex)
+            {
+                return ex.InnerException.ToString();
+
+            }
            
 
         }
