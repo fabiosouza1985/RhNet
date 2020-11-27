@@ -1,0 +1,91 @@
+﻿<mat-toolbar class="mat-elevation-z6 header">
+
+    <mat-label class="title">
+        {{title}}
+    </mat-label>
+    <span class="divisor"></span>
+    <a mat-icon-button (click)="addRemoveFavorite()">
+        <mat-icon class="notfavorite" [ngClass]="{'favorite' : isFavorite === true}">star</mat-icon>
+    </a>
+</mat-toolbar>
+
+<div class="table-container mat-elevation-z6">
+    <table mat-table [dataSource]="ds" matSort>
+
+        <ng-container [matColumnDef]="property.name" *ngFor="let property of properties">
+
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-label mat-sort-header> {{property.description}}<span *ngIf="property.required === true"> (*)</span></mat-label>
+
+                <mat-form-field *ngIf="property.autoGenerateFilter === true">
+                    <input matInput (keyup)="applyFilter($event, property.name)" placeholder="Filtro" />
+                </mat-form-field>
+
+            </th>
+
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field *ngIf="property.type_Description === 'string'" appearance="standard">
+                    <input matInput type="text"
+                           [(ngModel)]="element[property.name]"
+                           [maxlength]="getMaxLength(property.name)"
+                           [readonly]="property.readOnly">
+                    <mat-hint align="start" *ngIf="property.required === true && element[property.name].length === 0"><strong>(*) Obrigatório</strong> </mat-hint>
+                    <mat-hint align="end">{{element[property.name].length}} / {{getMaxLength(property.name)}}</mat-hint>
+                </mat-form-field>
+
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="municipio">
+            <th mat-header-cell *matHeaderCellDef>
+                
+                <mat-label mat-sort-header> Município</mat-label>
+
+                <mat-form-field >
+                    <input matInput (keyup)="applyFilter($event, 'municipio_Descricao')" placeholder="Filtro" />
+                </mat-form-field>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field>
+                    <mat-select [(ngModel)]="element.municipio_Id">
+                        <mat-option *ngFor="let municipio of municipios" [value]="municipio.id">
+                            {{municipio.descricao}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button (click)="add(element)" mat-icon-button *ngIf="element.id === 0"
+                        [disabled]="variable.IsEnabled === false">
+                    <mat-icon>add</mat-icon>
+                </button>
+
+                <button (click)="update(element)" mat-icon-button *ngIf="element.id !== 0"
+                        [disabled]="variable.IsEnabled === false">
+                    <mat-icon>save</mat-icon>
+                </button>
+                <button (click)="remove(element)" mat-icon-button *ngIf="element.id !== 0"
+                        [disabled]="variable.IsEnabled === false">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="paginator" [sticky]="true">
+            <td mat-footer-cell *matFooterCellDef colspan="3">
+                <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="['paginator']; sticky: true"></tr>
+    </table>
+</div>

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualBasic.CompilerServices;
+using System.ComponentModel;
 
 namespace RhNetAPI.Util
 {
@@ -21,6 +22,7 @@ namespace RhNetAPI.Util
         public Int64 Maximum { get; set; }
         public string Type_Description { get; set; }
 
+        public bool ReadOnly { get; set; }
         public static List<Property> GetProperties(Type type)
         {
             List<Property> properties = new List<Property>();
@@ -76,7 +78,7 @@ namespace RhNetAPI.Util
                         case TypeCode.Int64:
                         case TypeCode.UInt16:
                         case TypeCode.UInt32:
-                        case TypeCode.UInt64:
+                        case TypeCode.UInt64:                        
                             property.Type_Description = "int";
                             break;
                         case TypeCode.Boolean:
@@ -94,11 +96,22 @@ namespace RhNetAPI.Util
                             property.Type_Description = "decimal";
                             break;
                         case TypeCode.Object:
-                            property.Type_Description = "object";
+                           
+                            property.Type_Description = _properties.ElementAt(i).PropertyType.ToString();
                             break;
 
                     }
 
+                    ReadOnlyAttribute isreadonly = (ReadOnlyAttribute)_properties.ElementAt(i).GetCustomAttributes(typeof(ReadOnlyAttribute), true).FirstOrDefault();
+
+                    if (isreadonly != null)
+                    {
+                        property.ReadOnly = isreadonly.IsReadOnly;
+                    }
+                    else
+                    {
+                        property.ReadOnly = false;
+                    }
                     properties.Add(property);
                 }
             }
