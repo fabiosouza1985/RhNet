@@ -51,6 +51,7 @@ import { ViewUsersComponent } from './components/views/adm/users/view-users/view
 import { AddUserComponent } from './components/views/adm/users/add-user/add-user.component';
 import { SelectClientComponent } from './components/views/adm/clients/select-client/select-client.component';
 import { MunicipiosComponent } from './components/views/shared/municipios/municipios.component';
+import { EntidadesComponent } from './components/views/shared/entidades/entidades.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { MunicipiosComponent } from './components/views/shared/municipios/munici
     ViewUsersComponent,
     AddUserComponent,
     SelectClientComponent,
-    MunicipiosComponent
+    MunicipiosComponent,
+    EntidadesComponent
   ],
   imports: [
     BrowserModule,

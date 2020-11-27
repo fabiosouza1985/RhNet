@@ -13,6 +13,7 @@ import { ViewUsersComponent } from './components/views/adm/users/view-users/view
 import { AddUserComponent } from './components/views/adm/users/add-user/add-user.component';
 import { SelectClientComponent } from './components/views/adm/clients/select-client/select-client.component';
 import { MunicipiosComponent } from './components/views/shared/municipios/municipios.component';
+import { EntidadesComponent } from './components/views/shared/entidades/entidades.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,10 @@ const routes: Routes = [
     {
         path: "municipios",
         component: MunicipiosComponent
+    },
+    {
+        path: "entidades",
+        component: EntidadesComponent
     },
     {
         path: "**",
