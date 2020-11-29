@@ -32,10 +32,6 @@ table {
     padding-top: 10px;
 }
 
-tr :hover {
-    background-color: #ebe9e9;
-}
-
 .mat-form-field {
     width: 100%;
 }

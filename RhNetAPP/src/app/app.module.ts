@@ -33,6 +33,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { HomeComponent } from './components/views/home/home.component';
 import { LoginComponent } from './components/views/login/login.component';
@@ -52,6 +54,8 @@ import { AddUserComponent } from './components/views/adm/users/add-user/add-user
 import { SelectClientComponent } from './components/views/adm/clients/select-client/select-client.component';
 import { MunicipiosComponent } from './components/views/shared/municipios/municipios.component';
 import { EntidadesComponent } from './components/views/shared/entidades/entidades.component';
+import { TiposDeAtoNormativoComponent } from './components/views/shared/tipos-de-ato-normativo/tipos-de-ato-normativo.component';
+import { AtosNormativosComponent } from './components/views/shared/atos-normativos/atos-normativos.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +76,9 @@ import { EntidadesComponent } from './components/views/shared/entidades/entidade
     AddUserComponent,
     SelectClientComponent,
     MunicipiosComponent,
-    EntidadesComponent
+    EntidadesComponent,
+    TiposDeAtoNormativoComponent,
+    AtosNormativosComponent
   ],
   imports: [
     BrowserModule,
@@ -102,11 +108,14 @@ import { EntidadesComponent } from './components/views/shared/entidades/entidade
       MatRadioModule,
       MatTabsModule,
       MatSlideToggleModule,
-      MatProgressBarModule
+      MatProgressBarModule,
+      MatDatepickerModule,
+      MatNativeDateModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,
-    multi: true}],
+        multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

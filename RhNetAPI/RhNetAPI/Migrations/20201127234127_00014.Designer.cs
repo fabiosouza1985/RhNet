@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RhNetAPI.Contexts;
 
 namespace RhNetAPI.Migrations
 {
     [DbContext(typeof(RhNetContext))]
-    partial class RhNetContextModelSnapshot : ModelSnapshot
+    [Migration("20201127234127_00014")]
+    partial class _00014
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -412,7 +414,7 @@ namespace RhNetAPI.Migrations
                         .HasColumnName("Publicacao_Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Tipo_de_Ato_Normativo_Id")
+                    b.Property<int?>("Tipo_de_Ato_Normativo_Id")
                         .HasColumnName("Tipo_de_Ato_Normativo_Id")
                         .HasColumnType("int");
 
@@ -618,9 +620,7 @@ namespace RhNetAPI.Migrations
                 {
                     b.HasOne("RhNetAPI.Entities.Shared.Tipo_de_Ato_Normativo", "Tipo_de_Ato_Normativo")
                         .WithMany()
-                        .HasForeignKey("Tipo_de_Ato_Normativo_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Tipo_de_Ato_Normativo_Id");
                 });
 
             modelBuilder.Entity("RhNetAPI.Entities.Shared.Entidade", b =>

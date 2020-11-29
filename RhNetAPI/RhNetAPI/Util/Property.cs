@@ -96,8 +96,41 @@ namespace RhNetAPI.Util
                             property.Type_Description = "decimal";
                             break;
                         case TypeCode.Object:
-                           
-                            property.Type_Description = _properties.ElementAt(i).PropertyType.ToString();
+
+                            List<Type> int_types = new List<Type>();
+                            int_types.Add(typeof(Nullable<Int16>));
+                            int_types.Add(typeof(Nullable<Int32>));
+                            int_types.Add(typeof(Nullable<Int64>));
+                            int_types.Add(typeof(Nullable<UInt16>));
+                            int_types.Add(typeof(Nullable<UInt32>));
+                            int_types.Add(typeof(Nullable<UInt64>));
+
+                            List<Type> decimal_types = new List<Type>();
+                            decimal_types.Add(typeof(Nullable<Decimal>));
+                            decimal_types.Add(typeof(Nullable<Double>));
+                            decimal_types.Add(typeof(Nullable<Single>));
+
+                            if (int_types.Contains(_properties.ElementAt(i).PropertyType))
+                            {
+                                property.Type_Description = "int";
+                            }
+
+                            if (decimal_types.Contains(_properties.ElementAt(i).PropertyType))
+                            {
+                                property.Type_Description = "decimal";
+                            }
+
+                            if (_properties.ElementAt(i).PropertyType == typeof( Nullable<DateTime>))
+                            {
+                                property.Type_Description = "datetime";
+                            }
+                            
+
+                            if(property.Type_Description.Length == 0)
+                            {
+                                property.Type_Description = _properties.ElementAt(i).PropertyType.ToString();
+                            }
+                            
                             break;
 
                     }

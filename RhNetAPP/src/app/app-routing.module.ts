@@ -14,7 +14,8 @@ import { AddUserComponent } from './components/views/adm/users/add-user/add-user
 import { SelectClientComponent } from './components/views/adm/clients/select-client/select-client.component';
 import { MunicipiosComponent } from './components/views/shared/municipios/municipios.component';
 import { EntidadesComponent } from './components/views/shared/entidades/entidades.component';
-
+import { TiposDeAtoNormativoComponent } from './components/views/shared/tipos-de-ato-normativo/tipos-de-ato-normativo.component';
+import { AtosNormativosComponent } from './components/views/shared/atos-normativos/atos-normativos.component';
 const routes: Routes = [
   {
     path: '',
@@ -70,6 +71,14 @@ const routes: Routes = [
     {
         path: "entidades",
         component: EntidadesComponent
+    },
+    {
+        path: "tipos_de_ato_normativo",
+        component: TiposDeAtoNormativoComponent
+    },
+    {
+        path: "atos_normativos",
+        component: AtosNormativosComponent
     },
     {
         path: "**",
