@@ -1,0 +1,23 @@
+table {
+    min-width: 100%;
+}
+
+.table-container {
+    width: 100%;
+    overflow: auto;
+    max-height: calc(100vh - 250px);
+}
+
+.mat-cell {
+    padding-right: 20px;
+    padding-bottom: 5px;
+}
+
+.mat-header-cell {
+    padding-right: 20px;
+    padding-top: 10px;
+}
+
+.mat-form-field {
+    width: 100%;
+}

@@ -1,0 +1,11 @@
+<mat-toolbar class="mat-elevation-z6 header">
+
+    <mat-label class="title">
+        {{title}}
+    </mat-label>
+    <span class="divisor"></span>
+    <a mat-icon-button (click)="addRemoveFavorite()"
+       [disabled]="variable.IsEnabled === false">
+        <mat-icon class="notfavorite" [ngClass]="{'favorite' : variable.IsFavorite === true}">star</mat-icon>
+    </a>
+</mat-toolbar>

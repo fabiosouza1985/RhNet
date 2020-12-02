@@ -1,15 +1,7 @@
-<mat-toolbar class="mat-elevation-z6 header">
-
-    <mat-label class="title">
-        {{title}}
-    </mat-label>
-    <span class="divisor"></span>
-    <a mat-icon-button (click)="addRemoveFavorite()">
-        <mat-icon class="notfavorite" [ngClass]="{'favorite' : isFavorite === true}">star</mat-icon>
-    </a>
-</mat-toolbar>
+<app-header-page [title]="title"></app-header-page>
 
 <div class="table-container mat-elevation-z6">
+      
     <table mat-table [dataSource]="ds" matSort>
 
         <ng-container [matColumnDef]="property.name" *ngFor="let property of properties">
@@ -34,7 +26,6 @@
 
             </td>
         </ng-container>
-
 
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>

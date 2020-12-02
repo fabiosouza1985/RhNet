@@ -56,6 +56,8 @@ import { MunicipiosComponent } from './components/views/shared/municipios/munici
 import { EntidadesComponent } from './components/views/shared/entidades/entidades.component';
 import { TiposDeAtoNormativoComponent } from './components/views/shared/tipos-de-ato-normativo/tipos-de-ato-normativo.component';
 import { AtosNormativosComponent } from './components/views/shared/atos-normativos/atos-normativos.component';
+import { HeaderPageComponent } from './components/template/header-page/header-page.component';
+import { EditableTableComponent } from './components/template/editable-table/editable-table.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +80,9 @@ import { AtosNormativosComponent } from './components/views/shared/atos-normativ
     MunicipiosComponent,
     EntidadesComponent,
     TiposDeAtoNormativoComponent,
-    AtosNormativosComponent
+    AtosNormativosComponent,
+    HeaderPageComponent,
+    EditableTableComponent
   ],
   imports: [
     BrowserModule,

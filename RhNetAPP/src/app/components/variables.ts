@@ -26,7 +26,7 @@ export class Variables {
     public QuickAccess: Menu[] = [];
     public Favorites: Favorite[] = [];
     public SelectedClient: Client = null;
-
+    public IsFavorite: Boolean = false;
     constructor(private service: UserService,
         private menuService: MenuService,
         private clientService: ClientService,
@@ -240,6 +240,7 @@ export class Variables {
 
     public addRemoveFavorite(add: boolean, path: string): void{
         this.IsLoading = true;
+        this.IsEnabled = false;
         if (add) {
             this.favoriteService.addFavorite(path, this.CurrentProfile).subscribe(results => {
 
@@ -248,13 +249,15 @@ export class Variables {
                 });
                 this.Favorites.push(results);
                 this.IsLoading = false;
-               
+                this.IsEnabled = true;
+                this.IsFavorite= true;
             },
                 (err) => {
                     console.log(err);
                     this.IsLoading = false;
-                   
-                })
+                    this.IsEnabled = true;
+                }   
+            )
             
         } else {
             this.favoriteService.removeFavorite(path, this.CurrentProfile).subscribe(results => {
@@ -266,12 +269,11 @@ export class Variables {
                     this.Favorites.splice(index, 1);
                 }
                 this.IsLoading = false;
-                
+                this.IsFavorite = false;
             },
                 (err) => {
                     console.log(err);
                     this.IsLoading = false;
-                   
                 })
            
         }

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Variables } from 'src/app/components/variables';
-import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,7 +7,6 @@ import { Property } from 'src/app/components/models/shared/property.model';
 import { Ato_Normativo } from 'src/app/components/models/shared/ato_normativo.model';
 import { Tipo_de_Ato_Normativo } from 'src/app/components/models/shared/tipo_de_ato_normativo.model';
 import { SharedService } from 'src/app/components/services/shared/shared.service';
-import { FavoriteService } from 'src/app/components/services/adm/favorite.service';
 
 
 @Component({
@@ -21,7 +19,7 @@ export class AtosNormativosComponent implements OnInit {
 
     title: string = "Atos Normativos";
     table: string = "ato_normativo";
-    isFavorite: boolean = false;
+   
     properties: Property[] = [];
     displayedColumns: string[] = [];
     ds = new MatTableDataSource();
@@ -33,25 +31,13 @@ export class AtosNormativosComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
 
     filterColumns = [];
-    constructor(private variable: Variables, private router: Router, private service: SharedService, private favoriteService: FavoriteService) {
+    constructor(private variable: Variables, private service: SharedService) {
        
     }
 
    
     ngOnInit(): void {
-        
-        var currentProfile = '';
-        if (this.variable.CurrentProfile.length > 0) {
-            currentProfile = this.variable.CurrentProfile
-        } else {
-            currentProfile = localStorage.getItem('currentProfile');
-        }
-        this.favoriteService.isFavorite(this.router.url, currentProfile).subscribe(results => {
-            this.isFavorite = results;
-        },
-            (err) => {
-                console.log(err)
-            })
+              
 
         this.service.getProperties(this.table).subscribe(results => {
             this.properties = results;
@@ -193,11 +179,6 @@ export class AtosNormativosComponent implements OnInit {
 
     }
 
-    addRemoveFavorite(): void {
-        this.variable.addRemoveFavorite(!this.isFavorite, this.router.url);
-        this.isFavorite = !this.isFavorite;
-
-    }
 
     getMaxLength(propertyName: string): number {
         var maxLength = 0;

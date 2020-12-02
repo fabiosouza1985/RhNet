@@ -1,13 +1,5 @@
-<mat-toolbar class="mat-elevation-z6 header">
+<app-header-page [title]="title"></app-header-page>
 
-    <mat-label class="title">
-        {{title}}
-    </mat-label>
-    <span class="divisor"></span>
-    <a mat-icon-button (click)="addRemoveFavorite()">
-        <mat-icon class="notfavorite" [ngClass]="{'favorite' : isFavorite === true}">star</mat-icon>
-    </a>
-</mat-toolbar>
 
 <div class="table-container mat-elevation-z6">
     <table mat-table [dataSource]="ds" matSort>
@@ -23,9 +15,9 @@
 
                 <mat-form-field *ngIf="property.autoGenerateFilter === true && property.type_Description === 'datetime'" appearance="standard">
 
-                    <input matInput type="date" 
+                    <input matInput type="date"
                            (change)="applyFilterDate($event, property.name)">
-                    
+
 
                 </mat-form-field>
 
@@ -85,7 +77,6 @@
                 </mat-form-field>
             </td>
         </ng-container>
-
 
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
