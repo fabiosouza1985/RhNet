@@ -2,7 +2,6 @@
 using RhNetAPI.Contexts;
 using RhNetAPI.Entities.Shared;
 using RhNetAPI.Models.Shared;
-using RhNetAPI.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;

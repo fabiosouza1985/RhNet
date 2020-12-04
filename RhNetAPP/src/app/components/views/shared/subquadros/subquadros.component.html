@@ -1,0 +1,10 @@
+<app-header-page [title]="title"></app-header-page>
+
+
+
+<app-editable-table *ngIf="subquadros.length> 0" [properties]="properties"
+                    [displayedColumns]="displayedColumns"
+                    [table]="table"
+                    [objectList]="subquadros">
+
+</app-editable-table>

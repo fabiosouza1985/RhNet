@@ -7,6 +7,7 @@ export interface Property {
     autoGenerateFilter: boolean,
     minimum: number,
     maximum: number,
-    readOnly: boolean
+    readOnly: boolean,
+    type_Description: string
 
 }

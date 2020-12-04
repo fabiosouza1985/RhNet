@@ -1,36 +1,36 @@
-﻿import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Property } from 'src/app/components/models/shared/property.model';
-import { Municipio } from 'src/app/components/models/shared/municipio.model';
+import { Quadro } from 'src/app/components/models/shared/quadro.model';
 import { SharedService } from 'src/app/components/services/shared/shared.service';
 import { Variables } from 'src/app/components/variables';
 
 @Component({
-  selector: 'app-municipios',
-  templateUrl: './municipios.component.html',
-    styleUrls: ['./municipios.component.css'],
+  selector: 'app-quadros',
+  templateUrl: './quadros.component.html',
+    styleUrls: ['./quadros.component.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class MunicipiosComponent implements OnInit {
+export class QuadrosComponent implements OnInit {
 
-    title: string = "Municípios";
-    table: string = "municipio";
-  
+    title: string = "Quadros";
+    table: string = "quadro";
+
     properties: Property[] = [];
     displayedColumns: string[] = [];
-    
-  
 
-    municipios: Municipio[] = [];
 
- 
+
+    quadros: Quadro[] = [];
+
+
     constructor(private service: SharedService, public variable: Variables) {
-       
+
     }
 
     ngOnInit(): void {
-      
+
         this.variable.IsLoading = true;
-        
+
         this.service.getProperties(this.table).subscribe(results => {
             this.properties = results;
             for (var i = 0; i < this.properties.length; i++) {
@@ -42,14 +42,14 @@ export class MunicipiosComponent implements OnInit {
             this.displayedColumns.push("actions");
 
             this.service.get(this.table).subscribe(results => {
-                this.municipios = results;
+                this.quadros = results;
 
 
-                let newEntity = {} as Municipio;
+                let newEntity = {} as Quadro;
                 newEntity.id = 0;
-                newEntity.codigo_Audesp = '';
+                newEntity.sigla = '';
                 newEntity.descricao = '';
-                this.municipios.splice(0, 0, newEntity);
+                this.quadros.splice(0, 0, newEntity);
 
                 this.variable.IsLoading = false;
 
@@ -59,12 +59,8 @@ export class MunicipiosComponent implements OnInit {
                     this.variable.IsLoading = false;
                 })
 
-        })        
-     
+        })
+
     }
-
- 
-
-    
 
 }

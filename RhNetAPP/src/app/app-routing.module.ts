@@ -16,6 +16,8 @@ import { MunicipiosComponent } from './components/views/shared/municipios/munici
 import { EntidadesComponent } from './components/views/shared/entidades/entidades.component';
 import { TiposDeAtoNormativoComponent } from './components/views/shared/tipos-de-ato-normativo/tipos-de-ato-normativo.component';
 import { AtosNormativosComponent } from './components/views/shared/atos-normativos/atos-normativos.component';
+import { QuadrosComponent } from './components/views/shared/quadros/quadros.component';
+import { SubquadrosComponent } from './components/views/shared/subquadros/subquadros.component';
 const routes: Routes = [
   {
     path: '',
@@ -79,6 +81,14 @@ const routes: Routes = [
     {
         path: "atos_normativos",
         component: AtosNormativosComponent
+    },
+    {
+        path: "quadros",
+        component: QuadrosComponent
+    },
+    {
+        path: "subquadros",
+        component: SubquadrosComponent
     },
     {
         path: "**",

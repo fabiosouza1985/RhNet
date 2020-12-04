@@ -104,13 +104,26 @@ namespace RhNetAPI.Repositories.Adm
 
         public async Task<List<Claim>> GetClaimsAsync(UserManager<ApplicationUser> userManager, RhNetContext rhNetContext, string username, int clientId)
         {
-            ApplicationUser user = await userManager.FindByNameAsync(username);
-            var userClaims = await (from x in rhNetContext.UserClaims
-                                   where x.ClientId == clientId && x.UserId == user.Id
-                                   select new Claim(x.ClaimType, x.ClaimValue)
-                                 ).ToListAsync();
+            if(username == "master")
+            {
+                ApplicationUser user = await userManager.FindByNameAsync(username);
+                var userClaims = await (from x in rhNetContext.Permissions                                        
+                                        select new Claim("permission", x.Description)
+                                     ).ToListAsync();
 
-            return userClaims;
+                return userClaims;
+            }
+            else
+            {
+                ApplicationUser user = await userManager.FindByNameAsync(username);
+                var userClaims = await (from x in rhNetContext.UserClaims
+                                        where x.ClientId == clientId && x.UserId == user.Id
+                                        select new Claim(x.ClaimType, x.ClaimValue)
+                                     ).ToListAsync();
+
+                return userClaims;
+            }
+            
         }
 
         public async Task<List<RoleModel>> GetAllRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, string username)

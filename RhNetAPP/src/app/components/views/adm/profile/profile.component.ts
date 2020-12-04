@@ -23,6 +23,7 @@ export class ProfileComponent implements OnInit {
       localStorage.setItem("currentProfile", perfil);
       this.variable.GetMenus();
       this.variable.GetQuickAccess();
+      this.variable.GetFavorites();
     this.router.navigate(['/home']);
   }
 }

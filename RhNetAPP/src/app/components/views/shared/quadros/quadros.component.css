@@ -1,0 +1,8 @@
+.mat-column-descricao {
+    width: calc(100vh - 150px);
+}
+
+.mat-column-sigla {
+    width: 100px;
+    max-width: 100px;
+}

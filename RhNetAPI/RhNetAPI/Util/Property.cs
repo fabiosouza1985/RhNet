@@ -149,7 +149,7 @@ namespace RhNetAPI.Util
                 }
             }
 
-            return properties;
+            return properties.OrderBy(e => e.Order).ToList();
         }
     }
 }

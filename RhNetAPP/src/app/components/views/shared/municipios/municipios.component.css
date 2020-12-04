@@ -1,47 +1,13 @@
-
-
-.header {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 15px;
+.mat-column-codigo_Audesp {
+    width: 50px;
+    max-width: 50px;
 }
 
-.title {
-    font-size: 16pt;
-    font-weight: 500;
+.mat-column-codigo_Audesp input {
+    text-align: center;
 }
 
-
-table {
-    min-width: 100%;
-}
-
-.table-container {
-    width: 100%;
-    overflow: auto;
-    max-height: calc(100vh - 250px);
-}
-
-.mat-cell {
-    
-    padding-right: 20px;
-    padding-bottom: 5px;
-}
-
-.mat-header-cell {
-    padding-right: 20px;
-    padding-top: 10px;
-}
-
-.mat-form-field {
-    width: 100%;
-}
 
 .mat-column-descricao {
-    width: 90%
+    width: calc(100vh - 120px);
 }
-
-.mat-column-actions {
-    width: 10%
-}
-

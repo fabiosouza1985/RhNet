@@ -21,3 +21,8 @@ table {
 .mat-form-field {
     width: 100%;
 }
+
+.mat-column-actions {
+    width: 50px;
+    max-width: 50px;
+}

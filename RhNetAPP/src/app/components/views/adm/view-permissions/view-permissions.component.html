@@ -1,67 +1,10 @@
-﻿<mat-toolbar class="mat-elevation-z6 header">
-
-    <mat-label class="title">
-        {{title}}
-    </mat-label>
-    <span class="divisor"></span>
-    <a mat-icon-button (click)="addRemoveFavorite()">
-        <mat-icon class="notfavorite" [ngClass]="{'favorite' : isFavorite === true}">star</mat-icon>
-    </a>
-</mat-toolbar>
-
-<div class="table-container mat-elevation-z6">
-    <table mat-table [dataSource]="ds" matSort>
-
-        <ng-container matColumnDef="table">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tabela </th>
-            <td mat-cell *matCellDef="let element">
-                <mat-form-field>
-                    <input matInput type="text"
-                           [(ngModel)]="element.table">
-                </mat-form-field>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
-            <td mat-cell *matCellDef="let element">
-                <mat-form-field>
-                    <input matInput type="text"
-                           [(ngModel)]="element.description">
-                </mat-form-field>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element">
-                <button (click)="add(element)" mat-icon-button *ngIf="element.id === 0">
-                    <mat-icon>add</mat-icon>
-                </button>
-                <button (click)="update(element)" mat-icon-button *ngIf="element.id !== 0">
-                    <mat-icon>save</mat-icon>
-                </button>
-                <button (click)="remove(element)" mat-icon-button *ngIf="element.id !== 0">
-                    <mat-icon>remove</mat-icon>
-                </button>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="paginator" [sticky]="true">
-            <td mat-footer-cell *matFooterCellDef colspan="3">
-                <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        <tr mat-footer-row *matFooterRowDef="['paginator']; sticky: true" ></tr>
-    </table>
-   
-</div>
+﻿<app-header-page [title]="title"></app-header-page>
 
 
 
+<app-editable-table *ngIf="permissions.length> 0" [properties]="properties"
+                    [displayedColumns]="displayedColumns"
+                    [table]="table"
+                    [objectList]="permissions">
 
-
-
+</app-editable-table>

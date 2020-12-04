@@ -37,7 +37,7 @@ export class Variables {
     {
 
         if(localStorage.getItem("username") !== null && localStorage.getItem("username") !== undefined){
-            this.IsLoading = true;
+            
             this.Username = localStorage.getItem("username");
            
             this.clientService.getClients().subscribe(results => {
@@ -74,12 +74,12 @@ export class Variables {
                         this.GetMenus();
                         this.GetQuickAccess();
                         this.GetFavorites();
-                        this.IsLoading = false;
+                     
 
 
                     },
                         (err) => {
-                            this.IsLoading = false;
+                          
                             console.log(err);
                         });
                 }
@@ -87,7 +87,7 @@ export class Variables {
 
             },
                 (err) => {
-                    this.IsLoading = false;
+                  
                     console.log(err);
                 });
 

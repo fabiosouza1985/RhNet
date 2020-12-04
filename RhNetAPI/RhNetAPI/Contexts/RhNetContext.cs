@@ -37,6 +37,10 @@ namespace RhNetAPI.Contexts
         public DbSet<Tipo_de_Ato_Normativo> Tipos_de_Ato_Normativo { get; set; }
 
         public DbSet<Ato_Normativo> Atos_Normativos { get; set; }
+
+        public DbSet<Quadro> Quadros { get; set; }
+
+        public DbSet<Subquadro> Subquadros { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<EntidadeSubordinacao>()

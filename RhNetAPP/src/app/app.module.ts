@@ -58,6 +58,8 @@ import { TiposDeAtoNormativoComponent } from './components/views/shared/tipos-de
 import { AtosNormativosComponent } from './components/views/shared/atos-normativos/atos-normativos.component';
 import { HeaderPageComponent } from './components/template/header-page/header-page.component';
 import { EditableTableComponent } from './components/template/editable-table/editable-table.component';
+import { QuadrosComponent } from './components/views/shared/quadros/quadros.component';
+import { SubquadrosComponent } from './components/views/shared/subquadros/subquadros.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,9 @@ import { EditableTableComponent } from './components/template/editable-table/edi
     TiposDeAtoNormativoComponent,
     AtosNormativosComponent,
     HeaderPageComponent,
-    EditableTableComponent
+    EditableTableComponent,
+    QuadrosComponent,
+    SubquadrosComponent
   ],
   imports: [
     BrowserModule,

@@ -35,7 +35,7 @@
 
             <a mat-raised-button (click)="favorite.toggle()" class="favoriteButton" *ngIf="variable.Favorites.length > 0">Favoritos</a>
 
-            <mat-spinner class="loading" diameter="50" *ngIf="variable.IsLoading == true"></mat-spinner>
+            <mat-spinner class="loading" diameter="50" *ngIf="variable.IsLoading && variable.IsLoading == true"></mat-spinner>
         </div>
   
 
