@@ -32,17 +32,19 @@ export class LoginComponent implements OnInit {
         this.variable.IsLoading = true;
         this.variable.IsEnabled = false;
         this.service.login(this.user_login.userName, this.user_login.password, this.selectedClient).subscribe(results => {     
-      
-            localStorage.setItem('token', results.token);
+
+            this.variable.Username = results.username;
+            this.variable.Profiles = JSON.parse(results.profiles);
+            this.variable.CurrentProfile = this.variable.Profiles[0].name;
+            this.variable.SelectedClient = JSON.parse(results.currentClient);
+            
+            localStorage.setItem('token', results.access_token);
             localStorage.setItem('username', results.username);
             localStorage.setItem('email', results.email);
-            localStorage.setItem('currentProfile', results.profiles[0].name);
-            localStorage.setItem("currentClient", results.currentClient.cnpj);
-            this.variable.Username = results.username;
-            this.variable.Profiles = results.profiles;
-            this.variable.CurrentProfile = results.profiles[0].name;
-            this.variable.SelectedClient = results.currentClient;
-
+            localStorage.setItem('currentProfile', this.variable.Profiles[0].name);
+            localStorage.setItem("currentClient", this.variable.SelectedClient.cnpj);
+           
+         
             this.variable.setTitle();
 
             this.router.navigate(['/home']);

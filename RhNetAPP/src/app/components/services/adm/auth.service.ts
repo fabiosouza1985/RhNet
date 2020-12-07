@@ -29,9 +29,9 @@ export class AuthService {
     return !helper.isTokenExpired(token);
   }
 
-  public login( usuario: string,  senha: string, selectedClient: Client): Observable<User>{
- 
-      return this.http.post<any>(this.constants.Url + 'account/login', { Username: usuario, Password: senha, SelectedClient: selectedClient});
+  public login( usuario: string,  senha: string, selectedClient: Client): Observable<any>{
+      return this.http.post<any>(this.constants.Url + 'account/login', { Username: usuario, Password: senha, SelectedClient: selectedClient });
+      
   }
 
   public login1( usuario: string,  senha: string): Observable<any>{
