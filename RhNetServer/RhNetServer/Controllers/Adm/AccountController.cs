@@ -16,7 +16,6 @@ using System.Web.Http.Cors;
 namespace RhNetServer.Controllers.Adm
 {
     [RoutePrefix("api/account")]
-    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class AccountController : ApiController
     {
         
@@ -71,58 +70,58 @@ namespace RhNetServer.Controllers.Adm
                     }
                 }
 
-                //if (clients.Count() > 1 && model.SelectedClient == null)
-                //{       
-                //    return Content(HttpStatusCode.Conflict, clients);
-                //}
+                if (clients.Count() > 1 && model.SelectedClient == null)
+                {
+                    return Content(HttpStatusCode.Conflict, clients);
+                }
 
-                //ClientModel selectedClient = null;
+                ClientModel selectedClient = null;
 
 
-                //if (clients.Count() == 1)
-                //{
-                //    selectedClient = clients[0];
-                //}
-                //else
-                //{
-                //    for (var i = 0; i < clients.Count; i++)
-                //    {
-                //        if (model.SelectedClient.Cnpj == clients[i].Cnpj)
-                //        {
-                //            selectedClient = clients[i];
-                //            break;
-                //        }
-                //    }
-                //}
+                if (clients.Count() == 1)
+                {
+                    selectedClient = clients[0];
+                }
+                else
+                {
+                    for (var i = 0; i < clients.Count; i++)
+                    {
+                        if (model.SelectedClient.Cnpj == clients[i].Cnpj)
+                        {
+                            selectedClient = clients[i];
+                            break;
+                        }
+                    }
+                }
 
-                //if (selectedClient == null)
-                //{
-                //    return BadRequest("Cliente não associado a um cliente ou cliente selecionado incorreto");
-                //}
+                if (selectedClient == null)
+                {
+                    return BadRequest("Cliente não associado a um cliente ou cliente selecionado incorreto");
+                }
 
-                //if (selectedClient.Situation == Enums.ClientSituation.Bloqueado && user.UserName != "master")
-                //{
-                //    return BadRequest("Cliente bloqueado. Entre em contato com um administrador do sistema");
-                //}
+                if (selectedClient.Situation == Enums.ClientSituation.Bloqueado && user.UserName != "master")
+                {
+                    return BadRequest("Cliente bloqueado. Entre em contato com um administrador do sistema");
+                }
 
-                //if (selectedClient.Situation == Enums.ClientSituation.Inativo && user.UserName != "master")
-                //{
-                //    return BadRequest("Cliente inativo. Entre em contato com um administrador do sistema");
-                //}
+                if (selectedClient.Situation == Enums.ClientSituation.Inativo && user.UserName != "master")
+                {
+                    return BadRequest("Cliente inativo. Entre em contato com um administrador do sistema");
+                }
 
 
                 dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(resultContent);
 
-                
 
-                //result.currentClient = Newtonsoft.Json.JsonConvert.SerializeObject(new 
-                //{
-                //    id = selectedClient.Id, 
-                //    cnpj = selectedClient.Cnpj ,
-                //    description = selectedClient.Description,
-                //    situation = selectedClient.Situation
-                //});
-               
+
+                result.currentClient = Newtonsoft.Json.JsonConvert.SerializeObject(new
+                {
+                    id = selectedClient.Id,
+                    cnpj = selectedClient.Cnpj,
+                    description = selectedClient.Description,
+                    situation = selectedClient.Situation
+                });
+
                 return Ok(result);
             }
         }

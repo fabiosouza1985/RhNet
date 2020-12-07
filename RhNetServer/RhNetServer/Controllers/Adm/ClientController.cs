@@ -14,9 +14,8 @@ using System.Web.Http.Cors;
 namespace RhNetServer.Controllers.Adm
 {
 
-   
+    [Authorize]
     [RoutePrefix("api/client")]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ClientController: ApiController
     {
 
@@ -30,7 +29,7 @@ namespace RhNetServer.Controllers.Adm
             return await clientRepository.GetAllClients(rhNetContext);
         }
 
-      [Authorize]
+      
         [HttpGet]
         [Route("getClients")]
         public async Task<List<ClientModel>> GetClients()

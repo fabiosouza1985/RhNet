@@ -15,11 +15,11 @@ namespace RhNetServer.App_Start
     {
         public static void Register(HttpConfiguration config)
         {
-            var cors = new EnableCorsAttribute("*", "*", "*");
+            var cors = new EnableCorsAttribute("http://localhost:4200", "*", "*");
             config.EnableCors(cors);
             var constraints = new { httpMethod = new HttpMethodConstraint(HttpMethod.Options) };
-            //config.Routes.IgnoreRoute("OPTIONS", "*pathInfo", constraints);
-            
+            config.Routes.IgnoreRoute("OPTIONS", "*pathInfo", constraints);
+
             config.MapHttpAttributeRoutes();
             
             config.Routes.MapHttpRoute(

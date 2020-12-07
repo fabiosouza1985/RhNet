@@ -23,18 +23,14 @@ namespace RhNetServer
         public void Configuration(IAppBuilder app)
         {
 
-            
-
             HttpConfiguration config = new HttpConfiguration();
-            WebApiConfig.Register(config);
-
-
             ConfigureOAuth(app);
 
-            app.UseCors(CorsOptions.AllowAll);
+            WebApiConfig.Register(config);
+            //app.UseCors(CorsOptions.AllowAll);
             app.UseWebApi(config);
 
-
+           
 
         }
 
@@ -43,17 +39,20 @@ namespace RhNetServer
             app.CreatePerOwinContext(RhNetContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
+
+            var issuer = "http://localhost";
+
             OAuthAuthorizationServerOptions authServerOptions = new OAuthAuthorizationServerOptions()
             {               
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/api/security/token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 Provider = new CustomOAuthProvider(),
-                AccessTokenFormat = new CustomJwtFormat("http://localhost:4200")
+                AccessTokenFormat = new CustomJwtFormat(issuer)
             };
-            app.UseOAuthAuthorizationServer(authServerOptions);
+            app.UseOAuthBearerTokens(authServerOptions);
 
-            var issuer = "http://localhost:4200";
+           
             var audience = WebApplicationAccess.WebApplicationAccessList.Select(x => x.Value.ClientId).AsEnumerable();
 
             var secretsSymmetricKey = (from x in WebApplicationAccess.WebApplicationAccessList
