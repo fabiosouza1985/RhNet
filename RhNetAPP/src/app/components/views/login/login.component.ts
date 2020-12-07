@@ -66,7 +66,16 @@ export class LoginComponent implements OnInit {
             } else if (err.status === 0) {
                 alert('Não foi possível acessar o servidor');
             } else {
-                alert(err.error);
+                var erro = '';
+                if (err.error.modelState !== null) {
+                    for (var i = 0; i < err.error.modelState.error_description.length; i++) {
+                        erro += err.error.modelState.error_description[i] + '\n '
+                    }
+                    alert(erro);
+                } else {
+                    alert(err.error);
+                }
+
             };
                
       

@@ -18,6 +18,7 @@ namespace RhNetServer.App_Start
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
+            
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser, ApplicationRole, string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>(context.Get<RhNetContext>()));
 
             manager.UserValidator = new UserValidator<ApplicationUser>(manager) 

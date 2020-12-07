@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using RhNetServer.Entities.Adm;
 using Microsoft.AspNet.Identity;
+using RhNetServer.App_Start;
 
 namespace RhNetServer.Repositories.Adm
 {
@@ -28,7 +29,7 @@ namespace RhNetServer.Repositories.Adm
 
         }
 
-        public async Task<List<ClientModel>> GetClients(RhNetContext context, UserManager<ApplicationUser> userManager, String username)
+        public async Task<List<ClientModel>> GetClients(RhNetContext context, ApplicationUserManager userManager, String username)
         {
             if (username == "master")
             {

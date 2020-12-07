@@ -29,8 +29,18 @@ export class AuthService {
     return !helper.isTokenExpired(token);
   }
 
-  public login( usuario: string,  senha: string, selectedClient: Client): Observable<any>{
-      return this.http.post<any>(this.constants.Url + 'account/login', { Username: usuario, Password: senha, SelectedClient: selectedClient });
+    public login(usuario: string, senha: string, selectedClient: Client): Observable<any>{
+        let headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        let grant_type = 'password';
+        let body = `grant_type=${grant_type}&username=${usuario}&password=${senha}&SelectedClient=${selectedClient}`;
+
+        let options = {
+            headers: headers
+        };
+      return this.http.post<any>(this.constants.Url + 'security/token', body,options);
+      //return this.http.post<any>(this.constants.Url + 'account/login', { Username: usuario, Password: senha, SelectedClient: selectedClient });
       
   }
 

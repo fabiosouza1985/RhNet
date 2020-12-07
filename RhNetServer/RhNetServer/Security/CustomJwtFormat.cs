@@ -27,6 +27,16 @@ namespace RhNetServer.Security
                 throw new ArgumentNullException("data");
 
 
+            string audience = data.Properties.Dictionary["audience"];
+            if (string.IsNullOrWhiteSpace(audience)) throw new InvalidOperationException("ClientId e AccessKey não foi encontrado");
+            var keys = audience.Split(':');
+            var client_id = keys.First();
+            var accessKey = keys.Last();
+            var applicationAccess = WebApplicationAccess.Find(client_id);
+
+            var keyByteArray = TextEncodings.Base64Url.Decode(applicationAccess.SecretKey);
+           
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Base64Secret);
             
@@ -35,10 +45,10 @@ namespace RhNetServer.Security
             {
                 Subject = data.Identity,
                 Expires = data.Properties.ExpiresUtc.Value.UtcDateTime,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyByteArray), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = _issuer,
                 IssuedAt = data.Properties.IssuedUtc.Value.UtcDateTime,
-                TokenType = SecurityAlgorithms.HmacSha256Signature
+                TokenType = SecurityAlgorithms.HmacSha256Signature, Audience = audience,
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
