@@ -7,12 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RhNetServer.App_Start;
 
 namespace RhNetServer.Repositories.Adm
 {
     public class FavoriteRepository
     {
-        public async Task<List<FavoriteModel>> GetFavorites(UserManager<ApplicationUser> userManager,RhNetContext context, string userName, string profile, int clientId)
+        public async Task<List<FavoriteModel>> GetFavorites(ApplicationUserManager userManager,RhNetContext context, string userName, string profile, int clientId)
         {
             UserRepository userRepository = new UserRepository();
 

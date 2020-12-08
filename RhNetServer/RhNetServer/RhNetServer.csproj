@@ -153,6 +153,9 @@
     <Compile Include="Contexts\RhNetContext.cs" />
     <Compile Include="Controllers\Adm\AccountController.cs" />
     <Compile Include="Controllers\Adm\ClientController.cs" />
+    <Compile Include="Controllers\Adm\FavoriteController.cs" />
+    <Compile Include="Controllers\Adm\MenuController.cs" />
+    <Compile Include="Controllers\Adm\UserController.cs" />
     <Compile Include="Entities\Adm\ApplicationMenu.cs" />
     <Compile Include="Entities\Adm\ApplicationRole.cs" />
     <Compile Include="Entities\Adm\ApplicationUser.cs" />

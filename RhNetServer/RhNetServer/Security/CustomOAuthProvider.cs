@@ -61,6 +61,7 @@ namespace RhNetServer.Security
                 var roleManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationRoleManager>();
 
                 //context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "http://localhost:4200" });
+                
 
                 var user = await userManager.FindAsync(context.UserName, context.Password);
 

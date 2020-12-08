@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using RhNetServer.App_Start;
 
 namespace RhNetServer.Repositories.Adm
 {
@@ -66,7 +67,7 @@ namespace RhNetServer.Repositories.Adm
 
             return clients;
         }
-        public async Task<List<RoleModel>> GetRolesAsync(UserManager<ApplicationUser> userManager, RhNetContext rhNetContext, string username, int clientId)
+        public async Task<List<RoleModel>> GetRolesAsync(ApplicationUserManager userManager, RhNetContext rhNetContext, string username, int clientId)
         {
             if (username == "master")
             {
@@ -102,31 +103,47 @@ namespace RhNetServer.Repositories.Adm
             
         }
 
-        public async Task<List<Claim>> GetClaimsAsync(UserManager<ApplicationUser> userManager, RhNetContext rhNetContext, string username, int clientId)
+        public async Task<List<Claim>> GetClaimsAsync(ApplicationUserManager userManager, RhNetContext rhNetContext, string username, int clientId)
         {
             if(username == "master")
             {
                 ApplicationUser user = await userManager.FindByNameAsync(username);
-                var userClaims = await (from x in rhNetContext.Permissions                                        
-                                        select new Claim("permission", x.Description)
+
+                List<Claim> userClaims = new List<Claim>();
+
+
+                var _claims = await (from x in rhNetContext.Permissions                                        
+                                        select  x.Description
                                      ).ToListAsync();
 
+                for(var i = 0; i < _claims.Count; i++)
+                {
+                    userClaims.Add(new Claim("permission", _claims.ElementAt(i)));
+                }
                 return userClaims;
             }
             else
             {
                 ApplicationUser user = await userManager.FindByNameAsync(username);
-                var userClaims = await (from x in rhNetContext.UserClaims
+
+                List<Claim> userClaims = new List<Claim>();
+
+                var _claims = await (from x in rhNetContext.UserClaims
                                         where x.ClientId == clientId && x.UserId == user.Id
-                                        select new Claim(x.ClaimType, x.ClaimValue)
+                                        select  x.ClaimValue
                                      ).ToListAsync();
+
+                for (var i = 0; i < _claims.Count; i++)
+                {
+                    userClaims.Add(new Claim("permission", _claims.ElementAt(i)));
+                }
 
                 return userClaims;
             }
             
         }
 
-        public async Task<List<RoleModel>> GetAllRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, string username)
+        public async Task<List<RoleModel>> GetAllRolesAsync(ApplicationUserManager userManager, ApplicationRoleManager roleManager, string username)
         {
            if(username == "master")
             {

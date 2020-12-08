@@ -16,7 +16,7 @@
             AutomaticMigrationsEnabled = false;
         }
 
-        protected async override void Seed(RhNetServer.Contexts.RhNetContext context)
+        protected override void Seed(RhNetServer.Contexts.RhNetContext context)
         {
             
             //  This method will be called after migrating to the latest version.

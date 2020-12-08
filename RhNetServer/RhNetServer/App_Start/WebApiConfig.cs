@@ -19,7 +19,7 @@ namespace RhNetServer.App_Start
             config.EnableCors(cors);
             var constraints = new { httpMethod = new HttpMethodConstraint(HttpMethod.Options) };
             config.Routes.IgnoreRoute("OPTIONS", "*pathInfo", constraints);
-
+            
             config.MapHttpAttributeRoutes();
             
             config.Routes.MapHttpRoute(

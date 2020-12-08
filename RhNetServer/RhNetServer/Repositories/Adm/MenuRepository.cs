@@ -7,6 +7,7 @@ using RhNetServer.Contexts;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity;
 using RhNetServer.Entities.Adm;
+using RhNetServer.App_Start;
 
 namespace RhNetServer.Repositories.Adm
 {
@@ -29,7 +30,7 @@ namespace RhNetServer.Repositories.Adm
             ;
 
         }
-        public async Task<List<MenuModel>> GetMenus(string username, string profile, RhNetContext context,  UserManager<ApplicationUser> userManager, int clientId)
+        public async Task<List<MenuModel>> GetMenus(string username, string profile, RhNetContext context,  ApplicationUserManager userManager, int clientId)
         {
             List<MenuModel> menus = new List<MenuModel>();
 
@@ -76,7 +77,7 @@ namespace RhNetServer.Repositories.Adm
 
         }
 
-        public async Task<List<MenuModel>> GetQuickAccess(string username, string profile, RhNetContext context, UserManager<ApplicationUser> userManager, int clientId)
+        public async Task<List<MenuModel>> GetQuickAccess(string username, string profile, RhNetContext context,ApplicationUserManager userManager, int clientId)
         {
             List<MenuModel> menus = new List<MenuModel>();
 
