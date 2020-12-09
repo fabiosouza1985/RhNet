@@ -33,13 +33,24 @@ export class SelectClientComponent implements OnInit {
 
         this.userService.setClient(client).subscribe(results => {
 
-            localStorage.setItem('token', results.token);            
-            localStorage.setItem('currentProfile', results.profiles[0].name);
-            localStorage.setItem("currentClient", results.currentClient.cnpj);
+            var client = JSON.parse(results.currentClient);
+            this.variable.Profiles = JSON.parse(results.profiles);
             
-            this.variable.Profiles = results.profiles;
-            this.variable.CurrentProfile = results.profiles[0].name;
-            this.variable.SelectedClient = results.currentClient;
+           
+            this.variable.CurrentProfile = this.variable.Profiles[0].name;
+            this.variable.SelectedClient = client;
+                        
+
+            localStorage.setItem('token', results.access_token);
+            
+            localStorage.setItem('currentProfile', this.variable.Profiles[0].name);
+            localStorage.setItem("currentClient", this.variable.SelectedClient.cnpj);
+
+
+
+
+
+
 
             this.variable.setTitle();
 

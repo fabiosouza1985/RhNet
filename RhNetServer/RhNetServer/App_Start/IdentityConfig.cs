@@ -4,10 +4,14 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using RhNetServer.Contexts;
 using RhNetServer.Entities.Adm;
+using RhNetServer.Models.Adm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
+using System.Data.Entity;
+using System.Security.Claims;
 
 namespace RhNetServer.App_Start
 {
@@ -38,6 +42,116 @@ namespace RhNetServer.App_Start
 
             return manager;
 
+        }
+
+        public  async Task<List<RoleModel>> GetRoleByClientAsync(string userName, string clientCnpj)
+        {
+            var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
+            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            if (userName == "master")
+            {
+                return await (from y in rhnetContext.Roles
+                              select new RoleModel()
+                              {
+                                  Id = y.Id,
+                                  Description = y.Description,
+                                  Level = y.Level,
+                                  Name = y.Name
+                              }).ToListAsync();
+            }
+            var user = await userManager.FindByNameAsync(userName);
+
+            Client client = await rhnetContext.Clients.Where(e => e.Cnpj == clientCnpj).FirstOrDefaultAsync();
+
+            if (client == null)
+            {
+                return null;
+            }
+            List<RoleModel> roleModels = await (from x in rhnetContext.UserRoles
+                                                from y in rhnetContext.Roles.Where(e => e.Id == x.RoleId)
+                                                where x.UserId == user.Id && x.ClientId == client.Id
+                                                select new RoleModel()
+                                                {
+                                                    Id = y.Id,
+                                                    Description = y.Description,
+                                                    Level = y.Level,
+                                                    Name = y.Name
+                                                }).ToListAsync();
+
+            return roleModels;
+
+        }
+
+        public async Task<List<Claim>> GetClaimsAsync( string username, string clientCnpj)
+        {
+            var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
+            if (username == "master")
+            {
+                ApplicationUser user = await FindByNameAsync(username);
+
+                List<Claim> claims = new List<Claim>();
+
+                var userClaims = await (from x in rhnetContext.Permissions
+                                        select  x.Description
+                                     ).ToListAsync();
+
+                for (var i = 0; i < userClaims.Count; i++)
+                {
+                    claims.Add(new Claim("permission", userClaims.ElementAt(i)));
+                }
+                return claims;
+            }
+            else
+            {
+                ApplicationUser user = await FindByNameAsync(username);
+
+                List<Claim> claims = new List<Claim>();
+
+                var userClaims = await (from x in rhnetContext.UserClaims
+                                        from c in rhnetContext.Clients.Where(e => e.Id == x.ClientId)
+                                        where c.Cnpj == clientCnpj && x.UserId == user.Id
+                                        select new { x.ClaimType, x.ClaimValue }
+                                     ).ToListAsync();
+
+
+                for (var i = 0; i < userClaims.Count; i++)
+                {
+                    claims.Add(new Claim(userClaims.ElementAt(i).ClaimType, userClaims.ElementAt(i).ClaimValue));
+                }
+                return claims;
+            }
+
+        }
+
+        public async Task<List<ClientModel>> GetClientsAsync( string username)
+        {
+            var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
+
+            if (username == "master")
+            {
+                return await (from y in rhnetContext.Clients
+                              select new ClientModel()
+                              {
+                                  Id = y.Id,
+                                  Cnpj = y.Cnpj,
+                                  Description = y.Description,
+                                  Situation = y.Situation
+                              }).ToListAsync();
+            }
+            var user = await FindByNameAsync(username);           
+            List<ClientModel> clients = await (from x in rhnetContext.UserClients
+                                               from y in rhnetContext.Clients.Where(e => e.Id == x.ClientId)
+                                               where x.UserId == user.Id
+                                               select new ClientModel()
+                                               {
+                                                   Id = y.Id,
+                                                   Cnpj = y.Cnpj,
+                                                   Description = y.Description,
+                                                   Situation = y.Situation
+                                               }).ToListAsync();
+
+            return clients;
         }
     }
 

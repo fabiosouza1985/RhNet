@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
             this.variable.SelectedClient = JSON.parse(results.currentClient);
             
             localStorage.setItem('token', results.access_token);
+            localStorage.setItem('refresh_token', results.refresh_token);
             localStorage.setItem('username', results.username);
             localStorage.setItem('email', results.email);
             localStorage.setItem('currentProfile', this.variable.Profiles[0].name);

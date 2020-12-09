@@ -38,7 +38,8 @@ export class UserService {
     }; 
 
     setClient(client): Observable<any> {
-        return this.http.post<any>(this.constants.Url + 'user/setClient', client);
+        var refresh_token = localStorage.getItem('refresh_token');
+        return this.http.post<any>(this.constants.Url + 'user/setClient', { clientModel: client, refresh_token: refresh_token });
     }; 
 
 }

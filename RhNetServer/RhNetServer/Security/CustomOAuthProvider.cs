@@ -6,6 +6,7 @@ using RhNetServer.App_Start;
 using RhNetServer.Contexts;
 using RhNetServer.Entities.Adm;
 using RhNetServer.Models.Adm;
+using RhNetServer.Repositories.Adm;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -59,10 +60,9 @@ namespace RhNetServer.Security
 
                 var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var roleManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationRoleManager>();
-
+                            
                 //context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "http://localhost:4200" });
-                
-
+                              
                 var user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)
@@ -96,15 +96,56 @@ namespace RhNetServer.Security
 
                 }
 
+                var clients = await userManager.GetClientsAsync(user.UserName);
+
+                if (clients.Count == 0)
+                {
+                    context.SetError("client_erro", "Usuário não associado a um cliente");
+                    return;
+                }
+
+                var data = await context.Request.ReadFormAsync();
+                string selectedClient;
+
+                if (data.Where(x => x.Key == "selectedClient").Count() == 0)
+                {
+                    if (clients.Count > 1)
+                    {
+                        context.SetError("client_select_error", "Cliente não selecionado");
+                        return;
+                    }
+
+                    if(clients.Count == 1)
+                    {
+                        selectedClient = clients.First().Cnpj;
+                    }
+                }
+
+                 selectedClient = data.Where(x => x.Key == "selectedClient").Select(x => x.Value).FirstOrDefault().FirstOrDefault();
+
+                if(clients.Where(e => e.Cnpj == selectedClient).Count() == 0)
+                {
+                    context.SetError("client_select_error", "Cliente selecionado inválido");
+                    return;
+                }
+
                 var identity = new ClaimsIdentity("JWT");
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
                 identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
 
-                var roles = await userManager.GetRolesAsync(user.Id);
 
-                for (var i = 0; i < roles.Count; i++)
+                var roles = (await userManager.GetRoleByClientAsync(user.UserName, selectedClient)).Select(e => new {name = e.Name, description  = e.Description});
+                var claims = await userManager.GetClaimsAsync(user.UserName, selectedClient);
+
+               
+                for (var i = 0; i < roles.Count(); i++)
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Role, roles.ElementAt(i)));
+                    identity.AddClaim(new Claim(ClaimTypes.Role, roles.ElementAt(i).name));
+                }
+
+                for (var i = 0; i < claims.Count(); i++)
+                {
+                    identity.AddClaim(new Claim(claims[i].Type, claims[i].Value));
                 }
 
                 var props = new AuthenticationProperties(new Dictionary<string, string>());
@@ -112,17 +153,10 @@ namespace RhNetServer.Security
                 props.Dictionary.Add("username", user.UserName);
                 props.Dictionary.Add("email", user.Email);
 
-                if (roles.Count > 0)
-                {
-                    var listRoleModel = roleManager.Roles.Where(e => roles.Contains(e.Name)).OrderBy(e => e.Level).Select(e => new
-                    {
-                        name = e.Name,
-                        description = e.Description,
-                        id = e.Id,
-                        level = e.Level
-                    }).ToList();
-
-                    props.Dictionary.Add("profiles", Newtonsoft.Json.JsonConvert.SerializeObject(listRoleModel));
+                if (roles.Count() > 0)
+                {             
+                    props.Dictionary.Add("profiles", Newtonsoft.Json.JsonConvert.SerializeObject(roles));
+                    
                 }
 
                 var ticket = new AuthenticationTicket(identity, props);

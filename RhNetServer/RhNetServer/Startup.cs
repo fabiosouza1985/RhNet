@@ -48,7 +48,8 @@ namespace RhNetServer
                 TokenEndpointPath = new PathString("/api/security/token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 Provider = new CustomOAuthProvider(),
-                AccessTokenFormat = new CustomJwtFormat(issuer)
+                AccessTokenFormat = new CustomJwtFormat(issuer),
+                RefreshTokenProvider = new RefreshTokenProvider()
             };
             app.UseOAuthBearerTokens(authServerOptions);
 

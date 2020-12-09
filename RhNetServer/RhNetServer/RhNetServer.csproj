@@ -186,6 +186,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adm\ApplicationUserModel.cs" />
+    <Compile Include="Models\Adm\ChangeClientModel.cs" />
     <Compile Include="Models\Adm\ClientModel.cs" />
     <Compile Include="Models\Adm\FavoriteModel.cs" />
     <Compile Include="Models\Adm\LoginModel.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Repositories\Adm\UserRepository.cs" />
     <Compile Include="Security\CustomJwtFormat.cs" />
     <Compile Include="Security\CustomOAuthProvider.cs" />
+    <Compile Include="Security\RefreshTokenProvider.cs" />
     <Compile Include="Security\WebApplicationAccess.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
