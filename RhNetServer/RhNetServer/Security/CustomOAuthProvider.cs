@@ -73,11 +73,18 @@ namespace RhNetServer.Security
                         {
                             UserName = "master",
                             Email = "master@email.com",
-                            Cpf = "11111111111"
+                            Cpf = "11111111111", Id= ""
                         };
 
 
-                        await userManager.CreateAsync(user, "Mm123456*");
+                    var result =    await userManager.CreateAsync(user, "Mm123456*");
+
+                        if (!result.Succeeded)
+                        {
+                            context.SetError("invalid_create_user", result.Errors.ToString());
+                            return;
+                        }
+                        
                         user = await userManager.FindByNameAsync("master");
 
                         await userManager.AddToRoleAsync(user.Id, "Master");
@@ -165,7 +172,25 @@ namespace RhNetServer.Security
 
                 return;
             }
-            catch(Exception ex)
+            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+            {
+                var st = new StackTrace(ex, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+
+                var erro = ex.EntityValidationErrors.ElementAt(0).Entry.Entity.ToString() + " ";
+                for(var i = 0; i < ex.EntityValidationErrors.Count(); i++)
+                {
+                    for(var x = 0; x < ex.EntityValidationErrors.ElementAt(i).ValidationErrors.Count(); x++)
+                    {
+                        erro += ex.EntityValidationErrors.ElementAt(i).ValidationErrors.ElementAt(x).ErrorMessage + "\n";
+                    }
+                  
+                }
+                context.SetError("errors", erro + " - Linha:" + line);
+                return;
+            }
+            catch (Exception ex)
             {
                 var st = new StackTrace(ex, true);              
                 var frame = st.GetFrame(0);
@@ -174,7 +199,7 @@ namespace RhNetServer.Security
                 context.SetError("errors", ex.Message.ToString() + " - Linha:" + line);
                 return;
             }
-
+            
             
         }
 

@@ -20,6 +20,7 @@ namespace RhNetServer.App_Start
     {
         public ApplicationUserManager(IUserStore<ApplicationUser, string> userStore) : base(userStore) { }
 
+
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             
@@ -152,6 +153,11 @@ namespace RhNetServer.App_Start
                                                }).ToListAsync();
 
             return clients;
+        }
+
+        public async Task CreateUser(ApplicationUser applicationUser, string password)
+        {
+            await this.CreateAsync(applicationUser, password);
         }
     }
 

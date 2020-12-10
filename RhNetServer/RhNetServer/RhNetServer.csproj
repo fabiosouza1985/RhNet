@@ -184,6 +184,10 @@
     <Compile Include="Migrations\202012060206085_m00002.designer.cs">
       <DependentUpon>202012060206085_m00002.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012092050386_m00003.cs" />
+    <Compile Include="Migrations\202012092050386_m00003.designer.cs">
+      <DependentUpon>202012092050386_m00003.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adm\ApplicationUserModel.cs" />
     <Compile Include="Models\Adm\ChangeClientModel.cs" />
@@ -221,6 +225,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012060206085_m00002.resx">
       <DependentUpon>202012060206085_m00002.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012092050386_m00003.resx">
+      <DependentUpon>202012092050386_m00003.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

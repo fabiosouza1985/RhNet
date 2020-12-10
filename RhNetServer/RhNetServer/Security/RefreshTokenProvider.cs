@@ -17,57 +17,57 @@ namespace RhNetServer.Security
     {
         public async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
-            var data = await context.Request.ReadFormAsync();
+            //var data = await context.Request.ReadFormAsync();
 
-            var selectedClient = data.Where(x => x.Key == "selectedClient").Select(x => x.Value).LastOrDefault().LastOrDefault();
+            //var selectedClient = data.Where(x => x.Key == "selectedClient").Select(x => x.Value).LastOrDefault().LastOrDefault();
 
-            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            //var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
-            var roles = (await userManager.GetRoleByClientAsync(context.Ticket.Identity.Claims.GetValue(ClaimTypes.Name), selectedClient)).Select(e => new { name = e.Name, description = e.Description });
+            //var roles = (await userManager.GetRoleByClientAsync(context.Ticket.Identity.Claims.GetValue(ClaimTypes.Name), selectedClient)).Select(e => new { name = e.Name, description = e.Description });
             
-            var claims = await userManager.GetClaimsAsync(context.Ticket.Identity.Claims.GetValue(ClaimTypes.Name), selectedClient);
+            //var claims = await userManager.GetClaimsAsync(context.Ticket.Identity.Claims.GetValue(ClaimTypes.Name), selectedClient);
             
-            foreach (Claim claim in context.Ticket.Identity.Claims)
-            {
-                if (claim.Type == ClaimTypes.Role)
-                {
-                    if (roles.Where(e => e.name == claim.Value).Count() == 0)
-                    {
-                        context.Ticket.Identity.RemoveClaim(claim);
-                    }
-                }
+            //foreach (Claim claim in context.Ticket.Identity.Claims)
+            //{
+            //    if (claim.Type == ClaimTypes.Role)
+            //    {
+            //        if (roles.Where(e => e.name == claim.Value).Count() == 0)
+            //        {
+            //            context.Ticket.Identity.RemoveClaim(claim);
+            //        }
+            //    }
 
-                if (claim.Type == "permission")
-                {
-                    if (claims.Where(e => e.Value == claim.Value).Count() == 0)
-                    {
-                        context.Ticket.Identity.RemoveClaim(claim);
-                    }
-                }
-            }
+            //    if (claim.Type == "permission")
+            //    {
+            //        if (claims.Where(e => e.Value == claim.Value).Count() == 0)
+            //        {
+            //            context.Ticket.Identity.RemoveClaim(claim);
+            //        }
+            //    }
+            //}
 
-            context.Ticket.Properties.Dictionary.Remove("profiles");
-            context.Ticket.Properties.Dictionary.Add("profiles", Newtonsoft.Json.JsonConvert.SerializeObject(roles));
+            //context.Ticket.Properties.Dictionary.Remove("profiles");
+            //context.Ticket.Properties.Dictionary.Add("profiles", Newtonsoft.Json.JsonConvert.SerializeObject(roles));
             
-            for (var i = 0; i < roles.Count(); i++)
-            {
-                //if (context.Ticket.Identity.Claims.Where(e => e.Type == ClaimTypes.Role && e.Value == roles.ElementAt(i).name).Count() == 0)
-                //{
-                    //context.Ticket.Identity.AddClaim(new Claim(ClaimTypes.Role, roles.ElementAt(i).name));
-                //}
+            //for (var i = 0; i < roles.Count(); i++)
+            //{
+            //    if (context.Ticket.Identity.Claims.Where(e => e.Type == ClaimTypes.Role && e.Value == roles.ElementAt(i).name).Count() == 0)
+            //    {
+            //        context.Ticket.Identity.AddClaim(new Claim(ClaimTypes.Role, roles.ElementAt(i).name));
+            //    }
 
 
-            }
+            //}
 
-            for (var i = 0; i < claims.Count(); i++)
-            {
-                //if (context.Ticket.Identity.Claims.Where(e => e.Type == claims.ElementAt(i).Type && e.Value == claims.ElementAt(i).Value).Count() == 0)
-                //{
-                   // context.Ticket.Identity.AddClaim(new Claim(claims[i].Type, claims[i].Value));
-                //}
+            //for (var i = 0; i < claims.Count(); i++)
+            //{
+            //    if (context.Ticket.Identity.Claims.Where(e => e.Type == claims.ElementAt(i).Type && e.Value == claims.ElementAt(i).Value).Count() == 0)
+            //    {
+            //        context.Ticket.Identity.AddClaim(new Claim(claims[i].Type, claims[i].Value));
+            //    }
 
 
-            }
+            //}
             Create(context);
         }
 
@@ -90,7 +90,7 @@ namespace RhNetServer.Security
             if (grant == null || grant.Equals("refresh_token")) return;
 
             context.Ticket.Properties.ExpiresUtc = DateTime.UtcNow.AddHours(1);
-            context.Ticket.Properties.Dictionary.Add("teste2", client.FirstOrDefault() + "-" + client.Count().ToString());
+           
             context.SetToken(context.SerializeTicket());
         }
 
