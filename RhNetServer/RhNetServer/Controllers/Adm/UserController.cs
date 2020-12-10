@@ -50,33 +50,16 @@ namespace RhNetServer.Controllers.Adm
             var tokenServiceUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + HttpContext.Current.Request.ApplicationPath + "/api/Security/Token";
             var response = await client.PostAsync(tokenServiceUrl, content);
 
-            string resultContent = response.Content.ReadAsStringAsync().Result;
-
+            dynamic resultContent = response.Content.ReadAsStringAsync().Result;
+            
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
-                var erros = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(resultContent);
-                
-                for (var i = 0; i < erros.Count; i++)
-                {
-                    ModelState.AddModelError(erros.ElementAt(i).Key, erros.ElementAt(i).Value);
-
-                }
-                return BadRequest(ModelState);
+                return BadRequest(resultContent.ReasonPhrase);
+               
             }
             else
-            {
-               
-                dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(resultContent);
-
-                result.currentClient = Newtonsoft.Json.JsonConvert.SerializeObject(new
-                {
-                    id = clientModel.ClientModel.Id,
-                    cnpj = clientModel.ClientModel.Cnpj,
-                    description = clientModel.ClientModel.Description,
-                    situation = clientModel.ClientModel.Situation
-                });
-                
-                return Ok(result);
+            { 
+                return Ok(Newtonsoft.Json.JsonConvert.DeserializeObject(resultContent));
             }
         }
 

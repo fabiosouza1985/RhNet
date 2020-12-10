@@ -11,7 +11,10 @@ namespace RhNetServer.Entities.Adm
 {
     public class ApplicationRole : IdentityRole<string, ApplicationUserRole>
     {
-
+        public ApplicationRole()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
         [Column("Description")]
         [StringLength(200)]
         public string Description { get; set; }

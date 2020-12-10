@@ -45,10 +45,16 @@ namespace RhNetServer.Contexts
         }
         protected override void OnModelCreating(DbModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.Entity<EntidadeSubordinacao>()
                 .HasKey(c => new { c.Entidade_Superior_Id, c.Entidade_Inferior_Id, c.Vigencia_Inicio });
+
+          
+            builder.Entity<ApplicationUserRole>()
+               .HasKey(c => new { c.RoleId, c.UserId, c.ClientId });
+                      
            
-            base.OnModelCreating(builder);
         }
     }
 }

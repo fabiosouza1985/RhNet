@@ -114,6 +114,7 @@
                     {
                         Id = c.String(nullable: false, maxLength: 128),
                         Cpf = c.String(maxLength: 11, fixedLength: true, unicode: false),
+                        LockoutEnd = c.DateTime(),
                         Email = c.String(maxLength: 256),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -121,7 +122,6 @@
                         PhoneNumber = c.String(),
                         PhoneNumberConfirmed = c.Boolean(nullable: false),
                         TwoFactorEnabled = c.Boolean(nullable: false),
-                        LockoutEndDateUtc = c.DateTime(),
                         LockoutEnabled = c.Boolean(nullable: false),
                         AccessFailedCount = c.Int(nullable: false),
                         UserName = c.String(nullable: false, maxLength: 256),
@@ -134,12 +134,15 @@
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        ClientId = c.Int(),
                         UserId = c.String(nullable: false, maxLength: 128),
                         ClaimType = c.String(),
                         ClaimValue = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Clients", t => t.ClientId)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.ClientId)
                 .Index(t => t.UserId);
             
             CreateTable(
@@ -158,14 +161,17 @@
                 "dbo.AspNetUserRoles",
                 c => new
                     {
-                        UserId = c.String(nullable: false, maxLength: 128),
+                        ClientId = c.Int(nullable: false),
                         RoleId = c.String(nullable: false, maxLength: 128),
+                        UserId = c.String(nullable: false, maxLength: 128),
                     })
-                .PrimaryKey(t => new { t.UserId, t.RoleId })
+                .PrimaryKey(t => new { t.ClientId, t.RoleId, t.UserId })
+                .ForeignKey("dbo.Clients", t => t.ClientId, cascadeDelete: true)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
-                .Index(t => t.UserId)
-                .Index(t => t.RoleId);
+                .Index(t => t.ClientId)
+                .Index(t => t.RoleId)
+                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.Permissions",
@@ -236,8 +242,10 @@
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Favorites", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserRoles", "ClientId", "dbo.Clients");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserClaims", "ClientId", "dbo.Clients");
             DropForeignKey("dbo.Favorites", "MenuId", "dbo.ApplicationMenus");
             DropForeignKey("dbo.EntidadesSubordinacoes", "Entidade_Superior_Id", "dbo.Entidades");
             DropForeignKey("dbo.EntidadesSubordinacoes", "Entidade_Inferior_Id", "dbo.Entidades");
@@ -247,10 +255,12 @@
             DropIndex("dbo.UserClients", new[] { "UserId" });
             DropIndex("dbo.Subquadros", new[] { "Quadro_Id" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "ClientId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
+            DropIndex("dbo.AspNetUserClaims", new[] { "ClientId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.Favorites", new[] { "MenuId" });
             DropIndex("dbo.Favorites", new[] { "UserId" });

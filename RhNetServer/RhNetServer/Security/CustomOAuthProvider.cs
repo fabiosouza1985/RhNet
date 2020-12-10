@@ -67,6 +67,8 @@ namespace RhNetServer.Security
 
                 if (user == null)
                 {
+                    context.SetError("invalid_grant", "Usuário ou senha invalidos");
+                    return;
                     if (context.UserName == "master" && context.Password == "Mm123456*")
                     {
                         user = new ApplicationUser()
@@ -130,11 +132,26 @@ namespace RhNetServer.Security
 
                  selectedClient = data.Where(x => x.Key == "selectedClient").Select(x => x.Value).FirstOrDefault().FirstOrDefault();
 
-                if(clients.Where(e => e.Cnpj == selectedClient).Count() == 0)
+                ClientModel client = clients.Where(e => e.Cnpj == selectedClient).FirstOrDefault();
+
+                if (client == null)
                 {
-                    context.SetError("client_select_error", "Cliente selecionado inválido");
+                    context.SetError("client_select_error", "Cliente não associado a um cliente ou cliente selecionado incorreto");
+                    return;
+                }             
+
+                if (client.Situation == Enums.ClientSituation.Bloqueado && user.UserName != "master")
+                {
+                    context.SetError("client_error", "Cliente bloqueado. Entre em contato com um administrador do sistema");
                     return;
                 }
+
+                if (client.Situation == Enums.ClientSituation.Inativo && user.UserName != "master")
+                {
+                    context.SetError("client_error", "Cliente inativo. Entre em contato com um administrador do sistema");
+                    return;
+                }
+
 
                 var identity = new ClaimsIdentity("JWT");
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
@@ -144,7 +161,13 @@ namespace RhNetServer.Security
                 var roles = (await userManager.GetRoleByClientAsync(user.UserName, selectedClient)).Select(e => new {name = e.Name, description  = e.Description});
                 var claims = await userManager.GetClaimsAsync(user.UserName, selectedClient);
 
-               
+                if (roles.Count() == 0)
+                {
+                    context.SetError("profile_error", "Cliente não associado a um perfil neste cliente. Entre em contato com um administrador do sistema");
+                    return;
+                    
+                }
+
                 for (var i = 0; i < roles.Count(); i++)
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, roles.ElementAt(i).name));
@@ -165,6 +188,14 @@ namespace RhNetServer.Security
                     props.Dictionary.Add("profiles", Newtonsoft.Json.JsonConvert.SerializeObject(roles));
                     
                 }
+
+                props.Dictionary.Add("currentClient", Newtonsoft.Json.JsonConvert.SerializeObject(new
+                {
+                    id = client.Id,
+                    cnpj = client.Cnpj,
+                    description = client.Description,
+                    situation = client.Situation
+                }));
 
                 var ticket = new AuthenticationTicket(identity, props);
 

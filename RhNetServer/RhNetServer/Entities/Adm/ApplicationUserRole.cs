@@ -11,9 +11,11 @@ namespace RhNetServer.Entities.Adm
 {
     public class ApplicationUserRole : IdentityUserRole<string>
     {
-        [Column("ClientId")]
+        [Key]
+        [Column("ClientId", Order =2)]
         [ForeignKey("Client")]
-        public int? ClientId { get; set; }
+        public int ClientId { get; set; }
+
 
         [Column("Client")]
         [ForeignKey("ClientId")]

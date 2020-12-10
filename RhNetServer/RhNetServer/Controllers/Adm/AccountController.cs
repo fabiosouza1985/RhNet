@@ -25,26 +25,49 @@ namespace RhNetServer.Controllers.Adm
         [Route("create")]
         public async Task<IHttpActionResult> Create()
         {
+            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var roleManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
+            
+            
+
             try
             {
-                var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                var roleManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationRoleManager>();
-                var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
+              
 
                 var userMaster = await userManager.FindByNameAsync("master");
                 var userFabio = await userManager.FindByNameAsync("fabio");
-
+                
                 if(userMaster == null)
                 {
-                   await userManager.CreateUser(new ApplicationUser() {Id= "18f6b2ef-1dae-4d54-a56b-82a396b0ae6f", Email = "master@email.com", UserName = "master", Cpf = "11111111111" }, "Mm123456*");
-                    
+                    var result = await userManager.CreateAsync(new ApplicationUser() { Email = "master@email.com", UserName = "master", Cpf = "11111111111" }, "Mm123456*");
+
+                    if (!result.Succeeded)
+                    {
+                        var erro = "";
+                        for (var i = 0; i < result.Errors.Count(); i++)
+                        {
+                            erro += result.Errors.ElementAt(i) + " - ";
+                        }
+                        return BadRequest(erro);
+                    }
                     userMaster = await userManager.FindByNameAsync("master");
                 }
 
                 if (userFabio == null)
                 {
-                  
-                    await userManager.CreateUser(new ApplicationUser() { Id = "8afa24f2-02ed-4379-8157-c9812fe624a2", Email = "fabio@email.com", UserName = "fabio", Cpf = "22222222222"}, "Mm123456*");
+
+                    var result =  await userManager.CreateAsync(new ApplicationUser() { Email = "fabio@email.com", UserName = "fabio", Cpf = "22222222222"}, "Mm123456*");
+                    if (!result.Succeeded)
+                    {
+                        var erro = "";
+                        for (var i = 0; i < result.Errors.Count(); i++)
+                        {
+                            erro += result.Errors.ElementAt(i) + " - ";
+                        }
+                        return BadRequest(erro);
+                    }
+
                     userFabio = await userManager.FindByNameAsync("fabio");
                 }
 
@@ -79,6 +102,17 @@ namespace RhNetServer.Controllers.Adm
                     await rhnetContext.SaveChangesAsync();
                 }
 
+                if(rhnetContext.UserClients.Count() == 0)
+                {
+                    var client_1 = await (from x in rhnetContext.Clients where x.Cnpj == "11111111111111" select x).FirstOrDefaultAsync();
+                    var client_2 = await (from x in rhnetContext.Clients where x.Cnpj == "22222222222222" select x).FirstOrDefaultAsync();
+                    var client_3 = await (from x in rhnetContext.Clients where x.Cnpj == "33333333333333" select x).FirstOrDefaultAsync();
+
+                    rhnetContext.UserClients.Add(new UserClient() { ClientId = client_1.Id, UserId = userFabio.Id });
+                    rhnetContext.UserClients.Add(new UserClient() { ClientId = client_2.Id, UserId = userFabio.Id });
+                    rhnetContext.UserClients.Add(new UserClient() { ClientId = client_3.Id, UserId = userFabio.Id });
+                    await rhnetContext.SaveChangesAsync();
+                }
                 return Ok("Operação concluída");
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException ex)
@@ -88,6 +122,7 @@ namespace RhNetServer.Controllers.Adm
                 var line = frame.GetFileLineNumber();
 
                 var erro = ex.EntityValidationErrors.ElementAt(0).Entry.Entity.ToString() + " ";
+                
                 for (var i = 0; i < ex.EntityValidationErrors.Count(); i++)
                 {
                     for (var x = 0; x < ex.EntityValidationErrors.ElementAt(i).ValidationErrors.Count(); x++)
@@ -151,79 +186,7 @@ namespace RhNetServer.Controllers.Adm
             }
             else
             {
-                
-                UserRepository repository = new UserRepository();
-                var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                var user = await userManager.FindByNameAsync(model.Username);
-
-                var rhNetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
-
-                var clients = await repository.GetClientsAsync(rhNetContext, user.Id);
-
-                if (clients.Count() == 0)
-                {
-                    if (user.UserName == "master")
-                    {
-                        ClientRepository clientRepository = new ClientRepository();
-                        clients = await clientRepository.GetAllClients(rhNetContext);
-                    }
-                    else
-                    {
-                        return BadRequest("Cliente não associado a um cliente");
-                    }
-                }
-
-                if (clients.Count() > 1 && model.SelectedClient == null)
-                {
-                    return Content(HttpStatusCode.Conflict, clients);
-                }
-
-                ClientModel selectedClient = null;
-
-
-                if (clients.Count() == 1)
-                {
-                    selectedClient = clients[0];
-                }
-                else
-                {
-                    for (var i = 0; i < clients.Count; i++)
-                    {
-                        if (model.SelectedClient.Cnpj == clients[i].Cnpj)
-                        {
-                            selectedClient = clients[i];
-                            break;
-                        }
-                    }
-                }
-
-                if (selectedClient == null)
-                {
-                    return BadRequest("Cliente não associado a um cliente ou cliente selecionado incorreto");
-                }
-
-                if (selectedClient.Situation == Enums.ClientSituation.Bloqueado && user.UserName != "master")
-                {
-                    return BadRequest("Cliente bloqueado. Entre em contato com um administrador do sistema");
-                }
-
-                if (selectedClient.Situation == Enums.ClientSituation.Inativo && user.UserName != "master")
-                {
-                    return BadRequest("Cliente inativo. Entre em contato com um administrador do sistema");
-                }
-
-
-                dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(resultContent);
-
-                result.currentClient = Newtonsoft.Json.JsonConvert.SerializeObject(new
-                {
-                    id = selectedClient.Id,
-                    cnpj = selectedClient.Cnpj,
-                    description = selectedClient.Description,
-                    situation = selectedClient.Situation
-                });
-
-                return Ok(result);
+                return Ok(Newtonsoft.Json.JsonConvert.DeserializeObject(resultContent));
             }
         }
 

@@ -157,6 +157,8 @@ namespace RhNetServer.App_Start
 
         public async Task CreateUser(ApplicationUser applicationUser, string password)
         {
+            
+
             await this.CreateAsync(applicationUser, password);
         }
     }

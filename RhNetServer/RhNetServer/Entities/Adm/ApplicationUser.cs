@@ -9,8 +9,13 @@ using System.Threading.Tasks;
 
 namespace RhNetServer.Entities.Adm
 {
-    public class ApplicationUser : IdentityUser<string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
+    public class ApplicationUser : IdentityUser<string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim> 
     {
+
+        public ApplicationUser()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
 
         [Column("Cpf", TypeName ="Char")]
         [StringLength(11)]

@@ -7,13 +7,13 @@ namespace RhNetServer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class m00003 : IMigrationMetadata
+    public sealed partial class m00001 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(m00003));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(m00001));
         
         string IMigrationMetadata.Id
         {
-            get { return "202012092050386_m00003"; }
+            get { return "202012101316533_m00001"; }
         }
         
         string IMigrationMetadata.Source
