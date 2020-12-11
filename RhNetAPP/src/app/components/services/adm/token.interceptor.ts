@@ -36,7 +36,10 @@ export class TokenInterceptor implements HttpInterceptor {
 
   handleResponse(req: HttpRequest<any>, event) {
     //console.log('Handling response for ', req.url, event);
-    if (event instanceof HttpResponse) {
+      if (event instanceof HttpResponse) {
+          
+              this.auth.refresh_token();
+         
       // console.log('Request for ', req.url,
       //     ' Response Status ', event.status);
     }

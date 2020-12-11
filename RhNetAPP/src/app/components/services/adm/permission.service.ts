@@ -11,24 +11,24 @@ export class PermissionService {
 
     constructor(private http: HttpClient, private constants: Constants) { }
 
-    getAllPermissions(): Observable<Permission[]> {
-        return this.http.get<Permission[]>(this.constants.Url + 'permission/getAllPermissions');
+    getAll(): Observable<Permission[]> {
+        return this.http.get<Permission[]>(this.constants.Url + 'permission/getAll');
     };
 
-    getPermissions(): Observable<Permission[]> {
-        return this.http.get<Permission[]>(this.constants.Url + 'permission/getPermissions');
+    get(): Observable<Permission[]> {
+        return this.http.get<Permission[]>(this.constants.Url + 'permission/get');
     };
 
 
-    addPermission(permission: Permission): Observable<Permission> {
-        return this.http.post<Permission>(this.constants.Url + 'permission/addPermission', permission);
+    add(permission: Permission): Observable<Permission> {
+        return this.http.post<Permission>(this.constants.Url + 'permission/add', permission);
     }
 
-    updatePermission(permission: Permission): Observable<Permission> {
-        return this.http.post<Permission>(this.constants.Url + 'permission/updatePermission', permission);
+    update(permission: Permission): Observable<Permission> {
+        return this.http.post<Permission>(this.constants.Url + 'permission/update', permission);
     }
 
-    removePermission(permission: Permission): Observable<Permission> {
-        return this.http.post<Permission>(this.constants.Url + 'permission/removePermission', permission);
+    remove(permission: Permission): Observable<Permission> {
+        return this.http.post<Permission>(this.constants.Url + 'permission/remove', permission);
     }
 }

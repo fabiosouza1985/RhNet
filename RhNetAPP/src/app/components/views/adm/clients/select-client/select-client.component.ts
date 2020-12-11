@@ -45,13 +45,6 @@ export class SelectClientComponent implements OnInit {
             
             localStorage.setItem('currentProfile', this.variable.Profiles[0].name);
             localStorage.setItem("currentClient", this.variable.SelectedClient.cnpj);
-
-
-
-
-
-
-
             this.variable.setTitle();
 
             this.router.navigate(['/home']);
@@ -60,13 +53,15 @@ export class SelectClientComponent implements OnInit {
             this.variable.GetFavorites();
             this.variable.IsLoading = false;
             this.variable.IsEnabled = true;
-
+            this.variable.showMessage("Cliente alterado");
         },
             (err) => {
-                console.log(err)
+                alert(err.error.message)
+                this.variable.IsLoading = false;
+                this.variable.IsEnabled = true;
             }) 
 
-        this.router.navigate(['/home']);
+       
     }
 
 }

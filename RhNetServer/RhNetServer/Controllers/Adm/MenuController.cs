@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using RhNetServer.Util;
 
 namespace RhNetServer.Controllers.Adm
 {
@@ -24,6 +25,7 @@ namespace RhNetServer.Controllers.Adm
             userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
         }
 
+        [AuthorizeAction("Visualizar Menus")]
         [Authorize(Roles = "Master")]
         [HttpGet]
         [Route("getAllMenus")]
@@ -50,6 +52,7 @@ namespace RhNetServer.Controllers.Adm
 
         }
 
+        [AuthorizeAction("Adicionar Menu")]
         [Authorize(Roles = "Master")]
         [HttpPost]
         [Route("addMenu")]
@@ -67,6 +70,7 @@ namespace RhNetServer.Controllers.Adm
 
         }
 
+        [AuthorizeAction("Atualizar Menu")]
         [Authorize(Roles = "Master")]
         [HttpPost]
         [Route("updateMenu")]
@@ -84,6 +88,7 @@ namespace RhNetServer.Controllers.Adm
 
         }
 
+        [AuthorizeAction("Remover Menu")]
         [Authorize(Roles = "Master")]
         [HttpPost]
         [Route("removeMenu")]

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using RhNetServer.App_Start;
 
 namespace RhNetServer.Repositories.Adm
 {
@@ -27,7 +28,7 @@ namespace RhNetServer.Repositories.Adm
 
         }
 
-        public async Task<List<PermissionModel>> GetPermissions(RhNetContext context, UserManager<ApplicationUser> userManager, string userName)
+        public async Task<List<PermissionModel>> GetPermissions(RhNetContext context, ApplicationUserManager userManager, string userName)
         {
             if (userName == "master")
             {

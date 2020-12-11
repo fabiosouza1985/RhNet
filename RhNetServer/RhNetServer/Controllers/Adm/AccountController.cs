@@ -29,8 +29,6 @@ namespace RhNetServer.Controllers.Adm
             var roleManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationRoleManager>();
             var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
             
-            
-
             try
             {
               

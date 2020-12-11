@@ -39,7 +39,7 @@ namespace RhNetServer.Repositories.Adm
                                 select x.Id).CountAsync() > 0;
         }
 
-        public async Task<Object> AddFavorite(RhNetContext context, string userName, FavoriteModel favoriteModel)
+        public async Task<object> AddFavorite(RhNetContext context, string userName, FavoriteModel favoriteModel)
         {
             string userId = await (from x in context.Users
                                    where x.UserName == userName
@@ -68,7 +68,7 @@ namespace RhNetServer.Repositories.Adm
             return favoriteModel;
         }
 
-        public async Task<Object> RemoveFavorite(RhNetContext context, string userName, FavoriteModel favoriteModel)
+        public async Task<object> RemoveFavorite(RhNetContext context, string userName, FavoriteModel favoriteModel)
         {
             Favorite favorite = await (from x in context.Favorites
                                        from y in context.Users.Where(e => e.UserName == userName)

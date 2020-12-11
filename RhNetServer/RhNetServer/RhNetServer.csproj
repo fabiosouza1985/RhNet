@@ -155,7 +155,14 @@
     <Compile Include="Controllers\Adm\ClientController.cs" />
     <Compile Include="Controllers\Adm\FavoriteController.cs" />
     <Compile Include="Controllers\Adm\MenuController.cs" />
+    <Compile Include="Controllers\Adm\PermissionController.cs" />
     <Compile Include="Controllers\Adm\UserController.cs" />
+    <Compile Include="Controllers\Shared\Ato_NormativoController.cs" />
+    <Compile Include="Controllers\Shared\EntidadeController.cs" />
+    <Compile Include="Controllers\Shared\MunicipioController.cs" />
+    <Compile Include="Controllers\Shared\QuadroController.cs" />
+    <Compile Include="Controllers\Shared\SubquadroController.cs" />
+    <Compile Include="Controllers\Shared\Tipo_de_Ato_NormativoController.cs" />
     <Compile Include="Entities\Adm\ApplicationMenu.cs" />
     <Compile Include="Entities\Adm\ApplicationRole.cs" />
     <Compile Include="Entities\Adm\ApplicationUser.cs" />
@@ -190,17 +197,31 @@
     <Compile Include="Models\Adm\PermissionModel.cs" />
     <Compile Include="Models\Adm\RoleModel.cs" />
     <Compile Include="Models\Adm\UserModel.cs" />
+    <Compile Include="Models\Shared\Ato_NormativoModel.cs" />
+    <Compile Include="Models\Shared\EntidadeModel.cs" />
+    <Compile Include="Models\Shared\MunicipioModel.cs" />
+    <Compile Include="Models\Shared\QuadroModel.cs" />
+    <Compile Include="Models\Shared\SubquadroModel.cs" />
+    <Compile Include="Models\Shared\Tipo_de_Ato_NormativoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Adm\ClientRepository.cs" />
     <Compile Include="Repositories\Adm\FavoriteRepository.cs" />
     <Compile Include="Repositories\Adm\MenuRepository.cs" />
     <Compile Include="Repositories\Adm\PermissionRepository.cs" />
     <Compile Include="Repositories\Adm\UserRepository.cs" />
+    <Compile Include="Repositories\Shared\Ato_NormativoRepository.cs" />
+    <Compile Include="Repositories\Shared\EntidadeRepository.cs" />
+    <Compile Include="Repositories\Shared\MunicipioRepository.cs" />
+    <Compile Include="Repositories\Shared\QuadroRepository.cs" />
+    <Compile Include="Repositories\Shared\SubquadroRepository.cs" />
+    <Compile Include="Repositories\Shared\Tipo_de_Ato_NormativoRepository.cs" />
     <Compile Include="Security\CustomJwtFormat.cs" />
     <Compile Include="Security\CustomOAuthProvider.cs" />
     <Compile Include="Security\RefreshTokenProvider.cs" />
     <Compile Include="Security\WebApplicationAccess.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Util\AuthorizeAction.cs" />
+    <Compile Include="Util\Property.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

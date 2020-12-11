@@ -14,7 +14,7 @@ namespace RhNetServer.Repositories.Adm
 {
     public class UserRepository
     {
-        public async Task<List<ApplicationUserModel>> GetUsers(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, RhNetContext rhNetContext, string username)
+        public async Task<List<ApplicationUserModel>> GetUsers(ApplicationUserManager userManager, RhNetContext rhNetContext, string username)
         {
             ApplicationUser user = await userManager.FindByNameAsync(username);
 
@@ -186,7 +186,7 @@ namespace RhNetServer.Repositories.Adm
            
         }
 
-        public async Task<Object> AddUserAsync(UserManager<ApplicationUser> userManager, RhNetContext rhNetContext, ApplicationUserModel applicationUserModel)
+        public async Task<object> AddUserAsync(ApplicationUserManager userManager, RhNetContext rhNetContext, ApplicationUserModel applicationUserModel)
         {
             
             ApplicationUser applicationUser = new ApplicationUser()
@@ -264,7 +264,7 @@ namespace RhNetServer.Repositories.Adm
 
            
         }
-        public async Task<RoleModel> AddRoleAsync(RoleManager<ApplicationRole> roleManager, RoleModel role)
+        public async Task<RoleModel> AddRoleAsync(ApplicationRoleManager roleManager, RoleModel role)
         {
             ApplicationRole newRole = new ApplicationRole() { 
                 Description = role.Description,

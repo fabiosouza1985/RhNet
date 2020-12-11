@@ -61,7 +61,7 @@ export class AddUserComponent implements OnInit {
                 console.log(err)
             })
 
-        this.permissionService.getPermissions().subscribe(results => {
+        this.permissionService.get().subscribe(results => {
             this.permissions = results;
             this.tables = [];
             for (var i = 0; i < this.permissions.length; i++) {

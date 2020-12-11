@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using RhNetServer.App_Start;
 using RhNetServer.Contexts;
@@ -6,6 +7,7 @@ using RhNetServer.Entities.Adm;
 using RhNetServer.Models.Adm;
 using RhNetServer.Repositories.Adm;
 using RhNetServer.Security;
+using RhNetServer.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,11 +52,12 @@ namespace RhNetServer.Controllers.Adm
             var tokenServiceUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + HttpContext.Current.Request.ApplicationPath + "/api/Security/Token";
             var response = await client.PostAsync(tokenServiceUrl, content);
 
-            dynamic resultContent = response.Content.ReadAsStringAsync().Result;
+            var resultContent = response.Content.ReadAsStringAsync().Result;
             
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
-                return BadRequest(resultContent.ReasonPhrase);
+              
+                return BadRequest(response.ReasonPhrase);
                
             }
             else
@@ -80,5 +83,59 @@ namespace RhNetServer.Controllers.Adm
 
             return Ok(await repository.GetRolesAsync(userManager, rhNetContext, this.User.Identity.Name, clientId));
         }
+
+
+        [AuthorizeAction("Visualizar Usuários")]
+        [HttpGet]
+        [Route("getusers")]
+        public async Task<IHttpActionResult> GetUser()
+        {
+            UserRepository repository = new UserRepository();
+            return Ok(await repository.GetUsers(userManager, rhNetContext, this.User.Identity.Name));
+        }
+
+        [AuthorizeAction("Adicionar Usuário")]
+        [HttpPost]
+        [Route("addUser")]
+        public async Task<IHttpActionResult> AddUser([FromBody] ApplicationUserModel applicationUserModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            UserRepository repository = new UserRepository();
+            var result = await repository.AddUserAsync(userManager, rhNetContext, applicationUserModel);
+
+            if (result == applicationUserModel)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                ModelState.AddModelError("errors", result.ToString());
+                return BadRequest(ModelState);
+            }
+        }
+
+        [Authorize(Roles = "Master")]
+        [HttpPost]
+        [Route("addRole")]
+        public async Task<IHttpActionResult> AddRole( [FromBody] RoleModel role)
+        {
+            UserRepository repository = new UserRepository();
+            return Ok(await repository.AddRoleAsync(roleManager, role));
+
+        }
+
+        [Authorize(Roles = "Master")]
+        [HttpPost]
+        [Route("updateRole")]
+        public async Task<IHttpActionResult> UpdateRole( [FromBody] RoleModel role)
+        {
+            UserRepository repository = new UserRepository();
+            return Ok(await repository.UpdateRoleAsync(roleManager, role));
+
+        }
     }
+
 }
