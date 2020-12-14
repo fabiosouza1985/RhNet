@@ -147,7 +147,11 @@ namespace RhNetServer.Controllers.Adm
         [Route("login")]
         public async Task<IHttpActionResult> Login([FromBody] LoginModel model)
         {
-            
+            var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
+            if(rhnetContext.Users.Count() == 0)
+            {
+                await Create();
+            }
             List<KeyValuePair<string, string>> pairs = new List<KeyValuePair<string, string>>();
             pairs.Add(new KeyValuePair<string, string>("grant_type", "password"));
             pairs.Add(new KeyValuePair<string, string>("username", model.Username));

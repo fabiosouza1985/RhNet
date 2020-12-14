@@ -52,6 +52,62 @@ namespace RhNetServer.Repositories.Adm
             return users;
         }
 
+
+        public async Task<ApplicationUserModel> GetUser(ApplicationUserManager userManager, RhNetContext rhNetContext, string userId)
+        {
+            ApplicationUser user = await userManager.FindByIdAsync(userId);
+
+
+            List<ApplicationUserModel> users = new List<ApplicationUserModel>();
+
+            ApplicationUserModel applicationUserModel = await (from x in rhNetContext.Users
+                                                               where x.Id == userId
+                                                               select new ApplicationUserModel()
+                                                               {
+                                                                   Cpf = x.Cpf,
+                                                                   Email = x.Email,
+                                                                   UserId = x.Id,
+                                                                   UserName = x.UserName
+                                                               }).FirstOrDefaultAsync();
+
+            if(applicationUserModel == null)
+            {
+                return null;
+            }
+
+            applicationUserModel.clients = await (from x in rhNetContext.UserClients
+                                                  from y in rhNetContext.Clients.Where(e => e.Id == x.ClientId)
+                                                  where x.UserId == applicationUserModel.UserId
+                                                  select new ClientModel()
+                                                  {
+                                                      Id = y.Id,
+                                                      Cnpj = y.Cnpj,
+                                                      Description = y.Description,
+                                                      Situation = y.Situation
+                                                  }).ToListAsync();
+
+            applicationUserModel.applicationRoles = await (from x in rhNetContext.UserRoles
+                                                           where x.UserId == applicationUserModel.UserId
+                                                           select new ApplicationUserModel.UserRoleModel()
+                                                           {
+                                                               UserId = x.UserId,
+                                                               ClientId = x.ClientId,
+                                                               RoleId = x.RoleId
+                                                           }).ToListAsync();
+
+            applicationUserModel.permissions = await (from x in rhNetContext.UserClaims
+                                                           where x.UserId == applicationUserModel.UserId &&
+                                                           x.ClaimType == "permission"
+                                                           select new ApplicationUserModel.UserPermissionModel()
+                                                           {
+                                                               UserId = x.UserId,
+                                                               ClientId = x.ClientId,
+                                                               Description = x.ClaimValue
+                                                           }).ToListAsync();
+
+            return applicationUserModel;
+        }
+
         public async Task<List<ClientModel>> GetClientsAsync(RhNetContext rhNetContext, string userId)
         {
             List<ClientModel> clients = await (from x in rhNetContext.UserClients
@@ -263,6 +319,144 @@ namespace RhNetServer.Repositories.Adm
 
 
            
+        }
+
+        public async Task<object> UpdateUserAsync(ApplicationUserManager userManager, RhNetContext rhNetContext, ApplicationUserModel applicationUserModel)
+        {
+
+            ApplicationUser applicationUser =await userManager.FindByNameAsync(applicationUserModel.UserName);
+
+            if (applicationUser == null)
+            {
+                return "Usuário não encontrado.";
+            }
+
+            applicationUser.Email = applicationUserModel.Email;
+            applicationUser.Cpf = applicationUserModel.Cpf;
+
+            List<ClientModel> clients = applicationUserModel.clients;
+            List<ApplicationUserModel.UserRoleModel> roles = applicationUserModel.applicationRoles;
+            List<ApplicationUserModel.UserPermissionModel> permissions = applicationUserModel.permissions;
+
+
+            var result = await userManager.UpdateAsync(applicationUser);
+
+            if (result.Succeeded)
+            {
+
+                var current_roles = await userManager.GetAllRolesAsync(applicationUserModel.UserName);
+                var current_permissions = await userManager.GetAllClaimsAsync(applicationUserModel.UserName, "permission");
+                var current_clients = await userManager.GetClientsAsync(applicationUserModel.UserName);
+
+                for (var i = 0; i < current_roles.Count(); i++)
+                {
+                    if(roles.Where(e => e.ClientId == current_roles.ElementAt(i).ClientId && e.RoleId == current_roles.ElementAt(i).RoleId).Count() == 0)
+                    {
+                        ApplicationUserRole applicationUserRole = await (from x in rhNetContext.UserRoles
+                                                                         where x.ClientId == current_roles.ElementAt(i).ClientId &&
+                                                                         x.RoleId == current_roles.ElementAt(i).RoleId &&
+                                                                         x.UserId == applicationUserModel.UserId
+                                                                         select x).FirstOrDefaultAsync();
+
+                        if(applicationUserRole != null)
+                        {
+                            rhNetContext.Entry(applicationUserRole).State = EntityState.Deleted;
+                        }
+                    }
+                }
+
+                for (var i = 0; i < current_permissions.Count(); i++)
+                {
+                    if (permissions.Where(e => e.ClientId == current_permissions.ElementAt(i).ClientId).Count() == 0)
+                    {
+                        ApplicationUserClaim applicationUserClaim = await (from x in rhNetContext.UserClaims
+                                                                         where x.ClientId == current_permissions.ElementAt(i).ClientId &&
+                                                                         x.ClaimType == current_permissions.ElementAt(i).ClaimType &&
+                                                                         x.UserId == applicationUserModel.UserId
+                                                                         select x).FirstOrDefaultAsync();
+
+                        if (applicationUserClaim != null)
+                        {
+                            rhNetContext.Entry(applicationUserClaim).State = EntityState.Deleted;
+                        }
+                    }
+                }
+
+                for (var i = 0; i < current_clients.Count(); i++)
+                {
+                    if (clients.Where(e => e.Id == current_clients.ElementAt(i).Id).Count() == 0)
+                    {
+                        UserClient userClient = await (from x in rhNetContext.UserClients
+                                                                         where x.ClientId == current_clients.ElementAt(i).Id &&
+                                                                         x.UserId == applicationUserModel.UserId
+                                                                         select x).FirstOrDefaultAsync();
+
+                        if (userClient != null)
+                        {
+                            rhNetContext.Entry(userClient).State = EntityState.Deleted;
+                        }
+                    }
+                }
+
+
+                for (var i = 0; i < roles.Count(); i++)
+                {
+                    if(current_roles.Where(e => e.ClientId == roles.ElementAt(i).ClientId && e.RoleId == roles.ElementAt(i).RoleId).Count() == 0)
+                    {
+                        ApplicationUserRole applicationUserRole = new ApplicationUserRole()
+                        {
+                            ClientId = roles[i].ClientId,
+                            UserId = applicationUser.Id,
+                            RoleId = roles[i].RoleId
+                        };
+                        rhNetContext.Entry(applicationUserRole).State = EntityState.Added;
+                    }
+                }
+
+                for (var i = 0; i < permissions.Count(); i++)
+                {
+                    ApplicationUserClaim applicationUserClaim = new ApplicationUserClaim()
+                    {
+                        ClientId = permissions[i].ClientId,
+                        UserId = applicationUser.Id,
+                        ClaimType = "permission",
+                        ClaimValue = permissions[i].Description
+                    };
+                    rhNetContext.Entry(applicationUserClaim).State = EntityState.Added;
+
+
+                }
+
+                for (var i = 0; i < clients.Count(); i++)
+                {
+                    UserClient userClient = new UserClient()
+                    {
+                        ApplicationUser = applicationUser,
+                        ClientId = clients[i].Id
+                    };
+                    rhNetContext.Entry(userClient).State = EntityState.Added;
+
+                }
+
+                await rhNetContext.SaveChangesAsync();
+                return applicationUserModel;
+            }
+            else
+            {
+                var errorList = result.Errors.ToList();
+                string errors = "";
+
+
+                for (var i = 0; i < errorList.Count; i++)
+                {
+                    errors += errorList.ElementAt(i) + " ";
+
+                }
+                return errors;
+            }
+
+
+
         }
         public async Task<RoleModel> AddRoleAsync(ApplicationRoleManager roleManager, RoleModel role)
         {

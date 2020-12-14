@@ -60,6 +60,7 @@ import { HeaderPageComponent } from './components/template/header-page/header-pa
 import { EditableTableComponent } from './components/template/editable-table/editable-table.component';
 import { QuadrosComponent } from './components/views/shared/quadros/quadros.component';
 import { SubquadrosComponent } from './components/views/shared/subquadros/subquadros.component';
+import { UpdateUserComponent } from './components/views/adm/users/update-user/update-user.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { SubquadrosComponent } from './components/views/shared/subquadros/subqua
     HeaderPageComponent,
     EditableTableComponent,
     QuadrosComponent,
-    SubquadrosComponent
+    SubquadrosComponent,
+    UpdateUserComponent
   ],
   imports: [
     BrowserModule,

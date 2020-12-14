@@ -16,8 +16,17 @@ export class UserService {
         return this.http.get<ApplicationUser[]>(this.constants.Url + 'user/getusers');
     };
 
+    getUser(userId): Observable<ApplicationUser> {
+        let httpParams = new HttpParams().set('userId', userId);
+        return this.http.get<ApplicationUser>(this.constants.Url + 'user/getuser', { params: httpParams });
+    };
+
     addUser(user): Observable<ApplicationUser> {
         return this.http.post<ApplicationUser>(this.constants.Url + 'user/adduser', user);
+    }; 
+
+    updateUser(user): Observable<ApplicationUser> {
+        return this.http.post<ApplicationUser>(this.constants.Url + 'user/updateuser', user);
     }; 
 
     getRoles(clientId : number): Observable<Profile[]> {

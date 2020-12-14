@@ -27,7 +27,7 @@ namespace RhNetServer.Models.Adm
         public class UserPermissionModel
         {
             public string UserId { get; set; }
-            public int ClientId { get; set; }
+            public int? ClientId { get; set; }
 
             public string Description { get; set; }
 

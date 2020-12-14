@@ -1,0 +1,135 @@
+<div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
+
+    <div fxFlex="25%">
+        <mat-card class="mat-elevation-z6">
+            <mat-card-header>
+                <mat-card-title>
+                    Dados do Usuário
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+
+                <div>
+                    <mat-form-field appearance="standard">
+                        <mat-label>Username</mat-label>
+                        <input matInput [(ngModel)]="User.userName" readonly>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <mat-label>CPF</mat-label>
+                        <input matInput maxlength="11" [(ngModel)]="User.cpf">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" [(ngModel)]="User.email">
+                    </mat-form-field>
+
+                </div>
+
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary"
+                        [disabled]="variable.IsEnabled === false" (click)="updateUser()">
+                    Atualizar
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <div fxFlex="25%">
+        <mat-card class="mat-elevation-z6">
+            <mat-card-header>
+                <mat-card-title>
+                    Clientes
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div>
+                    <mat-form-field appearance="standard">
+
+                        <mat-select [(ngModel)]="selectedClient">
+                            <mat-option *ngFor="let client of clients" [value]="client">
+                                {{client.description}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary"
+                        [disabled]="variable.IsEnabled === false" (click)="addClient()">
+                    Adicionar
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <div fxFlex="50%" *ngFor="let client of User.clients">
+        <mat-card class="mat-elevation-z6">
+            <mat-card-header>
+                <mat-card-title>
+                    <span>CNPJ: {{client.cnpj}}</span>
+                </mat-card-title>
+
+                <mat-card-subtitle>
+                    {{client.description}}
+                </mat-card-subtitle>
+
+            </mat-card-header>
+
+            <mat-card-content>
+                <mat-tab-group mat-align-tabs="start">
+                    <mat-tab label="Perfis">
+                        <div fxLayout="row wrap" fxLayoutGap="grid">
+                            <div fxFlex="33%" *ngFor="let profile of profiles">
+                                <mat-slide-toggle [checked]="existProfile(profile.id, client.id)" (change)="profileChange($event, profile, client.id)">
+                                    {{profile.name}}
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+
+
+                    </mat-tab>
+                    <mat-tab label="Permissões">
+                        <div fxLayout="row wrap" fxLayoutGap="grid">
+                            <div fxFlex="48%" *ngFor="let table of tables">
+                                <mat-card class="mat-elevation-z6" style="margin:10px">
+                                    <mat-card-header>
+                                        <mat-card-title>
+                                            {{table}}
+                                        </mat-card-title>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                        <div *ngFor="let permission of getPermissions(table)">
+                                            <mat-slide-toggle [checked]="existPermission(permission.id, client.id)" (change)="permissionChange($event, permission, client.id)">
+                                                {{permission.description}}
+                                            </mat-slide-toggle>
+
+                                        </div>
+                                    </mat-card-content>
+
+                                </mat-card>
+
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary"
+                        [disabled]="variable.IsEnabled === false" (click)="removeClient(client)">
+                    Remover Cliente
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+</div>
+

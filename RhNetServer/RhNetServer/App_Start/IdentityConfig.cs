@@ -84,6 +84,27 @@ namespace RhNetServer.App_Start
 
         }
 
+        public async Task<List<ApplicationUserRole>> GetAllRolesAsync(string userName)
+        {
+            var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
+            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            var user = await userManager.FindByNameAsync(userName);
+
+            List<ApplicationUserRole> applicationUserRoles = await (from x in rhnetContext.UserRoles
+                                                from y in rhnetContext.Roles.Where(e => e.Id == x.RoleId)
+                                                where x.UserId == user.Id
+                                                select new ApplicationUserRole()
+                                                {
+                                                    ClientId = x.ClientId,
+                                                    RoleId = x.RoleId,
+                                                    UserId = x.UserId
+                                                }).ToListAsync();
+
+            return applicationUserRoles;
+
+        }
+
         public async Task<List<Claim>> GetClaimsAsync( string username, string clientCnpj)
         {
             var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
@@ -125,6 +146,37 @@ namespace RhNetServer.App_Start
 
         }
 
+        public async Task<List<ApplicationUserClaim>> GetAllClaimsAsync(string username, string type = "")
+        {
+            var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
+            ApplicationUser user = await FindByNameAsync(username);
+
+            List<ApplicationUserClaim> claims = new List<ApplicationUserClaim>();
+
+            var userClaims = await (from x in rhnetContext.UserClaims
+                                    from c in rhnetContext.Clients.Where(e => e.Id == x.ClientId)
+                                    where x.UserId == user.Id
+                                    select new ApplicationUserClaim{ 
+                                        ClientId = x.ClientId,
+                                        ClaimType = x.ClaimType,
+                                        ClaimValue = x.ClaimValue,
+                                        Id = x.Id,
+                                        UserId = x.UserId
+                                    }
+                                 ).ToListAsync();
+
+
+            for (var i = 0; i < userClaims.Count; i++)
+            {
+                if (type == "" || type == userClaims.ElementAt(i).ClaimType)
+                {
+                    claims.Add(userClaims.ElementAt(i));
+                }
+
+            }
+            return claims;
+
+        }
         public async Task<List<ClientModel>> GetClientsAsync( string username)
         {
             var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();

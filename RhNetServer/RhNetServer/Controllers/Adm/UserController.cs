@@ -84,11 +84,19 @@ namespace RhNetServer.Controllers.Adm
             return Ok(await repository.GetRolesAsync(userManager, rhNetContext, this.User.Identity.Name, clientId));
         }
 
+        [AuthorizeAction("Visualizar Usuários")]
+        [HttpGet]
+        [Route("getuser")]
+        public async Task<IHttpActionResult> GetUser(string userId)
+        {
+            UserRepository repository = new UserRepository();
+            return Ok(await repository.GetUser(userManager, rhNetContext, userId));
+        }
 
         [AuthorizeAction("Visualizar Usuários")]
         [HttpGet]
         [Route("getusers")]
-        public async Task<IHttpActionResult> GetUser()
+        public async Task<IHttpActionResult> GetUsers()
         {
             UserRepository repository = new UserRepository();
             return Ok(await repository.GetUsers(userManager, rhNetContext, this.User.Identity.Name));
@@ -105,6 +113,29 @@ namespace RhNetServer.Controllers.Adm
             }
             UserRepository repository = new UserRepository();
             var result = await repository.AddUserAsync(userManager, rhNetContext, applicationUserModel);
+
+            if (result == applicationUserModel)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                ModelState.AddModelError("errors", result.ToString());
+                return BadRequest(ModelState);
+            }
+        }
+
+        [AuthorizeAction("Atualizar Usuário")]
+        [HttpPost]
+        [Route("updateUser")]
+        public async Task<IHttpActionResult> UpdateUser([FromBody] ApplicationUserModel applicationUserModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            UserRepository repository = new UserRepository();
+            var result = await repository.UpdateUserAsync(userManager, rhNetContext, applicationUserModel);
 
             if (result == applicationUserModel)
             {
