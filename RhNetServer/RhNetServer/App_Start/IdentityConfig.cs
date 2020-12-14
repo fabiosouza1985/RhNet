@@ -84,17 +84,17 @@ namespace RhNetServer.App_Start
 
         }
 
-        public async Task<List<ApplicationUserRole>> GetAllRolesAsync(string userName)
+        public async Task<List<ApplicationUserModel.UserRoleModel>> GetAllRolesAsync(string userName)
         {
             var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
             var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
             var user = await userManager.FindByNameAsync(userName);
-
-            List<ApplicationUserRole> applicationUserRoles = await (from x in rhnetContext.UserRoles
+           
+            List<ApplicationUserModel.UserRoleModel> applicationUserRoles = await (from x in rhnetContext.UserRoles
                                                 from y in rhnetContext.Roles.Where(e => e.Id == x.RoleId)
                                                 where x.UserId == user.Id
-                                                select new ApplicationUserRole()
+                                                select new ApplicationUserModel.UserRoleModel()
                                                 {
                                                     ClientId = x.ClientId,
                                                     RoleId = x.RoleId,
@@ -146,29 +146,28 @@ namespace RhNetServer.App_Start
 
         }
 
-        public async Task<List<ApplicationUserClaim>> GetAllClaimsAsync(string username, string type = "")
+        public async Task<List<ApplicationUserModel.UserPermissionModel>> GetAllClaimsAsync(string username, string type = "")
         {
             var rhnetContext = HttpContext.Current.GetOwinContext().GetUserManager<RhNetContext>();
             ApplicationUser user = await FindByNameAsync(username);
 
-            List<ApplicationUserClaim> claims = new List<ApplicationUserClaim>();
+            List<ApplicationUserModel.UserPermissionModel> claims = new List<ApplicationUserModel.UserPermissionModel>();
 
             var userClaims = await (from x in rhnetContext.UserClaims
                                     from c in rhnetContext.Clients.Where(e => e.Id == x.ClientId)
                                     where x.UserId == user.Id
-                                    select new ApplicationUserClaim{ 
+                                    select new ApplicationUserModel.UserPermissionModel
+                                    { 
                                         ClientId = x.ClientId,
-                                        ClaimType = x.ClaimType,
-                                        ClaimValue = x.ClaimValue,
-                                        Id = x.Id,
-                                        UserId = x.UserId
+                                        UserId = x.UserId,
+                                        Description = x.ClaimValue
                                     }
                                  ).ToListAsync();
 
 
             for (var i = 0; i < userClaims.Count; i++)
             {
-                if (type == "" || type == userClaims.ElementAt(i).ClaimType)
+                if (type == "" || type == userClaims.ElementAt(i).Description)
                 {
                     claims.Add(userClaims.ElementAt(i));
                 }

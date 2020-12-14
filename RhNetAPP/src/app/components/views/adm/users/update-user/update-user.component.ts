@@ -73,6 +73,13 @@ export class UpdateUserComponent implements OnInit {
 
                         this.userService.getUser(id).subscribe(results => {
                             this.User = results;
+                            for (var i = 0; i < this.User.clients.length; i++) {
+                                var index = this.clients.map(function (e) { return e.id }).indexOf(this.User.clients[i].id);
+
+                                if (index >= 0) {
+                                    this.clients.splice(index, 1);
+                                }
+                            }
                         },
                             (err) => {
                                 console.log(err)
@@ -152,7 +159,7 @@ export class UpdateUserComponent implements OnInit {
         this.userService.updateUser(this.User).subscribe(results => {
 
             this.variable.showMessage('Usuário atualizado com sucesso');
-            this.router.navigate(['/users']);
+           
             this.variable.IsLoading = false;
             this.variable.IsEnabled = true;
         },
@@ -209,10 +216,10 @@ export class UpdateUserComponent implements OnInit {
 
     }
 
-    existPermission(permissionId, clientId): boolean {
+    existPermission(permission, clientId): boolean {
         var exist: boolean = false;
-        for (var i = 0; i < this.permissions.length; i++) {
-            if (this.permissions[i].clientId == clientId && this.permissions[i].id == permissionId) {
+        for (var i = 0; i < this.User.permissions.length; i++) {
+            if (this.User.permissions[i].clientId == clientId && this.User.permissions[i].description == permission) {
                 exist = true;
                 break;
             }
@@ -224,9 +231,10 @@ export class UpdateUserComponent implements OnInit {
     existProfile(profileId, clientId): boolean {
         var exist: boolean = false;
        
-        for (var i = 0; i < this.profiles.length; i++) {
-            if (this.profiles[i].clientId == clientId && this.profiles[i].id == profileId) {
+        for (var i = 0; i < this.User.applicationRoles.length; i++) {
+            if (this.User.applicationRoles[i].clientId == clientId && this.User.applicationRoles[i].roleId == profileId) {
                 exist = true;
+               
                 break;
             }
         };

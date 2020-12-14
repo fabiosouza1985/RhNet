@@ -352,8 +352,9 @@ namespace RhNetServer.Repositories.Adm
                 {
                     if(roles.Where(e => e.ClientId == current_roles.ElementAt(i).ClientId && e.RoleId == current_roles.ElementAt(i).RoleId).Count() == 0)
                     {
+                        var client_id = current_roles.ElementAt(i).ClientId;
                         ApplicationUserRole applicationUserRole = await (from x in rhNetContext.UserRoles
-                                                                         where x.ClientId == current_roles.ElementAt(i).ClientId &&
+                                                                         where x.ClientId == client_id &&
                                                                          x.RoleId == current_roles.ElementAt(i).RoleId &&
                                                                          x.UserId == applicationUserModel.UserId
                                                                          select x).FirstOrDefaultAsync();
@@ -369,9 +370,11 @@ namespace RhNetServer.Repositories.Adm
                 {
                     if (permissions.Where(e => e.ClientId == current_permissions.ElementAt(i).ClientId).Count() == 0)
                     {
+                        var client_id = current_permissions.ElementAt(i).ClientId;
+                        var description = current_permissions.ElementAt(i).Description;
                         ApplicationUserClaim applicationUserClaim = await (from x in rhNetContext.UserClaims
-                                                                         where x.ClientId == current_permissions.ElementAt(i).ClientId &&
-                                                                         x.ClaimType == current_permissions.ElementAt(i).ClaimType &&
+                                                                         where x.ClientId == client_id &&
+                                                                         x.ClaimValue == description &&
                                                                          x.UserId == applicationUserModel.UserId
                                                                          select x).FirstOrDefaultAsync();
 
@@ -386,8 +389,9 @@ namespace RhNetServer.Repositories.Adm
                 {
                     if (clients.Where(e => e.Id == current_clients.ElementAt(i).Id).Count() == 0)
                     {
+                        var client_id = current_clients.ElementAt(i).Id;
                         UserClient userClient = await (from x in rhNetContext.UserClients
-                                                                         where x.ClientId == current_clients.ElementAt(i).Id &&
+                                                                         where x.ClientId == client_id &&
                                                                          x.UserId == applicationUserModel.UserId
                                                                          select x).FirstOrDefaultAsync();
 
@@ -415,26 +419,32 @@ namespace RhNetServer.Repositories.Adm
 
                 for (var i = 0; i < permissions.Count(); i++)
                 {
-                    ApplicationUserClaim applicationUserClaim = new ApplicationUserClaim()
+                    if (current_permissions.Where(e => e.ClientId == permissions.ElementAt(i).ClientId && e.Description == permissions.ElementAt(i).Description).Count() == 0)
                     {
-                        ClientId = permissions[i].ClientId,
-                        UserId = applicationUser.Id,
-                        ClaimType = "permission",
-                        ClaimValue = permissions[i].Description
-                    };
-                    rhNetContext.Entry(applicationUserClaim).State = EntityState.Added;
+                        ApplicationUserClaim applicationUserClaim = new ApplicationUserClaim()
+                        {
+                            ClientId = permissions[i].ClientId,
+                            UserId = applicationUser.Id,
+                            ClaimType = "permission",
+                            ClaimValue = permissions[i].Description
+                        };
+                        rhNetContext.Entry(applicationUserClaim).State = EntityState.Added;
+                    }                  
 
 
                 }
 
                 for (var i = 0; i < clients.Count(); i++)
                 {
-                    UserClient userClient = new UserClient()
+                    if(current_clients.Where(e => e.Id == clients.ElementAt(i).Id).Count() == 0)
                     {
-                        ApplicationUser = applicationUser,
-                        ClientId = clients[i].Id
-                    };
-                    rhNetContext.Entry(userClient).State = EntityState.Added;
+                        UserClient userClient = new UserClient()
+                        {
+                            ApplicationUser = applicationUser,
+                            ClientId = clients[i].Id
+                        };
+                        rhNetContext.Entry(userClient).State = EntityState.Added;
+                    }                   
 
                 }
 

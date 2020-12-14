@@ -107,7 +107,7 @@
                                     </mat-card-header>
                                     <mat-card-content>
                                         <div *ngFor="let permission of getPermissions(table)">
-                                            <mat-slide-toggle [checked]="existPermission(permission.id, client.id)" (change)="permissionChange($event, permission, client.id)">
+                                            <mat-slide-toggle [checked]="existPermission(permission.description, client.id)" (change)="permissionChange($event, permission, client.id)">
                                                 {{permission.description}}
                                             </mat-slide-toggle>
 
