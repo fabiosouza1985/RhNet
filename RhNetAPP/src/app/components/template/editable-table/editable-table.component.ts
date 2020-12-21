@@ -19,6 +19,7 @@ export class EditableTableComponent implements OnInit {
     @Input() displayedColumns: string[];
     @Input() objectList: any[];
     @Input() table: string;
+    @Input() detalheRouter: string
 
     filterColumns = [];
 
@@ -34,7 +35,6 @@ export class EditableTableComponent implements OnInit {
        
         this.ds = new MatTableDataSource(this.objectList);  
        
-       
     }
 
     getMaxLength(propertyName: string): number {
@@ -48,6 +48,19 @@ export class EditableTableComponent implements OnInit {
         }
 
         return maxLength;
+    }
+
+    getReadOnly(propertyName: string): boolean {
+        var readonly = false;
+
+        for (var i = 0; i < this.properties.length; i++) {
+            if (this.properties[i].name === propertyName) {
+                readonly = this.properties[i].readOnly;
+                break;
+            }
+        }
+
+        return readonly;
     }
 
     applyFilter(event: Event, columnName: string) {

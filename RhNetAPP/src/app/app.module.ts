@@ -61,6 +61,7 @@ import { EditableTableComponent } from './components/template/editable-table/edi
 import { QuadrosComponent } from './components/views/shared/quadros/quadros.component';
 import { SubquadrosComponent } from './components/views/shared/subquadros/subquadros.component';
 import { UpdateUserComponent } from './components/views/adm/users/update-user/update-user.component';
+import { QuadroDetalheComponent } from './components/views/shared/quadros/quadro-detalhe/quadro-detalhe.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { UpdateUserComponent } from './components/views/adm/users/update-user/up
     EditableTableComponent,
     QuadrosComponent,
     SubquadrosComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    QuadroDetalheComponent
   ],
   imports: [
     BrowserModule,

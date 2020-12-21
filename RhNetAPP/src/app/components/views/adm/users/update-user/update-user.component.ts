@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Variables } from 'src/app/components/variables';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ClientService } from 'src/app/components/services/adm/client.service';
 import { PermissionService } from 'src/app/components/services/adm/permission.service';
 import { UserService } from 'src/app/components/services/adm/user.service';

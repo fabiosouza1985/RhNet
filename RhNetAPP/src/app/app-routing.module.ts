@@ -18,6 +18,7 @@ import { EntidadesComponent } from './components/views/shared/entidades/entidade
 import { TiposDeAtoNormativoComponent } from './components/views/shared/tipos-de-ato-normativo/tipos-de-ato-normativo.component';
 import { AtosNormativosComponent } from './components/views/shared/atos-normativos/atos-normativos.component';
 import { QuadrosComponent } from './components/views/shared/quadros/quadros.component';
+import { QuadroDetalheComponent } from './components/views/shared/quadros/quadro-detalhe/quadro-detalhe.component';
 import { SubquadrosComponent } from './components/views/shared/subquadros/subquadros.component';
 const routes: Routes = [
   {
@@ -90,6 +91,10 @@ const routes: Routes = [
     {
         path: "quadros",
         component: QuadrosComponent
+    },
+    {
+        path: "quadros/quadro-detalhe/:quadroId",
+        component: QuadroDetalheComponent
     },
     {
         path: "subquadros",

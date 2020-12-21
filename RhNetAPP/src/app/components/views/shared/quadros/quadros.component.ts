@@ -3,6 +3,7 @@ import { Property } from 'src/app/components/models/shared/property.model';
 import { Quadro } from 'src/app/components/models/shared/quadro.model';
 import { SharedService } from 'src/app/components/services/shared/shared.service';
 import { Variables } from 'src/app/components/variables';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-quadros',
@@ -14,7 +15,7 @@ export class QuadrosComponent implements OnInit {
 
     title: string = "Quadros";
     table: string = "quadro";
-
+    detalheRouter: string = "quadro-detalhe"
     properties: Property[] = [];
     displayedColumns: string[] = [];
 
@@ -23,7 +24,7 @@ export class QuadrosComponent implements OnInit {
     quadros: Quadro[] = [];
 
 
-    constructor(private service: SharedService, public variable: Variables) {
+    constructor(private service: SharedService, public variable: Variables, private router: Router) {
 
     }
 
@@ -38,8 +39,9 @@ export class QuadrosComponent implements OnInit {
                     this.displayedColumns.push(this.properties[i].name);
                 }
             }
-
+                       
             this.displayedColumns.push("actions");
+            this.displayedColumns.push("details");
 
             this.service.get(this.table).subscribe(results => {
                 this.quadros = results;
@@ -63,4 +65,7 @@ export class QuadrosComponent implements OnInit {
 
     }
 
+    exibirDetalhe(quadroId): void {
+        this.router.navigate(['quadro-detalhe', quadroId]);
+    }
 }

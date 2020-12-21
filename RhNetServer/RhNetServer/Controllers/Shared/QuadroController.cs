@@ -37,6 +37,22 @@ namespace RhNetServer.Controllers.Shared
 
         }
 
+        [AuthorizeAction("Visualizar Quadros")]
+        [HttpGet]
+        [Route("getById")]
+        public async Task<IHttpActionResult> GetById(int id)
+        {
+            var result = await repository.Get(rhNetContext, id);
+
+            if(result == null)
+            {
+                return BadRequest("Quadro não encontrado");
+            }
+
+            return Ok((QuadroModel) result);
+
+        }
+
         [AuthorizeAction("Adicionar Quadro")]
         [HttpPost]
         [Route("add")]

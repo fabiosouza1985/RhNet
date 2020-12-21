@@ -2,7 +2,7 @@
     width: calc(100vh - 150px);
 }
 
-.mat-column-sigla {
-    width: 100px;
-    max-width: 100px;
+.mat-column-total_Subquadros, .mat-column-total_Atos_Normativos {
+    width: 50px;
+    max-width: 50px;
 }

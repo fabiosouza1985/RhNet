@@ -53,6 +53,7 @@ namespace RhNetServer.App_Start
             if (userName == "master")
             {
                 return await (from y in rhnetContext.Roles
+                              orderby y.Level
                               select new RoleModel()
                               {
                                   Id = y.Id,
@@ -72,6 +73,7 @@ namespace RhNetServer.App_Start
             List<RoleModel> roleModels = await (from x in rhnetContext.UserRoles
                                                 from y in rhnetContext.Roles.Where(e => e.Id == x.RoleId)
                                                 where x.UserId == user.Id && x.ClientId == client.Id
+                                                orderby y.Level
                                                 select new RoleModel()
                                                 {
                                                     Id = y.Id,

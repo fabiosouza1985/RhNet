@@ -25,8 +25,7 @@ namespace RhNetServer.Repositories.Shared
                               Quadro = new QuadroModel()
                               {
                                   Id = y.Id,
-                                  Descricao = y.Descricao,
-                                  Sigla = y.Sigla
+                                  Descricao = y.Descricao
                               }
                           }).ToListAsync();
         }

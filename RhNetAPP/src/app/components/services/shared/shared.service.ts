@@ -18,6 +18,11 @@ export class SharedService {
         return this.http.get<any[]>(this.constants.Url + table + '/get');
     };
 
+    getById(table: string, id: number): Observable<any> {
+        let httpParams = new HttpParams().set('id', id.toString());
+        return this.http.get<any>(this.constants.Url + table + '/getById', { params: httpParams });
+    };
+
     add(table: string, object): Observable<any> {
         return this.http.post<any>(this.constants.Url + table + '/add', object);
     }

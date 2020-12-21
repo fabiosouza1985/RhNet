@@ -19,16 +19,54 @@ namespace RhNetServer.Repositories.Shared
                           select new QuadroModel()
                           {
                               Descricao = x.Descricao,
-                              Id = x.Id,
-                              Sigla = x.Sigla
+                              Id = x.Id
                           }).ToListAsync();
+        }
+
+        public async Task<QuadroModel> Get(RhNetContext rhNetContext, int id)
+        {
+            QuadroModel quadroModel = await (from x in rhNetContext.Quadros
+                                             where x.Id == id
+                                             orderby x.Descricao
+                                             select new QuadroModel()
+                                             {
+                                                 Descricao = x.Descricao,
+                                                 Id = x.Id
+                                             }).FirstOrDefaultAsync();
+
+            if (quadroModel == null) return null;
+
+            quadroModel.Subquadros = await (from x in rhNetContext.Subquadros
+                                            where x.Quadro_Id == quadroModel.Id
+                                            select new SubquadroModel()
+                                            {
+                                                Id = x.Id,
+                                                Descricao = x.Descricao,
+                                                Sigla = x.Sigla
+                                            }).ToListAsync();
+
+            quadroModel.Atos_Normativos = await (from x in rhNetContext.Quadros_Atos_Normativos
+                                                 from y in rhNetContext.Atos_Normativos.Where(e => e.Id == x.Ato_Normativo_Id)
+                                                 from z in rhNetContext.Tipos_de_Ato_Normativo.Where(e => e.Id == y.Tipo_de_Ato_Normativo_Id)
+                                            where x.Quadro_Id == quadroModel.Id
+                                            select new Ato_NormativoModel()
+                                            {
+                                                Id = y.Id,
+                                                Descricao = y.Descricao,
+                                                Ano = y.Ano,
+                                                Numero = y.Numero,
+                                                Publicacao_Data = y.Publicacao_Data,
+                                                Vigencia_Data = y.Vigencia_Data,
+                                                Tipo_de_Ato_Normativo_Id = z.Id,
+                                                Tipo_de_Ato_Normativo_Descricao = z.Descricao
+                                            }).ToListAsync();
+            return quadroModel;
         }
 
         public async Task<object> Add(RhNetContext rhNetContext, QuadroModel quadroModel)
         {
             Quadro quadro = new Quadro()
             {
-                Sigla = quadroModel.Sigla,
                 Descricao = quadroModel.Descricao
             };
 
@@ -58,7 +96,6 @@ namespace RhNetServer.Repositories.Shared
                 return "Quadro não encontrado.";
             }
             quadro.Descricao = quadroModel.Descricao;
-            quadro.Sigla = quadroModel.Sigla;
 
             try
             {

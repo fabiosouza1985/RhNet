@@ -19,11 +19,5 @@ namespace RhNetServer.Entities.Shared
         [Required]
         [StringLength(100)]
         public string Descricao { get; set; }
-
-        [Column("Sigla")]
-        [Required]
-        [StringLength(10)]
-        public string Sigla { get; set; }
-
     }
 }

@@ -36,7 +36,9 @@ namespace RhNetServer.Contexts
         public DbSet<Quadro> Quadros { get; set; }
 
         public DbSet<Subquadro> Subquadros { get; set; }
-              
+
+        public DbSet<Quadro_Ato_Normativo> Quadros_Atos_Normativos { get; set; }
+
         public RhNetContext() : base("DefaultConnection") { }
 
         public static RhNetContext Create()
