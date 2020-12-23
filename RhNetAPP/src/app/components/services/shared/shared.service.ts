@@ -27,6 +27,10 @@ export class SharedService {
         return this.http.post<any>(this.constants.Url + table + '/add', object);
     }
 
+    addWithUrl(url: string, object): Observable<any> {
+        return this.http.post<any>(this.constants.Url + url, object);
+    }
+
     update(table: string, object): Observable<any> {
         return this.http.post<any>(this.constants.Url + table + '/update', object);
     }

@@ -137,5 +137,68 @@ namespace RhNetServer.Repositories.Shared
 
 
         }
+
+        public async Task<object> AddAtoNormativo(RhNetContext rhNetContext, Quadro_Ato_NormativoModel quadro_Ato_NormativoModel)
+        {
+
+            Quadro quadro = await rhNetContext.Quadros.FindAsync(quadro_Ato_NormativoModel.Quadro_Id);
+
+            if (quadro == null)
+            {
+                return "Quadro não encontrado.";
+            }
+
+            Ato_Normativo ato_normativo = await rhNetContext.Atos_Normativos.FindAsync(quadro_Ato_NormativoModel.Ato_Normativo_Id);
+
+            if (ato_normativo == null)
+            {
+                return "Ato Normativo não encontrado.";
+            }
+
+            Quadro_Ato_Normativo quadro_ato_normativo = new Quadro_Ato_Normativo()
+            {
+                Ato_Normativo_Id = quadro_Ato_NormativoModel.Ato_Normativo_Id,
+                Quadro_Id = quadro_Ato_NormativoModel.Quadro_Id
+            };
+
+
+            Boolean exist = await (from x in rhNetContext.Quadros_Atos_Normativos
+                                   where x.Ato_Normativo_Id == quadro_Ato_NormativoModel.Ato_Normativo_Id &&
+                                   x.Quadro_Id == quadro_Ato_NormativoModel.Quadro_Id
+                                   select x).CountAsync() > 0;
+
+            if (exist)
+            {
+                return "Ato normativo já adicionado ao Quadro";
+            }
+
+
+            rhNetContext.Entry(quadro_ato_normativo).State = EntityState.Added;
+            await rhNetContext.SaveChangesAsync();
+
+            return quadro_Ato_NormativoModel;
+
+        }
+
+        public async Task<object> RemoveAtoNormativo(RhNetContext rhNetContext, Quadro_Ato_NormativoModel quadro_Ato_NormativoModel)
+        {
+            Quadro_Ato_Normativo quadro_ato_normativo = await (from x in rhNetContext.Quadros_Atos_Normativos
+                                   where x.Ato_Normativo_Id == quadro_Ato_NormativoModel.Ato_Normativo_Id &&
+                                   x.Quadro_Id == quadro_Ato_NormativoModel.Quadro_Id
+                                   select x).FirstOrDefaultAsync();
+
+            if(quadro_ato_normativo == null)
+            {
+                return "Ato Normativo não encontrado";
+            }
+
+            rhNetContext.Entry(quadro_ato_normativo).State = EntityState.Deleted;
+            await rhNetContext.SaveChangesAsync();
+
+            return quadro_Ato_NormativoModel;
+
+
+        }
+
     }
 }

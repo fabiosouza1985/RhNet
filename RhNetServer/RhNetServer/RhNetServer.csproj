@@ -206,6 +206,7 @@
     <Compile Include="Models\Shared\EntidadeModel.cs" />
     <Compile Include="Models\Shared\MunicipioModel.cs" />
     <Compile Include="Models\Shared\QuadroModel.cs" />
+    <Compile Include="Models\Shared\Quadro_Ato_NormativoModel.cs" />
     <Compile Include="Models\Shared\SubquadroModel.cs" />
     <Compile Include="Models\Shared\Tipo_de_Ato_NormativoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

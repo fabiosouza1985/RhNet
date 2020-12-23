@@ -114,5 +114,49 @@ namespace RhNetServer.Controllers.Shared
                 return BadRequest(result.ToString());
             }
         }
+
+        [AuthorizeAction("Atualizar Quadro")]
+        [HttpPost]
+        [Route("addAtoNormativo")]
+        public async Task<IHttpActionResult> AddAtoNormativo([FromBody] Quadro_Ato_NormativoModel quadro_Ato_NormativoModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            object result = await repository.AddAtoNormativo(rhNetContext, quadro_Ato_NormativoModel);
+
+            if (result.GetType() == typeof(Quadro_Ato_NormativoModel))
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToString());
+            }
+        }
+
+        [AuthorizeAction("Atualizar Quadro")]
+        [HttpPost]
+        [Route("removeAtoNormativo")]
+        public async Task<IHttpActionResult> RemoveAtoNormativo([FromBody] Quadro_Ato_NormativoModel quadro_Ato_NormativoModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            object result = await repository.RemoveAtoNormativo(rhNetContext, quadro_Ato_NormativoModel);
+
+            if (result.GetType() == typeof(Quadro_Ato_NormativoModel))
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToString());
+            }
+        }
     }
 }
